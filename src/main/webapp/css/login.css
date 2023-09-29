@@ -1,0 +1,164 @@
+*, html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Helvetica, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, #5ccb5f, #009929, #006414);
+}
+
+.login-container {
+    width: 35vw;
+    height: 75vh;
+    display: flex;
+    box-shadow: 0 0 17px 10px rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    background: white;
+}
+
+.login {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.lab-img {
+    width: 300px;
+    height: 120px;
+}
+
+.login-section {
+    margin: 40px 0 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
+
+
+.login-section h2.login-title {
+    margin-bottom: 15px 0;
+}
+
+.input-field {
+    background: #009929;
+    height: 40px;
+    display: flex;
+    width: 60%;
+    align-items: center;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+
+.input-field .input-text {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.input-field .input-text:focus {
+    box-shadow: none;
+}
+
+.input-field .input-text::placeholder {
+    color: white;
+}
+
+.login-button {
+    width: 60%;
+    height: 40px;
+    color: white;
+    background: linear-gradient(to right,  #5ccb5f, #009929, #006414) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    margin-top: 10px !important;
+}
+
+.create {
+    display: flex;
+    align-items: center;
+    margin: 40px 0 5px 0;
+}
+
+.create span {
+    margin-right: 30px;
+}
+
+.create-button {
+    height: 40px;
+    color: white;
+    background: linear-gradient(to right,  #5ccb5f, #009929, #006414) !important;
+    border: none !important;
+    border-radius: 10px !important;
+}
+
+.create-account {
+    width: 30vw !important;
+    border-radius: 10px !important;
+}
+
+
+.create-field {
+    background: #009929;
+    align-items: center;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.create-field .create-input-text {
+    background: none;
+    border: none !important;
+    outline: none !important;
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.create-field .create-input-text::placeholder {
+    color: white;
+}
+
+.create-input-text .ui-selectonemenu-label {
+    color: white;
+}
+
+.buttonsAccountContainer .done-create-button {
+    color: white;
+    background: linear-gradient(to right, #5ccb5f, #009929, #006414) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    margin-top: 10px !important;
+}
+
+.buttonsAccountContainer .cancel-create-button {
+    color: white;
+    background: linear-gradient(to right, #A11008, #C0230C, #A11008) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    margin-top: 10px !important;
+}
+
+
+
+
+
+
