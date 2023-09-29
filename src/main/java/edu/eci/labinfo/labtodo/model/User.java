@@ -1,9 +1,16 @@
 package edu.eci.labinfo.labtodo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * Esta es una entidad que representa a un usuario en la base de datos.
@@ -19,11 +26,16 @@ public class User {
     private String userEmail;
     private String userPassword;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany()
+    List<Task> tasks;
+
     public User(String name, String password, Role role, String email) {
         this.userName = name;
         this.userPassword = password;
         this.userRole = role.getValue();
         this.userEmail = email;
+        this.tasks = new ArrayList<>();
     }
 
     public User() {
@@ -73,6 +85,18 @@ public class User {
     public String toString() {
         return "Usuario: " + userName + ", Rol: " + userRole + ", Email: " + userEmail;
     }
+
+    public void addTask(Task taskToAdd) {
+		tasks.add(taskToAdd);
+	}
+
+    public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setIdeas(List<Task> task) {
+		this.tasks = task;
+	}
 
     
     
