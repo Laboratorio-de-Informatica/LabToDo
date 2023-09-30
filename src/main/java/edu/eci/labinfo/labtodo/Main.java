@@ -40,7 +40,6 @@ public class Main {
 		return args -> {
 			//Deleting tables's content...
             myTaskService.deleteAllTasks();
-
 			myUserService.deleteAllUsers();
 
 			//Adding User...
