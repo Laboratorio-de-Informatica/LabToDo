@@ -35,7 +35,7 @@ public class TaskService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Task updateTask(Task task) {
-        if (taskRepository.existsById(task.getId())) {
+        if (taskRepository.existsById(task.getTaskId())) {
             return taskRepository.save(task);
         }
         return null;

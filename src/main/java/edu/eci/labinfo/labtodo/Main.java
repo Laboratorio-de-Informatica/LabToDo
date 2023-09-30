@@ -56,9 +56,9 @@ public class Main {
             user.addTask(task1);
             user.addTask(task2);
             myUserService.updateUser(user);
-			task1.setUser(user);
+			task1.addUser(user);
 			myTaskService.updateTask(task1);
-			task2.setUser(user);
+			task2.addUser(user);
 			myTaskService.updateTask(task2);
 		};
     }

@@ -1,14 +1,20 @@
 package edu.eci.labinfo.labtodo.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 public class Task {
@@ -16,7 +22,8 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private Long taskId;
+
     private String title;
     private String status;
     private String description;
@@ -24,8 +31,9 @@ public class Task {
     @Column(name = "creationDate")
     private LocalDate creationDate;
 
-    @ManyToOne(targetEntity = User.class)
-    User user;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    List<User> users;
 
     public Task(){
     }
@@ -35,10 +43,15 @@ public class Task {
         this.status = Status.CREATED;
         this.description = description;
         this.creationDate = LocalDate.now();
+        this.users = new ArrayList<>();
     }
 
-    public Long getId() {
-        return id;
+    public void addUser(User user){
+        users.add(user);
+    }
+
+    public Long getTaskId() {
+        return taskId;
     }
 
     public String getTitle() {
@@ -57,8 +70,8 @@ public class Task {
         return creationDate;
     }
 
-    public User getUser() {
-        return user;
+    public List<User>  getUsers() {
+        return users;
     }
 
     public void setTitle(String title) {
@@ -77,20 +90,20 @@ public class Task {
         this.creationDate = creationDate;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(List<User>  users) {
+        this.users = users;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((taskId == null) ? 0 : taskId.hashCode());
         result = prime * result + ((title == null) ? 0 : title.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        result = prime * result + ((users == null) ? 0 : users.hashCode());
         return result;
     }
 
@@ -103,10 +116,10 @@ public class Task {
         if (getClass() != obj.getClass())
             return false;
         Task other = (Task) obj;
-        if (id == null) {
-            if (other.id != null)
+        if (taskId == null) {
+            if (other.taskId != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!taskId.equals(other.taskId))
             return false;
         if (title == null) {
             if (other.title != null)
@@ -128,17 +141,23 @@ public class Task {
                 return false;
         } else if (!creationDate.equals(other.creationDate))
             return false;
-        if (user == null) {
-            if (other.user != null)
+        if (users == null) {
+            if (other.users != null)
                 return false;
-        } else if (!user.equals(other.user))
+        } else if (!users.equals(other.users))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Task [id=" + id + ", title=" + title + ", status=" + status + ", description=" + description
-                + ", creationDate=" + creationDate + ", user=" + user + "]";
+        return "Task [id=" + taskId + ", title=" + title + ", status=" + status + ", description=" + description
+                + ", creationDate=" + creationDate + ", users=" + users + "]";
     }
+
+
+
+    
+
+
 }
