@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 
+import aj.org.objectweb.asm.Type;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.Task;
 import edu.eci.labinfo.labtodo.model.User;

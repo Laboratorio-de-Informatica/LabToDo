@@ -20,6 +20,7 @@ public class Task {
     private String title;
     private String status;
     private String description;
+
     @Column(name = "creationDate")
     private LocalDate creationDate;
 
@@ -56,6 +57,10 @@ public class Task {
         return creationDate;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -70,10 +75,6 @@ public class Task {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public void setUser(User user) {
