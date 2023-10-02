@@ -1,39 +1,40 @@
-*, html, body {
-    margin: 0;
-    padding: 0;
-}
-
 body {
     font-family: Helvetica, sans-serif;
+}
+
+main {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom right, #5ccb5f, #009929, #006414);
+    background: linear-gradient(to bottom right, #7dcc7f, #3dcc63, #2b9440);
 }
 
 .login-container {
-    width: 35vw;
-    height: 75vh;
     display: flex;
+    justify-content: space-evenly;
+    padding: 2rem;
+    width: 80%;
     box-shadow: 0 0 17px 10px rgba(255, 255, 255, 0.3);
     border-radius: 25px;
     background: white;
 }
 
-.login {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.illustration-to-do {
+    background-image: url(../img/to-do-illustration.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 30rem;
 }
 
-.title {
+.login {
+    padding: 2rem;
+}
+
+.title-containter {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .lab-img {
@@ -41,38 +42,32 @@ body {
     height: 120px;
 }
 
-.login-section {
-    margin: 40px 0 10px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
+.title {
+    text-align: center;
 }
 
+.login-section {
+    display: flex;
+    flex-direction: column;
+}
 
 .login-section h2.login-title {
     margin-bottom: 15px 0;
 }
 
 .input-field {
-    background: #009929;
-    height: 40px;
     display: flex;
-    width: 60%;
+    flex-direction: column;
     align-items: center;
-    border-radius: 10px;
-    margin: 5px 0;
+    gap: 1rem;
 }
 
-
 .input-field .input-text {
-    background: none;
+    background: #088251;
+    border-radius: 10px !important;
     border: none;
     outline: none;
     width: 100%;
-    height: 100%;
-    color: white;
 }
 
 .input-field .input-text:focus {
@@ -80,35 +75,21 @@ body {
 }
 
 .input-field .input-text::placeholder {
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
-.login-button {
-    width: 60%;
-    height: 40px;
+.buttons-container {
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
     color: white;
-    background: linear-gradient(to right,  #5ccb5f, #009929, #006414) !important;
+    background: #007BFF !important;
     border: none !important;
     border-radius: 10px !important;
     margin-top: 10px !important;
-}
-
-.create {
-    display: flex;
-    align-items: center;
-    margin: 40px 0 5px 0;
-}
-
-.create span {
-    margin-right: 30px;
-}
-
-.create-button {
-    height: 40px;
-    color: white;
-    background: linear-gradient(to right,  #5ccb5f, #009929, #006414) !important;
-    border: none !important;
-    border-radius: 10px !important;
 }
 
 .create-account {
@@ -116,9 +97,8 @@ body {
     border-radius: 10px !important;
 }
 
-
 .create-field {
-    background: #009929;
+    background: #088251;
     align-items: center;
     border-radius: 5px;
     margin: 10px 0;
@@ -126,6 +106,7 @@ body {
 
 .create-field .create-input-text {
     background: none;
+    border-radius: 10px !important;
     border: none !important;
     outline: none !important;
     width: 100%;
@@ -143,7 +124,7 @@ body {
 
 .buttonsAccountContainer .done-create-button {
     color: white;
-    background: linear-gradient(to right, #5ccb5f, #009929, #006414) !important;
+    background: #007BFF !important;
     border: none !important;
     border-radius: 10px !important;
     margin-top: 10px !important;
@@ -151,7 +132,7 @@ body {
 
 .buttonsAccountContainer .cancel-create-button {
     color: white;
-    background: linear-gradient(to right, #A11008, #C0230C, #A11008) !important;
+    background: #DC3545 !important;
     border: none !important;
     border-radius: 10px !important;
     margin-top: 10px !important;
