@@ -28,7 +28,7 @@ public class LoginBean {
     private UserService userService;
 
     @Autowired
-    private FacesContextWrapper facesContextWrapper;
+    private static FacesContextWrapper facesContextWrapper;
 
     @Autowired
     private PrimeFacesWrapper primeFacesWrapper;
