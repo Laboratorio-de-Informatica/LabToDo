@@ -82,6 +82,18 @@ public class User {
         this.userPassword = userPassword;
     }
 
+    public void addTask(Task taskToAdd) {
+        tasks.add(taskToAdd);
+	}
+
+    public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setIdeas(List<Task> task) {
+		this.tasks = task;
+	}
+
     @Override
     public String toString() {
         return "Usuario: " + userName + ", Rol: " + userRole + ", Email: " + userEmail;

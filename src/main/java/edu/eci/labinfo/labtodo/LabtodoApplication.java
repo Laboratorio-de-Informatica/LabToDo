@@ -12,6 +12,9 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 
+import edu.eci.labinfo.labtodo.model.Role;
+import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
 

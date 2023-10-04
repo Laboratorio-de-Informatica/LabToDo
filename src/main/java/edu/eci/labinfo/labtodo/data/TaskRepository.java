@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import edu.eci.labinfo.labtodo.model.Task;
 
 @Repository
-public class TaskRepository extends JpaRepository<Task, Long> {
+public interface TaskRepository extends JpaRepository<Task, Long>{
     boolean existsById(Long taskId);
 
 }
