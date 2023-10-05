@@ -40,7 +40,7 @@ public class Task {
 
     public Task(String title, String description) {
         this.title = title;
-        this.status = Status.CREATED;
+        this.status = Status.INPROGRESS;
         this.description = description;
         this.creationDate = LocalDate.now();
         this.users = new ArrayList<>();
