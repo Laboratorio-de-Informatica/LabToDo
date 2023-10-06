@@ -47,9 +47,18 @@
           />
         </div>
       </div>
-
       <div class="task-crud">
         <h:form id="form">
+
+        <div class="tool-bar">
+              <p:toolbar styleClass="mi-toolbar">
+                  <p:toolbarGroup>
+                      <!-- Botón Nuevo Usuario-->
+                      <p:commandButton type="button" value="Nueva Tarea" icon="pi pi-plus" styleClass="mr-2"  actionListener="#{taskBean.openNew}"
+                        action="PF('managetaskDialog').show()" />
+                  </p:toolbarGroup>
+              </p:toolbar>
+          </div>
           <div class="card">
             <p:carousel
               id="dt-task"
@@ -66,6 +75,9 @@
                 </div>
               </f:facet>
               <div class="task-item">
+                <div class="mb-3">
+                  <p:graphicImage url="../img/tarea.png"  styleClass="task-image"/>
+                </div>
                 <h4 class="mb-1">#{task.title}</h4>
                 <p>#{task.description}</p>
               </div>
@@ -75,6 +87,10 @@
       </div>
 
       <h:form id="dialogs">
+          <p:dialog header="Detalles de la tarea" showEffect="fade" modal="true" widgetVar="managetaskDialog"
+          responsive="true">
+          <p:outputPanel id="manage-task-content" class="ui-fluid"></p:outputPanel>
+      </p:dialog>
         <!-- Dialogo para cerrar sesion -->
         <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade" width="300"
             message="Are you sure you want to sing out?"  header="Confirm" >

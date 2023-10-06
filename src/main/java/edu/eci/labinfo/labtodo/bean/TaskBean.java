@@ -22,10 +22,15 @@ public class TaskBean {
 
     private List<Task> tasks;
     private List<Task> filteredTasks;
+    private Task currentTask;
 
     @PostConstruct
     public void init() {
         this.tasks = taskService.getAllITask();
+    }
+
+    public void openNew() {
+        this.currentTask = new Task();
     }
 
     public List<Task> getTasks() {
@@ -43,4 +48,14 @@ public class TaskBean {
     public void setFilteredTasks(List<Task> filteredTasks) {
         this.filteredTasks = filteredTasks;
     }
+
+    public Task getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(Task currentTask) {
+        this.currentTask = currentTask;
+    }
+
+    
 }

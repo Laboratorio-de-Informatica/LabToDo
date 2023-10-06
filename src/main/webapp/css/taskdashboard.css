@@ -83,7 +83,7 @@ main {
 
 .task-crud {
     width: 100%;
-    background-color: aqua;
+    background-color: white;
 }
 
 #dt-task {
@@ -94,4 +94,16 @@ main {
     padding: 1rem;
     border-radius: 25px;
     background-color: white;
+}
+
+.task-item {
+    border: 1px solid var(--surface-d);
+    border-radius: 3px;
+    margin: .3rem;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.task-image {
+    width: 50%;
 }
