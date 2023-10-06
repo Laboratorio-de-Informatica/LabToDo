@@ -12,31 +12,19 @@
     <h:body>
         <div class="task-crud">
             <h:form id="form" >
-                <div class="table">
-                    <p:dataTable id="dt-task" widgetVar="customersTask" var="task" value="#{taskBean.tasks}"
-                        rowKey="#{task.Id}" paginator="true" rows="5" rowSelectMode="add" paginatorPosition="bottom">
+                <div class="card">
+                    <p:carousel  id="dt-task" var="task" value="#{taskBean.tasks}" numVisible="1" numScroll="1" responsiveOptions="#{carouselView.responsiveOptions}">
                         <!-- Buscar usuarios -->
                         <f:facet name="header">
                             <div class="task-table-header">
                                 <span>Tareas</span>
                             </div>
                         </f:facet>
-                        <p:column headerText="Id">
-                            <h:outputText value="#{task.taskId}" />
-                        </p:column>
-                        <p:column headerText="Titulo">
-                            <h:outputText value="#{task.title}" />
-                        </p:column>
-                        <p:column headerText="Estado">
-                            <h:outputText value="#{task.status}" />
-                        </p:column>
-                        <p:column headerText="Descripción">
-                            <h:outputText value="#{task.description}" />
-                        </p:column>
-                        <p:column headerText="Fecha de Creación">
-                            <h:outputText value="#{task.creationDate}" />
-                        </p:column>
-                    </p:dataTable>
+                        <div class="task-item">
+                            <h4 class="mb-1">#{task.title}</h4>
+                            <p>#{task.description}</p>
+                        </div>
+                    </p:carousel >
                 </div>
             </h:form>
         </div>

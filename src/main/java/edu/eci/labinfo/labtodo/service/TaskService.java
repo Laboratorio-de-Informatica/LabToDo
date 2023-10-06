@@ -12,15 +12,15 @@ import edu.eci.labinfo.labtodo.model.Task;
 
 @Service
 public class TaskService {
-    
-    private final TaskRepository taskRepository;
 
     @Autowired
+    private final TaskRepository taskRepository;
+
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
-    public Task addTask(Task task){
+    public Task addTask(Task task) {
         return taskRepository.save(task);
     }
 
@@ -47,4 +47,5 @@ public class TaskService {
     public void deleteAllTasks() {
         taskRepository.deleteAll();
     }
+
 }

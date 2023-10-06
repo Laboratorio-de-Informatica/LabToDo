@@ -99,6 +99,6 @@ public class User {
         return "Usuario: " + userName + ", Rol: " + userRole + ", Email: " + userEmail;
     }
 
-    
+
     
 }

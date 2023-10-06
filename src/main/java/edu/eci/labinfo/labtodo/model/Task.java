@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -22,7 +23,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long taskId;
-    
+
     private String title;
     private String status;
     private String description;
@@ -39,13 +40,13 @@ public class Task {
 
     public Task(String title, String description) {
         this.title = title;
-        this.status = Status.PENDING.getValue();
+        this.status = Status.INPROCESS.getValue();
         this.description = description;
         this.creationDate = LocalDate.now();
         this.users = new ArrayList<>();
     }
 
-    public void addUser(User user){
+    public void addUser(User user) {
         users.add(user);
     }
 
@@ -69,7 +70,7 @@ public class Task {
         return creationDate;
     }
 
-    public List<User>  getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
@@ -89,7 +90,7 @@ public class Task {
         this.creationDate = creationDate;
     }
 
-    public void setUser(List<User>  users) {
+    public void setUser(List<User> users) {
         this.users = users;
     }
 
@@ -153,4 +154,5 @@ public class Task {
         return "Task [id=" + taskId + ", title=" + title + ", status=" + status + ", description=" + description
                 + ", creationDate=" + creationDate + ", users=" + users + "]";
     }
+
 }
