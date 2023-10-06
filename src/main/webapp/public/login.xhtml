@@ -7,11 +7,11 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   lang="es"
 >
-  <head>
+  <h:head>
     <title>Bienvenido!</title>
     <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="../css/login.css" />
-  </head>
+  </h:head>
   <main>
     <div class="login-container">
       <div class="illustration-to-do"></div>
@@ -25,7 +25,7 @@
           <p:growl id="messages" show-detail="true" />
           <div class="input-field">
             <p:inputText value="#{loginBean.userName}" placeholder="Nombre de Usuario" styleClass="input-text" />
-            <p:password value="#{loginBean.password}" placeholder="Contraseña" styleClass="input-text" />
+            <p:password value="#{loginBean.password}" placeholder="Contraseña" styleClass="input-text"/>
           </div>
           <div class="buttons-container">
             <p:commandButton actionListener="#{loginBean.login}" value="Ingresar" icon="pi pi-user" styleClass="button"/>
