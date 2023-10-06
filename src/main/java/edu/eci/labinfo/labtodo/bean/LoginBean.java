@@ -172,7 +172,7 @@ public class LoginBean {
         userName = null;
         try {
             ExternalContext ec = facesContextWrapper.getCurrentInstance().getExternalContext();
-            String redirectPath = "../pages/login.xhtml";
+            String redirectPath = "../public/login.xhtml";
             ec.redirect(ec.getRequestContextPath() + redirectPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,7 +189,7 @@ public class LoginBean {
         if (user.getUserRole().equals(Role.ADMINISTRADOR.getValue())) {
             return "../public/welcomeAdmin.xhtml";
         } else {
-            return "../public/main.xhtml";
+            return "../public/dashboard.xhtml";
         }
     }
 
