@@ -14,6 +14,7 @@ import org.springframework.context.annotation.DependsOn;
 
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.TypeTask;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
@@ -44,8 +45,8 @@ public class LabtodoApplication {
 			myUserService.addUser(user);
 
 			//Adding Task...
-            Task task1 = new Task("Tarea de prueba 1", "Prueba1");
-            Task task2 = new Task("Tarea de prueba 2", "Prueba2");
+            Task task1 = new Task("Tarea de prueba 1", "Prueba1", TypeTask.LABORATORIO);
+            Task task2 = new Task("Tarea de prueba 2", "Prueba2", TypeTask.MONITOR);
 
             myTaskService.addTask(task1);
             myTaskService.addTask(task2);

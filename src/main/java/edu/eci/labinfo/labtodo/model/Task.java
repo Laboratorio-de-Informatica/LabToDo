@@ -27,6 +27,7 @@ public class Task {
     private String title;
     private String status;
     private String description;
+    private String typeTask;
 
     @Column(name = "creationDate")
     private LocalDate creationDate;
@@ -38,8 +39,9 @@ public class Task {
     public Task() {
     }
 
-    public Task(String title, String description) {
+    public Task(String title, String description, TypeTask typeTask) {
         this.title = title;
+        this.typeTask = typeTask.getValue();
         this.status = Status.INPROCESS.getValue();
         this.description = description;
         this.creationDate = LocalDate.now();
@@ -68,6 +70,14 @@ public class Task {
 
     public LocalDate getCreationDate() {
         return creationDate;
+    }
+
+    public String getTypeTask() {
+        return typeTask;
+    }
+
+    public void setTypeTask(String typeTask) {
+        this.typeTask = typeTask;
     }
 
     public List<User> getUsers() {

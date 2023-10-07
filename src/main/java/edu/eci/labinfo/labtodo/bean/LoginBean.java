@@ -140,7 +140,7 @@ public class LoginBean {
         // Verificar que se ingresó un nombre de usuario y una contraseña
         if (password == null || userName == null) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter your username and password", ERROR));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor complete todos los campos", ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
@@ -148,7 +148,7 @@ public class LoginBean {
         User userToLogin = userService.getUserByUsername(userName);
         // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de error y salir temprano
         if (userToLogin == null || !password.equals(userToLogin.getUserPassword())) {
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The username or password are incorrect", ERROR));
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña no es correcta.", ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
