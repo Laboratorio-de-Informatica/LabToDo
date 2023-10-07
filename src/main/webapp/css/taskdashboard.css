@@ -107,3 +107,14 @@ main {
 .task-image {
     width: 50%;
 }
+
+.task-badge {
+    background-color: #8cd97d;
+    color: #088251;
+    border-radius: 2px;
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px
+}

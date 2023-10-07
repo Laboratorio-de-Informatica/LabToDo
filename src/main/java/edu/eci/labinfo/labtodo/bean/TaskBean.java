@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,5 +60,28 @@ public class TaskBean {
         this.currentTask = currentTask;
     }
 
+    /**
+     * Method that saves the currently selected Task object to the database. 
+     * If the task already exists in the database, it updates the existing task. Otherwise, it creates a new task.
+     * If the operation is successful, a success message is displayed to the user via the FacesContext object.
+     * If the operation fails, an error message is displayed.
+     */
+    public void saveTask() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String message = "";
+        if (this.currentTask.getTaskId() == null) {
+            taskService.addTask(currentTask);
+            tasks.add(currentTask);
+            message = "Tarea creada con exito";   
+        }else{
+            if(taskService.updateTask(currentTask) != null){
+                message = "Tarea actualizada con exito";       
+            }else{
+                message = "Error al actualizar";     
+            }
+        }
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));   
+        PrimeFaces.current().ajax().update("form:growl");   
+    }
     
-}
+}      

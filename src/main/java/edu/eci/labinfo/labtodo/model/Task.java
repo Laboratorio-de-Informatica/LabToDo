@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -36,7 +37,14 @@ public class Task {
     @ManyToMany(cascade = CascadeType.REMOVE)
     List<User> users;
 
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
     public Task() {
+        this.creationDate = LocalDate.now();
+        this.status = Status.INPROCESS.getValue();
+        this.users = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public Task(String title, String description, TypeTask typeTask) {
@@ -46,6 +54,7 @@ public class Task {
         this.description = description;
         this.creationDate = LocalDate.now();
         this.users = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public void addUser(User user) {
@@ -82,6 +91,10 @@ public class Task {
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public void setTitle(String title) {
@@ -163,6 +176,10 @@ public class Task {
     public String toString() {
         return "Task [id=" + taskId + ", title=" + title + ", status=" + status + ", description=" + description
                 + ", creationDate=" + creationDate + ", users=" + users + "]";
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
 }

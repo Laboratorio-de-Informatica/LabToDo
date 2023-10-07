@@ -49,7 +49,7 @@
       </div>
       <div class="task-crud">
         <h:form id="form">
-
+          <p:growl id="growl" showDetail="true" />
         <div class="tool-bar">
               <p:toolbar styleClass="mi-toolbar">
                   <p:toolbarGroup>
@@ -82,6 +82,13 @@
                 </div>
                 <h4 class="mb-1">#{task.title}</h4>
                 <p>#{task.description}</p>
+                <div class="mt-5">
+                  <p:commandButton icon="pi pi-eye" styleClass="rounded-button mr-2"  
+                    update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()"
+                  >
+                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                </p:commandButton>
+              </div>
               </div>
             </p:carousel>
           </div>
@@ -89,6 +96,7 @@
       </div>
 
       <h:form id="dialogs">
+        <!-- Dialogo para CrearTarea -->
         <p:dialog header="Detalles de la tarea" showEffect="fade" modal="true" widgetVar="managetaskDialog"
           responsive="true">
           <p:outputPanel id="manage-task-content" class="ui-fluid">
@@ -113,6 +121,13 @@
               </div>
                 </p:outputPanel>
           </p:outputPanel>
+          <f:facet name="footer">
+            <p:commandButton value="Guardar"  actionListener="#{taskBean.saveTask}"
+                update="manage-task-content :form" process="manage-task-content @this"  oncomplete="PF('managetaskDialog').hide()"/>
+            <p:commandButton value="Cancelar"  onclick="PF('managetaskDialog').hide()"
+                class="ui-button-secondary" type="button" />
+        </f:facet>
+        <p:messages for="somekey"/>
         </p:dialog>
         <!-- Dialogo para cerrar sesion -->
         <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade" width="300"
