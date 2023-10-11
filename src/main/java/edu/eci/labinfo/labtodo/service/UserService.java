@@ -22,11 +22,17 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findByUserName(username).orElse(null);
+        if (userRepository.findByUserName(username).isPresent()) {
+            return userRepository.findByUserName(username).get();
+        }
+        return null;
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByUserEmail(email).orElse(null);
+        if (userRepository.findByUserEmail(email).isPresent()) {
+            return userRepository.findByUserEmail(email).get();
+        }
+        return null;
     }
 
     public List<User> getUsers() {

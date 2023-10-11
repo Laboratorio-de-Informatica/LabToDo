@@ -82,6 +82,14 @@ public class LoginBean {
         this.newUser = new User();
     }
 
+    public String getCurrentUserName(String userName) {
+        return userService.getUserByUsername(userName).getUserName();
+    }
+
+    public String getCurrentUserProfile(String userName) {
+        return userService.getUserByUsername(userName).getUserRole();
+    }
+
     /**
      * Valida si el correo cumple con los requisitos
      * 
