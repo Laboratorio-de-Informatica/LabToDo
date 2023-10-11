@@ -9,135 +9,122 @@
 >
   <h:head>
     <title>Dashboard</title>
+    <link rel="shortcut icon" href="../img/favicon.png"/>
     <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
   </h:head>
   <h:body>
-    <main>
-      <div class="sidebar">
-        <div class="sidebar-brand">
-          <h2><i class="pi pi-prime"></i><span>LabToDo</span></h2>
+    <header>
+      <img src="../img/logo.png" class="team-image" alt="TeamLogo" />
+      <h1>Laboratorio Informática LabToDo</h1>
+      <div class="user-wrapper">
+        <div class="user-description">
+          <p:outputLabel value="#{loginBean.getCurrentUserName(loginBean.userName)}" styleClass="username-label" />
+          <p:outputLabel value=" #{loginBean.getCurrentUserProfile(loginBean.userName)}" styleClass="role-label" />
         </div>
-
-        <div class="sidebar-menu">
-          <ul>
-            <li>
-              <p:commandLink
-                styleClass="link active"
-                actionListener="#{initiativeBean.backPage(loginBean.userName)}"
-              >
-                <i class="pi pi-home"></i>
-                <span>Dashboard</span>
-              </p:commandLink>
-            </li>
-            <li>
-              <p:commandLink
-                styleClass="link"
-                oncomplete="PF('logoutDialog').show()"
-              >
-                <i class="pi pi-sign-out"></i>
-                <span>Sing out</span>
-              </p:commandLink>
-            </li>
-          </ul>
-          <img
-            src="https://colombiaestudia.com/wp-content/uploads/2021/06/Logo_ECILG.jpg"
-            class="eci-image"
-            alt="Logo_ECI"
-          />
-        </div>
+        <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user" />
       </div>
+    </header>
+    <main>
+      <nav class="sidebar">
+        <ul class="sidebar-list">
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link active" actionListener="#{initiativeBean.backPage(loginBean.userName)}" >
+              <i class="pi pi-home"></i>
+              <span>Dashboard</span>
+            </p:commandLink>
+          </li>
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link" oncomplete="PF('logoutDialog').show()" >
+              <i class="pi pi-sign-out"></i>
+              <span>Sing out</span>
+            </p:commandLink>
+          </li>
+        </ul>
+      </nav>
       <div class="task-crud">
         <h:form id="form">
           <p:growl id="growl" showDetail="true" />
-        <div class="tool-bar">
-              <p:toolbar styleClass="mi-toolbar">
-                  <p:toolbarGroup>
-                      <!-- Botón Nueva Tarea-->
-                      <p:commandButton value="Crear Tarea" icon="pi pi-plus"  actionListener="#{taskBean.openNew}" 
-                      update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()" styleClass="mr-2">
-                        <p:resetInput target=":dialogs:manage-task-content" />
-                      </p:commandButton>
-                  </p:toolbarGroup>
-              </p:toolbar>
-          </div>
-          <div class="card">
-            <p:carousel
-              id="dt-task"
-              var="task"
-              value="#{taskBean.tasks}"
-              numVisible="2"
-              numScroll="1"
-              responsiveOptions="#{carouselView.responsiveOptions}"
-            >
-              <!-- Buscar usuarios -->
-              <f:facet name="header">
-                <div class="task-table-header">
-                  <span>Tareas</span>
-                </div>
-              </f:facet>
-              <div class="task-item">
-                <div class="mb-3">
-                  <p:graphicImage url="../img/tarea.png"  styleClass="task-image"/>
-                </div>
-                <h4 class="mb-1">#{task.title}</h4>
-                <p>#{task.description}</p>
-                <div class="mt-5">
-                  <p:commandButton icon="pi pi-eye" styleClass="rounded-button mr-2"  
-                    update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()"
-                  >
+          <p:toolbar styleClass="mi-toolbar">
+            <p:toolbarGroup>
+              <!-- Botón Nueva Tarea-->
+              <p:commandButton value="Crear Tarea" icon="pi pi-plus"
+                actionListener="#{taskBean.openNew}" update=":dialogs:manage-task-content"
+                oncomplete="PF('managetaskDialog').show()" styleClass="mr-2" >
+                <p:resetInput target=":dialogs:manage-task-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
+          <p:carousel id="dt-task" var="task" value="#{taskBean.tasks}"
+            numVisible="2" numScroll="1" styleClass="dt-task"
+            responsiveOptions="#{carouselView.responsiveOptions}" >
+            <f:facet name="header">
+              <div class="task-table-header">
+                <span>Tareas</span>
+              </div>
+            </f:facet>
+            <!-- Buscar usuarios -->
+            <article class="task-item">
+              <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
+              <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
+              <h4 class="mb-1">#{task.title}</h4>
+              <p>#{task.description}</p>
+              <div class="mt-5">
+                <p:commandButton icon="pi pi-pencil" styleClass="button rounded-button mr-2"
+                  update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()" >
+                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                </p:commandButton>
+                <p:commandButton icon="pi pi-comments" styleClass="button ui-button-help  rounded-button mr-2"
+                  update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()" >
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                 </p:commandButton>
               </div>
-              </div>
-            </p:carousel>
-          </div>
+            </article>
+          </p:carousel>
         </h:form>
       </div>
-
-      <h:form id="dialogs">
-        <!-- Dialogo para CrearTarea -->
-        <p:dialog header="Detalles de la tarea" showEffect="fade" modal="true" widgetVar="managetaskDialog"
-          responsive="true">
-          <p:outputPanel id="manage-task-content" class="ui-fluid">
-            <p:outputPanel rendered="#{not empty taskBean.currentTask}">
-              <div class="field">
-                <p:outputLabel for="title">Nombre de la tarea</p:outputLabel>
-                <p:inputTextarea id="title" required="true"
-                value="#{taskBean.currentTask.title}" />
-              </div>
-              <div class="field">
-                  <p:outputLabel for="description">Descripción</p:outputLabel>
-                  <p:inputTextarea id="description" required="true"
-                  value="#{taskBean.currentTask.description}" />
-              </div>
-              <div class="field">
-                  <p:outputLabel for="typeTask">Tipo de Tarea</p:outputLabel>
-                  <p:selectOneMenu id="typeTask" value="#{taskBean.currentTask.typeTask}" required="true">
-                      <f:selectItem itemLabel="Selecciona el tipo de tarea" itemValue="" noSelectionOption="true"/>
-                      <f:selectItem itemLabel="Monitor" itemValue="Monitor" />
-                      <f:selectItem itemLabel="Laboratorio" itemValue="Laboratorio" />
-                  </p:selectOneMenu>
-              </div>
-                </p:outputPanel>
-          </p:outputPanel>
-          <f:facet name="footer">
-            <p:commandButton value="Guardar"  actionListener="#{taskBean.saveTask}"
-                update="manage-task-content :form" process="manage-task-content @this"  oncomplete="PF('managetaskDialog').hide()"/>
-            <p:commandButton value="Cancelar"  onclick="PF('managetaskDialog').hide()"
-                class="ui-button-secondary" type="button" />
-        </f:facet>
-        <p:messages for="somekey"/>
-        </p:dialog>
-        <!-- Dialogo para cerrar sesion -->
-        <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade" width="300"
-            message="Are you sure you want to sing out?"  header="Confirm" >
-            <p:commandButton value="Yes" icon="pi pi-check" process="@this" oncomplete="PF('upvoteInitiativeDialog').hide()"
-                actionListener="#{loginBean.logout}"/>
-            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                onclick="PF('logoutDialog').hide()" />
-        </p:confirmDialog>
-    </h:form>
     </main>
+    <h:form id="dialogs">
+      <!-- Dialogo para CrearTarea -->
+      <p:dialog header="Detalles de la tarea" showEffect="fade"
+        modal="true" widgetVar="managetaskDialog" responsive="true" >
+        <p:outputPanel id="manage-task-content" class="ui-fluid">
+          <p:outputPanel rendered="#{not empty taskBean.currentTask}">
+            <div class="field">
+              <p:outputLabel for="title">Nombre de la tarea</p:outputLabel>
+              <p:inputTextarea id="title" required="true" value="#{taskBean.currentTask.title}" />
+            </div>
+            <div class="field">
+              <p:outputLabel for="description">Descripción</p:outputLabel>
+              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" />
+            </div>
+            <div class="field">
+              <p:outputLabel for="typeTask">Tipo de Tarea</p:outputLabel>
+              <p:selectOneMenu id="typeTask" value="#{taskBean.currentTask.typeTask}" required="true" >
+                <f:selectItem itemLabel="Selecciona el tipo de tarea" itemValue="" noSelectionOption="true" />
+                <f:selectItem itemLabel="Monitor" itemValue="Monitor" />
+                <f:selectItem itemLabel="Laboratorio" itemValue="Laboratorio" />
+              </p:selectOneMenu>
+            </div>
+          </p:outputPanel>
+        </p:outputPanel>
+        <f:facet name="footer">
+          <p:commandButton value="Guardar" actionListener="#{taskBean.saveTask}"
+            update="manage-task-content :form" process="manage-task-content @this"
+            oncomplete="PF('managetaskDialog').hide()" />
+          <p:commandButton value="Cancelar" onclick="PF('managetaskDialog').hide()"
+            class="ui-button-secondary" type="button" />
+        </f:facet>
+        <p:messages for="somekey" />
+      </p:dialog>
+      <!-- Dialogo para cerrar sesion -->
+      <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
+        width="300" message="Are you sure you want to sing out?" header="Confirm" >
+        <p:commandButton value="Yes" icon="pi pi-check" process="@this"
+          oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
+        <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+          icon="pi pi-times" onclick="PF('logoutDialog').hide()" />
+      </p:confirmDialog>
+    </h:form>
   </h:body>
 </html>
