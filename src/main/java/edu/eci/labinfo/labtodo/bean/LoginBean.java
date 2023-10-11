@@ -1,11 +1,13 @@
 package edu.eci.labinfo.labtodo.bean;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContextWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,17 +76,25 @@ public class LoginBean {
     }
 
     /**
-     * Create a new user account
+     * Crea una nueva cuenta de usuario
      */
     public void createUserAccount() {
         this.newUser = new User();
     }
 
+    public String getCurrentUserName(String userName) {
+        return userService.getUserByUsername(userName).getUserName();
+    }
+
+    public String getCurrentUserProfile(String userName) {
+        return userService.getUserByUsername(userName).getUserRole();
+    }
+
     /**
-     * Function that validates if the email meets validation requirements
+     * Valida si el correo cumple con los requisitos
      * 
-     * @param email entered by user current
-     * @return True if it matches special characters otherwise False
+     * @param email el correo a validar
+     * @return True si el correo es valido, de lo contrario False
      */
     public boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,}$";
@@ -94,9 +104,9 @@ public class LoginBean {
     }
 
     /**
-     * Function that creates a user for the platform
+     * Funcion que crea una nueva cuenta de usuario
      * 
-     * @return True if it complies with security validations otherwise False
+     * @return True si se crea la cuenta, de lo contrario False
      */
     public Boolean createAccount() {
         String userEmail = this.newUser.getUserEmail();
@@ -128,6 +138,67 @@ public class LoginBean {
             e.printStackTrace();
         }
         return true;
+    }
+
+    /**
+     * Función que permite el inicio de sesión
+     * @return True si el inicio de sesión es exitoso, de lo contrario False
+     */
+    public Boolean login() {
+        // Verificar que se ingresó un nombre de usuario y una contraseña
+        if (password == null || userName == null) {
+            facesContextWrapper.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor complete todos los campos", ERROR));
+            primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
+            return false;
+        }
+        // Buscar al usuario por correo electrónico
+        User userToLogin = userService.getUserByUsername(userName);
+        // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de error y salir temprano
+        if (userToLogin == null || !password.equals(userToLogin.getUserPassword())) {
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña no es correcta.", ERROR));
+            primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
+            return false;
+        }
+        // Si el usuario está autenticado, redirigirlo a la página correspondiente
+        try {
+            password = null;
+            ExternalContext ec = facesContextWrapper.getCurrentInstance().getExternalContext();
+            String redirectPath = getRedirectPath(userToLogin);
+            ec.redirect(ec.getRequestContextPath() + redirectPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    /**
+     * Función que permite el cierre de sesión
+     * @return True si el cierre de sesión es exitoso, de lo contrario False
+     */
+    public Boolean logout() {
+        userName = null;
+        try {
+            ExternalContext ec = facesContextWrapper.getCurrentInstance().getExternalContext();
+            String redirectPath = "../public/login.xhtml";
+            ec.redirect(ec.getRequestContextPath() + redirectPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    /**
+     * Función que redirige a la página correspondiente según el rol del usuario
+     * @param user el usuario que se está autenticando
+     * @return la ruta de la página a la que se debe redirigir
+     */
+    private String getRedirectPath(User user) {
+        if (user.getUserRole().equals(Role.ADMINISTRADOR.getValue())) {
+            return "../public/welcomeAdmin.xhtml";
+        } else {
+            return "../public/dashboard.xhtml";
+        }
     }
 
 }

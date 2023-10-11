@@ -9,6 +9,7 @@
 >
   <h:head>
     <title>Bienvenido!</title>
+    <link rel="shortcut icon" href="../img/favicon.png"/>
     <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="../css/login.css" />
   </h:head>
@@ -17,8 +18,8 @@
       <div class="illustration-to-do"></div>
       <div class="login">
         <div class="title-containter">
-          <img class="lab-img" src="../img/logo.png" alt="LabInformatica"></img>
-          <h2 class="title">Bienvenido al sistema de actividades</h2>
+          <img class="lab-img" src="../img/logo.png" alt="LabInformatica" />
+          <h2 class="title">Bienvenido al Sistema de Actividades</h2>
         </div>
         <h:form id="login-form" styleClass="login-section">
           <h2 class="login-title">Iniciar Sesión</h2>
@@ -28,9 +29,9 @@
             <p:password value="#{loginBean.password}" placeholder="Contraseña" styleClass="input-text"/>
           </div>
           <div class="buttons-container">
-            <p:commandButton actionListener="#{loginBean.login}" value="Ingresar" icon="pi pi-user" styleClass="button"/>
+            <p:commandButton actionListener="#{loginBean.login}" value="Ingresar" icon="pi pi-user" styleClass="buttoon ui-button-raised ui-button-secondary"/>
             <p:commandButton actionListener="#{loginBean.createUserAccount}" value="Crear Cuenta" icon="pi pi-user-plus"
-              update=":dialogs:create-account-content" oncomplete="PF('createAccountDialog').show()" styleClass="button">
+              update=":dialogs:create-account-content" oncomplete="PF('createAccountDialog').show()" styleClass="buttoon ui-button-raised ui-button-secondary">
               <p:resetInput target=":dialogs:create-account-content" />
             </p:commandButton>
           </div>  
