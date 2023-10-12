@@ -24,9 +24,11 @@
         <h:form id="login-form" styleClass="login-section">
           <h2 class="login-title">Iniciar Sesión</h2>
           <p:growl id="messages" show-detail="true" />
-          <div class="input-field">
-            <p:inputText value="#{loginBean.userName}" placeholder="Nombre de Usuario" styleClass="input-text" />
-            <p:password value="#{loginBean.password}" placeholder="Contraseña" styleClass="input-text"/>
+          <div class="create-field">
+            <p:inputText value="#{loginBean.userName}" placeholder="Nombre de Usuario" styleClass="create-input-text" />
+          </div>
+          <div class="create-field">
+            <p:password value="#{loginBean.password}" placeholder="Contraseña" styleClass="create-input-text"/>
           </div>
           <div class="buttons-container">
             <p:commandButton actionListener="#{loginBean.login}" value="Ingresar" icon="pi pi-user" styleClass="buttoon ui-button-raised ui-button-secondary"/>
