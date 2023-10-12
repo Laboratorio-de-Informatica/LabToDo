@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Esta es una entidad que representa a un comentario en la base de datos.
+ */
 @Entity
 public class Comment {
 

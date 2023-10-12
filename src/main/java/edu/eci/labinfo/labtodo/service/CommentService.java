@@ -1,6 +1,5 @@
 package edu.eci.labinfo.labtodo.service;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +52,5 @@ public class CommentService {
     public void deleteAllComments() {
         commentRepository.deleteAll();
     }
-    
+
 }

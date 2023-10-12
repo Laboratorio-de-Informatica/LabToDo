@@ -1,25 +1,17 @@
 package edu.eci.labinfo.labtodo.bean;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
-import javax.faces.event.AjaxBehaviorEvent;
 
-import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.Comment;
-import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.Status;
 import edu.eci.labinfo.labtodo.model.Task;
 import edu.eci.labinfo.labtodo.model.User;
@@ -54,14 +46,6 @@ public class TaskBean {
     private Task currentTask;
     private Comment comment;
     private String commentary;
-
-    public void openNew() {
-        this.currentTask = new Task();
-    }
-
-    public void openComment() {
-        this.comment = new Comment();
-    }
 
     public List<Task> getTasks() {
         return tasks;
@@ -104,9 +88,25 @@ public class TaskBean {
     }
 
     /**
-     * Method that saves the currently selected Task object to the database. 
-     * If the task already exists in the database, it updates the existing task. Otherwise, it creates a new task.
-     * If the operation is successful, a success message is displayed to the user via the FacesContext object.
+     * Metodo que crea una nueva tarea.
+     */
+    public void openNew() {
+        this.currentTask = new Task();
+    }
+
+    /**
+     * Metodo que crea un nuevo comentario.
+     */
+    public void openComment() {
+        this.comment = new Comment();
+    }
+
+    /**
+     * Method that saves the currently selected Task object to the database.
+     * If the task already exists in the database, it updates the existing task.
+     * Otherwise, it creates a new task.
+     * If the operation is successful, a success message is displayed to the user
+     * via the FacesContext object.
      * If the operation fails, an error message is displayed.
      */
     public void saveTask() {
@@ -114,46 +114,70 @@ public class TaskBean {
         if (this.currentTask.getTaskId() == null) {
             this.currentTask.setUsers(selectedUsers);
             taskService.addTask(currentTask);
-            message = "Tarea creada con exito";   
-        }else{
-            if(taskService.updateTask(currentTask) != null){
-                message = "Tarea actualizada con exito";       
-            }else{
-                message = "Error al actualizar";     
+            message = "Tarea creada con exito";
+        } else {
+            if (taskService.updateTask(currentTask) != null) {
+                message = "Tarea actualizada con exito";
+            } else {
+                message = "Error al actualizar";
             }
         }
         selectedUsers.clear();
-        facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));   
-        primeFacesWrapper.current().ajax().update("form:growl");   
+        facesContextWrapper.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
+        primeFacesWrapper.current().ajax().update("form:growl");
     }
 
+    /**
+     * Metodo que avisa al usuario que la tarea ha sido completada.
+     */
     public void completedMessage() {
         String summary = Status.FINISH.getValue();
         if (this.currentTask != null) {
             this.currentTask.setStatus(summary);
             taskService.updateTask(this.currentTask);
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task"); 
-        } 
+            facesContextWrapper.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task");
+        }
     }
 
     public void changeLoggedTaskView() {
         primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task");
     }
 
+    /**
+     * Metodo que carga las tareas de la base de datos para un usuario especifico.
+     * 
+     * @param userName nombre del usuario que se va a cargar sus tareas.
+     */
     public void onDatabaseLoaded(String userName) {
         User user = userService.getUserByUsername(userName);
         this.tasks = taskService.getTasksByUser(user);
     }
 
+    /**
+     * Metodo que carga las tareas de la base de datos cuando se va a realizar un
+     * control de tareas.
+     */
     public void onControlLoaded() {
         this.tasks = taskService.getAllTask();
     }
 
+    /**
+     * Metodo que obtiene los comentarios de la tarea actual.
+     * 
+     * @return lista de comentarios de la tarea actual.
+     */
     public List<Comment> getCurrentTaskComments() {
         return commentService.getComentsByTask(this.currentTask);
     }
 
+    /**
+     * Metodo que guarda un comentario en la base de datos
+     * 
+     * @param userName nombre del usuario que realiza el comentario
+     */
     public void saveComment(String userName) {
         User userOpinion = userService.getUserByUsername(userName);
         this.comment.setDescription(commentary);
@@ -165,5 +189,5 @@ public class TaskBean {
         primeFacesWrapper.current().executeScript("PF('manageCommentDialog').hide()");
         primeFacesWrapper.current().ajax().update("form:messages", "form:comments-list");
     }
-    
-}      
+
+}

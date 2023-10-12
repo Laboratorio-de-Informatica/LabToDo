@@ -23,7 +23,8 @@ public enum Role {
      * Busca un rol por su valor, insensible a mayúsculas y minúsculas.
      *
      * @param role El valor del rol a buscar.
-     * @return El rol correspondiente al valor proporcionado, o null si no se encuentra.
+     * @return El rol correspondiente al valor proporcionado, o null si no se
+     *         encuentra.
      */
     public static Role findByValue(String role) {
         Role response = null;

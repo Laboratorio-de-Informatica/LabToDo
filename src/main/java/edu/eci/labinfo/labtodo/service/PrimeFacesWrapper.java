@@ -14,5 +14,5 @@ public class PrimeFacesWrapper {
     public PrimeRequestContext gRequestContext() {
         return PrimeRequestContext.getCurrentInstance();
     }
-    
+
 }

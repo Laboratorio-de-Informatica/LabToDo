@@ -31,13 +31,9 @@ public class Task {
     private String typeTask;
     @Column(name = "creationDate")
     private LocalDate creationDate;
-    
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(
-        name = "task_user",
-        joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "taskId"),
-        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId")
-    )
+    @JoinTable(name = "task_user", joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "taskId"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"))
     List<User> users;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)

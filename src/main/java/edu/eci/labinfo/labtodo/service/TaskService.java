@@ -33,6 +33,7 @@ public class TaskService {
         return taskRepository.findByUsersUserId(user.getUserId());
 
     }
+
     public List<Task> getAllTask() {
         return taskRepository.findAll();
     }

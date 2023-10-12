@@ -3,16 +3,12 @@ package edu.eci.labinfo.labtodo.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
 
 /**
  * Esta es una entidad que representa a un usuario en la base de datos.
@@ -87,21 +83,19 @@ public class User {
 
     public void addTask(Task taskToAdd) {
         tasks.add(taskToAdd);
-	}
+    }
 
     public List<Task> getTasks() {
-		return tasks;
-	}
+        return tasks;
+    }
 
-	public void setIdeas(List<Task> task) {
-		this.tasks = task;
-	}
+    public void setIdeas(List<Task> task) {
+        this.tasks = task;
+    }
 
     @Override
     public String toString() {
         return "Usuario: " + userName + ", Rol: " + userRole + ", Email: " + userEmail;
     }
 
-
-    
 }

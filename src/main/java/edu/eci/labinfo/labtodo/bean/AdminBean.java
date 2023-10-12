@@ -2,7 +2,6 @@ package edu.eci.labinfo.labtodo.bean;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,7 +10,6 @@ import javax.faces.context.FacesContextWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import edu.eci.labinfo.labtodo.model.Status;
 import edu.eci.labinfo.labtodo.model.Task;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
@@ -20,7 +18,6 @@ import edu.eci.labinfo.labtodo.service.TaskService;
 @ManagedBean(name = "adminBean")
 @SessionScoped
 public class AdminBean {
-    
 
     @Autowired
     TaskService taskService;
@@ -50,6 +47,11 @@ public class AdminBean {
         this.newState = newState;
     }
 
+    /**
+     * Metodo que cambia el estado de las tareas seleccionadas.
+     * 
+     * @return true si se cambio el estado de las tareas, false de lo contrario.
+     */
     public Boolean modifyStateTaks() {
         if (this.newState == null || this.newState.isEmpty()) {
             facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -67,12 +69,19 @@ public class AdminBean {
         } finally {
             int size = this.selectedTasks.size();
             String summary = size > 1 ? size + " tareas actualizadas con exito" : size + " tarea actualizada con exito";
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Exito"));
+            facesContextWrapper.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Exito"));
             primeFacesWrapper.current().ajax().update(":form:dt-task", ":form:messages");
         }
         return true;
     }
 
+    /**
+     * Metodo que retorna el mensaje que se muestra en el boton de actualizar
+     * para cambiar el estado de las tareas seleccionadas.
+     * 
+     * @return mensaje que se muestra en el boton de actualizar.
+     */
     public String getUpdateButtonMessage() {
         String message = "Cambiar estado de";
         if (hasSelectedTasks()) {
@@ -82,10 +91,13 @@ public class AdminBean {
         return message;
     }
 
+    /**
+     * Metodo que retorna true si hay tareas seleccionadas, false de lo contrario.
+     * 
+     * @return true si hay tareas seleccionadas, false de lo contrario.
+     */
     public boolean hasSelectedTasks() {
         return this.selectedTasks != null && !this.selectedTasks.isEmpty();
     }
-
-    
 
 }

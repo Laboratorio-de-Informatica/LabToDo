@@ -80,6 +80,14 @@ public class LoginBean {
         this.newUser = newUser;
     }
 
+    public List<User> getUsers() {
+        return userService.getUsers();
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     /**
      * Crea una nueva cuenta de usuario
      */
@@ -87,20 +95,24 @@ public class LoginBean {
         this.newUser = new User();
     }
 
+    /**
+     * Obtiene el nombre del usuario actual extraido de la base de datos.
+     * 
+     * @param userName el nombre del usuario a obtener.
+     * @return el nombre del usuario actual.
+     */
     public String getCurrentUserName(String userName) {
         return userService.getUserByUsername(userName).getUserName();
     }
 
+    /**
+     * Obtiene el rol del usuario actual extraido de la base de datos.
+     * 
+     * @param userName el nombre del usuario a obtener.
+     * @return el rol del usuario actual.
+     */
     public String getCurrentUserProfile(String userName) {
         return userService.getUserByUsername(userName).getUserRole();
-    }
-
-    public List<User> getUsers() {
-        return userService.getUsers();
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     /**
@@ -155,6 +167,7 @@ public class LoginBean {
 
     /**
      * Función que permite el inicio de sesión
+     * 
      * @return True si el inicio de sesión es exitoso, de lo contrario False
      */
     public Boolean login() {
@@ -167,9 +180,11 @@ public class LoginBean {
         }
         // Buscar al usuario por correo electrónico
         User userToLogin = userService.getUserByUsername(userName);
-        // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de error y salir temprano
+        // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de
+        // error y salir temprano
         if (userToLogin == null || !password.equals(userToLogin.getUserPassword())) {
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña no es correcta.", ERROR));
+            facesContextWrapper.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña no es correcta.", ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
@@ -187,6 +202,7 @@ public class LoginBean {
 
     /**
      * Función que permite el cierre de sesión
+     * 
      * @return True si el cierre de sesión es exitoso, de lo contrario False
      */
     public Boolean logout() {
@@ -203,6 +219,7 @@ public class LoginBean {
 
     /**
      * Función que redirige a la página correspondiente según el rol del usuario
+     * 
      * @param user el usuario que se está autenticando
      * @return la ruta de la página a la que se debe redirigir
      */
@@ -226,6 +243,12 @@ public class LoginBean {
         return false;
     }
 
+    /**
+     * Función que verifica si el usuario es administrador.
+     * 
+     * @param userName el nombre del usuario a verificar.
+     * @return True si el usuario es administrador, de lo contrario False.
+     */
     public boolean isAdmin(String userName) {
         boolean isAdminUser = false;
         User user = userService.getUserByUsername(userName);
