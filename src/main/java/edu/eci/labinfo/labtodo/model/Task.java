@@ -7,34 +7,37 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
+/**
+ * Esta es una entidad que representa una tarea en la base de datos.
+ */
 @Entity
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Long taskId;
-
     private String title;
     private String status;
     private String description;
     private String typeTask;
-
     @Column(name = "creationDate")
     private LocalDate creationDate;
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+        name = "task_user",
+        joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "taskId"),
+        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    )
     List<User> users;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
@@ -113,8 +116,16 @@ public class Task {
         this.creationDate = creationDate;
     }
 
-    public void setUser(List<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public String getAllUsers() {
+        String allUsers = "";
+        for (User user : users) {
+            allUsers += user.getUserName() + " ";
+        }
+        return allUsers;
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.eci.labinfo.labtodo.data.CommentRepository;
 import edu.eci.labinfo.labtodo.model.Comment;
+import edu.eci.labinfo.labtodo.model.Task;
 
 @Service
 public class CommentService {
@@ -31,6 +32,10 @@ public class CommentService {
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
+    }
+
+    public List<Comment> getComentsByTask(Task task) {
+        return commentRepository.findByTaskTaskId(task.getTaskId());
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

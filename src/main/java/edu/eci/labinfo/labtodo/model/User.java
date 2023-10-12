@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 
 /**
  * Esta es una entidad que representa a un usuario en la base de datos.
@@ -27,9 +28,11 @@ public class User {
     private String userEmail;
     private String userPassword;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "users")
     List<Task> tasks;
+
+    @OneToMany(mappedBy = "creatorUser")
+    List<Comment> comments = new ArrayList<>();
 
     public User(String name, String password, Role role, String email) {
         this.userName = name;
