@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.eci.labinfo.labtodo.data.TaskRepository;
 import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.User;
 
 @Service
 public class TaskService {
@@ -28,7 +29,12 @@ public class TaskService {
         return taskRepository.findById(taskId).get();
     }
 
-    public List<Task> getAllITask() {
+    public List<Task> getTasksByUser(User user) {
+        return taskRepository.findByUsersUserId(user.getUserId());
+
+    }
+
+    public List<Task> getAllTask() {
         return taskRepository.findAll();
     }
 

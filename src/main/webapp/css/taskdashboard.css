@@ -111,6 +111,13 @@ header {
     margin-top: 1rem;
 }
 
+.ui-carousel-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
 .task-table-header {
     border-radius: 15px 15px 0 0 !important;
     background-color: #e1e1e1 !important;
@@ -125,6 +132,12 @@ header {
     border-radius: 0 0 15px 15px !important;
     margin-top: 1rem;
     background-color: #e1e1e1 !important;
+}
+
+.card-task {
+    width: 100% !important;
+    text-decoration: none !important;
+    color: inherit !important;
 }
 
 .task-item {
@@ -176,7 +189,22 @@ header {
     background-color: #3372a5;
 }
 
-
 .button {
     margin: 0 .2rem 0 .2rem !important;
+}
+
+.field {
+    width: 40rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: .5rem;
+}
+
+.task-field-title {
+    height: 2rem;
+}
+
+.task-user-selection {
+    width: 1rem;
 }

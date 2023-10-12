@@ -1,29 +1,36 @@
 package edu.eci.labinfo.labtodo.model;
 
-
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Esta es una entidad que representa a un comentario en la base de datos.
+ */
 @Entity
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Long commentId;
     private String description;
     @Column(name = "creationDate")
     private LocalDate creationDate;
 
-    @ManyToOne(targetEntity = Task.class)
+    @ManyToOne
+    @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    public Comment(){
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User creatorUser;
+
+    public Comment() {
         this.creationDate = LocalDate.now();
     }
 
@@ -65,10 +72,12 @@ public class Comment {
         this.task = task;
     }
 
+    public User getCreatorUser() {
+        return creatorUser;
+    }
 
+    public void setCreatorUser(User creatorUser) {
+        this.creatorUser = creatorUser;
+    }
 
-    
-
-
-    
 }
