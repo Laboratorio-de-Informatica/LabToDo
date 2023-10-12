@@ -36,44 +36,22 @@ public class LabtodoApplication {
     public static void main(String[] args) {
         SpringApplication.run(LabtodoApplication.class, args);
     }
-    
+
     @Bean(name = "database")
-	public CommandLineRunner run() {
-		return args -> {
-			//Deleting tables's content...
+    public CommandLineRunner run() {
+        return args -> {
+            // Deleting tables's content...
             myCommentService.deleteAllComments();
             myTaskService.deleteAllTasks();
-			myUserService.deleteAllUsers();
+            myUserService.deleteAllUsers();
 
-			//Adding User...
-			User user = new User("monitor", "mypasswd", Role.MONITOR, "andres.onate@mail.escuelaing.edu.co");
-
-			myUserService.addUser(user);
-
-			//Adding Task...
-            Task task1 = new Task("Tarea de prueba 1", "Prueba1", TypeTask.LABORATORIO);
-            Task task2 = new Task("Tarea de prueba 2", "Prueba2", TypeTask.MONITOR);
-
-            //Adding Comments...
-            Comment comment1 = new Comment(task1,"Comentario de Prueba");
-
-            myTaskService.addTask(task1);
-            myTaskService.addTask(task2);
-            myCommentService.addComment(comment1);
-            user.addTask(task1);
-            user.addTask(task2);
-            myUserService.updateUser(user);
-			task1.addUser(user);
-			myTaskService.updateTask(task1);
-			task2.addUser(user);
-			myTaskService.updateTask(task2);
-            task1.addComment(comment1);
-            myTaskService.updateTask(task1);
-		};
+            myUserService.addUser(new User("andres.onate", "mypasswd", Role.MONITOR, "andres.onate@mail.escuelaing.edu.co"));
+            myUserService.addUser(new User("labinfo", "myadminpasswd", Role.ADMINISTRADOR, "labinfo@escuelaing.edu.co"));
+        };
     }
 
     @Bean
-	@DependsOn({ "database" })
+    @DependsOn({ "database" })
     ServletRegistrationBean<FacesServlet> jsfServletRegistration(ServletContext servletContext) {
         // spring boot only works if this is set
         servletContext.setInitParameter("com.sun.faces.forceLoadConfiguration", Boolean.TRUE.toString());
