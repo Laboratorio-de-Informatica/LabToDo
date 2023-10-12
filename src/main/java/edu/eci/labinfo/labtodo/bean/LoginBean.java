@@ -1,6 +1,7 @@
 package edu.eci.labinfo.labtodo.bean;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +31,9 @@ public class LoginBean {
     private UserService userService;
 
     @Autowired
+    private static TaskBean taskBean;
+
+    @Autowired
     private static FacesContextWrapper facesContextWrapper;
 
     @Autowired
@@ -39,6 +43,7 @@ public class LoginBean {
     private String password;
     private String email;
     private User newUser;
+    private List<User> users;
 
     public LoginBean() {
     }
@@ -88,6 +93,14 @@ public class LoginBean {
 
     public String getCurrentUserProfile(String userName) {
         return userService.getUserByUsername(userName).getUserRole();
+    }
+
+    public List<User> getUsers() {
+        return userService.getUsers();
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     /**
@@ -164,7 +177,7 @@ public class LoginBean {
         try {
             password = null;
             ExternalContext ec = facesContextWrapper.getCurrentInstance().getExternalContext();
-            String redirectPath = getRedirectPath(userToLogin);
+            String redirectPath = "../public/dashboard.xhtml";
             ec.redirect(ec.getRequestContextPath() + redirectPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -193,12 +206,33 @@ public class LoginBean {
      * @param user el usuario que se está autenticando
      * @return la ruta de la página a la que se debe redirigir
      */
-    private String getRedirectPath(User user) {
-        if (user.getUserRole().equals(Role.ADMINISTRADOR.getValue())) {
-            return "../public/welcomeAdmin.xhtml";
-        } else {
-            return "../public/dashboard.xhtml";
+    public Boolean getRedirectPath(String userName, String sendTo) {
+        User user = userService.getUserByUsername(userName);
+        ExternalContext ec = facesContextWrapper.getCurrentInstance().getExternalContext();
+        String redirectPath = "../public/dashboard.xhtml";
+        try {
+            if (user.getUserRole().equals(Role.ADMINISTRADOR.getValue())) {
+                if (!sendTo.equals("home")) {
+                    redirectPath = "../public/admindashboard.xhtml";
+                }
+                ec.redirect(ec.getRequestContextPath() + redirectPath);
+                return true;
+            } else {
+                ec.redirect(ec.getRequestContextPath() + redirectPath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return false;
+    }
+
+    public boolean isAdmin(String userName) {
+        boolean isAdminUser = false;
+        User user = userService.getUserByUsername(userName);
+        if (user.getUserRole().equals(Role.ADMINISTRADOR.getValue())) {
+            isAdminUser = true;
+        }
+        return isAdminUser;
     }
 
 }
