@@ -64,30 +64,52 @@
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
-          <p:carousel id="dt-task" var="task" value="#{taskBean.tasks}"
-            numVisible="2" numScroll="1" styleClass="dt-task"
-            responsiveOptions="#{carouselView.responsiveOptions}" >
-            <f:facet name="header">
-              <div class="task-table-header">
-                <span>Tareas</span>
-              </div>
-            </f:facet>
-            <!-- Buscar usuarios -->
-            <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
-              <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
-              <article class="task-item">
-                <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
-                <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
-                <h4 class="mb-1">#{task.title}</h4>
-                <p>#{task.description}</p>
-                <p class="task-status">#{task.status}</p>
-              </article>
-            </p:commandLink>
-            <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
-              oncomplete="PF('completeTaskDialog').show()">
-              <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
-            </p:commandButton>
-          </p:carousel>
+          <div class="task-tabview">
+          <p:tabView multiViewState="true" id="tabViewMVS" styleClass="rounded-tabview">
+            <p:tab title="Mis Tareas">
+              <p:carousel id="dt-task" var="task" value="#{taskBean.tasks}"
+                numVisible="2" numScroll="1" styleClass="dt-task"
+                responsiveOptions="#{carouselView.responsiveOptions}" >
+                <!-- Buscar usuarios -->
+                <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
+                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                  <article class="task-item">
+                    <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
+                    <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
+                    <h4 class="mb-1">#{task.title}</h4>
+                    <p>#{task.description}</p>
+                    <p class="task-status">#{task.status}</p>
+                  </article>
+                </p:commandLink>
+                <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
+                  oncomplete="PF('completeTaskDialog').show()">
+                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                </p:commandButton>
+              </p:carousel>
+            </p:tab>
+            <p:tab title="Tareas de laboratorio">
+              <p:carousel id="dt-task-lab" var="task" value="#{taskBean.tasksLab}"
+                 numVisible="2" numScroll="1" styleClass="dt-task"
+                 responsiveOptions="#{carouselView.responsiveOptions}" >
+                <!-- Buscar usuarios -->
+                <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
+                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                  <article class="task-item">
+                    <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
+                    <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
+                    <h4 class="mb-1">#{task.title}</h4>
+                    <p>#{task.description}</p>
+                    <p class="task-status">#{task.status}</p>
+                  </article>
+                </p:commandLink>
+                <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
+                    oncomplete="PF('completeTaskDialog').show()">
+                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                </p:commandButton>
+              </p:carousel>
+            </p:tab>
+          </p:tabView>
+          </div>
         </h:form>
       </div>
     </main>

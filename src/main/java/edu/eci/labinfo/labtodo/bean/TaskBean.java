@@ -8,13 +8,10 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 
+import edu.eci.labinfo.labtodo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import edu.eci.labinfo.labtodo.model.Comment;
-import edu.eci.labinfo.labtodo.model.Status;
-import edu.eci.labinfo.labtodo.model.Task;
-import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.CommentService;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
@@ -41,6 +38,7 @@ public class TaskBean {
     private PrimeFacesWrapper primeFacesWrapper;
 
     private List<Task> tasks;
+    private List<Task> tasksLab;
     private List<User> selectedUsers;
     private List<Task> filteredTasks;
     private Task currentTask;
@@ -86,6 +84,10 @@ public class TaskBean {
     public void setSelectedUsers(List<User> selectedUsers) {
         this.selectedUsers = selectedUsers;
     }
+
+    public List<Task> getTasksLab() {return tasksLab; }
+
+    public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
 
     /**
      * Metodo que crea una nueva tarea.
@@ -138,12 +140,12 @@ public class TaskBean {
             taskService.updateTask(this.currentTask);
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task");
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
         }
     }
 
     public void changeLoggedTaskView() {
-        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task");
+        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
     }
 
     /**
@@ -154,6 +156,7 @@ public class TaskBean {
     public void onDatabaseLoaded(String userName) {
         User user = userService.getUserByUsername(userName);
         this.tasks = taskService.getTasksByUser(user);
+        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
     }
 
     /**
@@ -162,6 +165,7 @@ public class TaskBean {
      */
     public void onControlLoaded() {
         this.tasks = taskService.getAllTask();
+        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
     }
 
     /**
