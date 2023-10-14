@@ -1,6 +1,7 @@
 package edu.eci.labinfo.labtodo.bean;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +44,7 @@ public class LoginBean {
     private String password;
     private String email;
     private User newUser;
-    private List<User> users;
+    private List<String> users;
 
     public LoginBean() {
     }
@@ -80,11 +81,13 @@ public class LoginBean {
         this.newUser = newUser;
     }
 
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<String> getUsers() {
+        List<String> userNames = new ArrayList<String>();
+        userService.getUsers().forEach(user -> userNames.add(user.getUserName()));
+        return userNames;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<String> users) {
         this.users = users;
     }
 

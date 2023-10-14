@@ -1,5 +1,6 @@
 package edu.eci.labinfo.labtodo.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
@@ -39,7 +40,7 @@ public class TaskBean {
 
     private List<Task> tasks;
     private List<Task> tasksLab;
-    private List<User> selectedUsers;
+    private List<String> selectedUsers;
     private List<Task> filteredTasks;
     private Task currentTask;
     private Comment comment;
@@ -77,11 +78,11 @@ public class TaskBean {
         this.commentary = commentary;
     }
 
-    public List<User> getSelectedUsers() {
+    public List<String> getSelectedUsers() {
         return selectedUsers;
     }
 
-    public void setSelectedUsers(List<User> selectedUsers) {
+    public void setSelectedUsers(List<String> selectedUsers) {
         this.selectedUsers = selectedUsers;
     }
 
@@ -114,7 +115,12 @@ public class TaskBean {
     public void saveTask() {
         String message = "";
         if (this.currentTask.getTaskId() == null) {
-            this.currentTask.setUsers(selectedUsers);
+            List<User> selectedUsersToTask = new ArrayList<User>();
+            for (String userName : selectedUsers) {
+                User user = userService.getUserByUsername(userName);
+                selectedUsersToTask.add(user);
+            }
+            this.currentTask.setUsers(selectedUsersToTask);
             taskService.addTask(currentTask);
             message = "Tarea creada con exito";
         } else {
