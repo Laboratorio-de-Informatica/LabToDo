@@ -208,3 +208,7 @@ header {
 .task-user-selection {
     width: 1rem;
 }
+
+.task-tabview {
+    margin-top: 20px; /* Ajusta el valor según tus preferencias */
+}

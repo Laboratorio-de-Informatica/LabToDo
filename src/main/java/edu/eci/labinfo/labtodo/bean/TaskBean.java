@@ -1,5 +1,6 @@
 package edu.eci.labinfo.labtodo.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
@@ -8,13 +9,10 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 
+import edu.eci.labinfo.labtodo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import edu.eci.labinfo.labtodo.model.Comment;
-import edu.eci.labinfo.labtodo.model.Status;
-import edu.eci.labinfo.labtodo.model.Task;
-import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.CommentService;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
@@ -41,7 +39,8 @@ public class TaskBean {
     private PrimeFacesWrapper primeFacesWrapper;
 
     private List<Task> tasks;
-    private List<User> selectedUsers;
+    private List<Task> tasksLab;
+    private List<String> selectedUsers;
     private List<Task> filteredTasks;
     private Task currentTask;
     private Comment comment;
@@ -79,13 +78,17 @@ public class TaskBean {
         this.commentary = commentary;
     }
 
-    public List<User> getSelectedUsers() {
+    public List<String> getSelectedUsers() {
         return selectedUsers;
     }
 
-    public void setSelectedUsers(List<User> selectedUsers) {
+    public void setSelectedUsers(List<String> selectedUsers) {
         this.selectedUsers = selectedUsers;
     }
+
+    public List<Task> getTasksLab() {return tasksLab; }
+
+    public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
 
     /**
      * Metodo que crea una nueva tarea.
@@ -112,7 +115,12 @@ public class TaskBean {
     public void saveTask() {
         String message = "";
         if (this.currentTask.getTaskId() == null) {
-            this.currentTask.setUsers(selectedUsers);
+            List<User> selectedUsersToTask = new ArrayList<User>();
+            for (String fullName : selectedUsers) {
+                User user = userService.getUserByFullName(fullName);
+                selectedUsersToTask.add(user);
+            }
+            this.currentTask.setUsers(selectedUsersToTask);
             taskService.addTask(currentTask);
             message = "Tarea creada con exito";
         } else {
@@ -138,12 +146,12 @@ public class TaskBean {
             taskService.updateTask(this.currentTask);
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task");
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
         }
     }
 
     public void changeLoggedTaskView() {
-        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task");
+        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
     }
 
     /**
@@ -154,6 +162,7 @@ public class TaskBean {
     public void onDatabaseLoaded(String userName) {
         User user = userService.getUserByUsername(userName);
         this.tasks = taskService.getTasksByUser(user);
+        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
     }
 
     /**
@@ -162,6 +171,7 @@ public class TaskBean {
      */
     public void onControlLoaded() {
         this.tasks = taskService.getAllTask();
+        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
     }
 
     /**

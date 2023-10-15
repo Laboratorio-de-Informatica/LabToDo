@@ -34,6 +34,10 @@ public class TaskService {
 
     }
 
+    public List<Task> getTaskByType(String taskType){
+        return  taskRepository.findByTypeTask(taskType);
+    }
+
     public List<Task> getAllTask() {
         return taskRepository.findAll();
     }

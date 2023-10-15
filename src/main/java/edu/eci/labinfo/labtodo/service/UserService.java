@@ -28,9 +28,9 @@ public class UserService {
         return null;
     }
 
-    public User getUserByEmail(String email) {
-        if (userRepository.findByUserEmail(email).isPresent()) {
-            return userRepository.findByUserEmail(email).get();
+    public User getUserByFullName(String fullName) {
+        if (userRepository.findByFullName(fullName).isPresent()) {
+            return userRepository.findByFullName(fullName).get();
         }
         return null;
     }
@@ -47,8 +47,8 @@ public class UserService {
         return null;
     }
 
-    public void deleteUser(String email) {
-        userRepository.delete(getUserByEmail(email));
+    public void deleteUser(String userName) {
+        userRepository.delete(getUserByUsername(userName));
     }
 
     public void deleteAllUsers() {

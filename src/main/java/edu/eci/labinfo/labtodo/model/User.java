@@ -19,9 +19,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
+    private String fullName;
     private String userName;
     private String userRole;
-    private String userEmail;
     private String userPassword;
 
     @ManyToMany(mappedBy = "users")
@@ -30,11 +30,11 @@ public class User {
     @OneToMany(mappedBy = "creatorUser")
     List<Comment> comments = new ArrayList<>();
 
-    public User(String name, String password, Role role, String email) {
-        this.userName = name;
+    public User(String fullName, String userName, String password, Role role) {
+        this.fullName = fullName;
+        this.userName = userName;
         this.userPassword = password;
         this.userRole = role.getValue();
-        this.userEmail = email;
         this.tasks = new ArrayList<>();
     }
 
@@ -47,6 +47,14 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getUserName() {
@@ -63,14 +71,6 @@ public class User {
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public String getUserPassword() {
@@ -95,7 +95,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Usuario: " + userName + ", Rol: " + userRole + ", Email: " + userEmail;
+        return "Nombre: " + fullName + ", Usuario: " + userName + ", Rol: " + userRole;
     }
 
 }

@@ -23,7 +23,7 @@
       <h1>Laboratorio Informática LabToDo</h1>
       <div class="user-wrapper">
         <div class="user-description">
-          <p:outputLabel value="#{loginBean.getCurrentUserName(loginBean.userName)}" styleClass="username-label" />
+          <p:outputLabel value="#{loginBean.getCurrentFullName(loginBean.userName)}" styleClass="username-label" />
           <p:outputLabel value=" #{loginBean.getCurrentUserProfile(loginBean.userName)}" styleClass="role-label" />
         </div>
         <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user" />
@@ -140,22 +140,14 @@
               </p:selectOneMenu>
             </div>
             <div class="field">
-              <p:outputLabel for="usersTable">Usuarios</p:outputLabel>
-              <p:dataTable id="usersTable" widgetVar="usersTable" var="user" value="#{loginBean.users}" 
-              reflow="true" selection="#{taskBean.selectedUsers}" rowKey="#{user.userId}" rows="5" rowSelectMode="add" paginatorPosition="bottom"
-              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                
-                <p:ajax event="rowSelect" update=":dialogs:usersTable" />
-                <p:ajax event="rowUnselect" update=":dialogs:usersTable" />
-                <p:ajax event="rowSelectCheckbox" update=":dialogs:usersTable" />
-                <p:ajax event="rowUnselectCheckbox" update=":dialogs:usersTable" />
-                <p:ajax event="toggleSelect" update=":dialogs:usersTable" />
-
-                <p:column selectionMode="multiple" exportable="false" styleClass="task-user-selection"/>
-                <p:column headerText="Nombre" filterBy="#{user.userName}" >
-                  <h:outputText value="#{user.userName}"/>
-                </p:column>
-              </p:dataTable>
+              <p:outputLabel for="multiple">Usuarios</p:outputLabel>
+              <p:selectCheckboxMenu id="multiple"
+                                  filter="true" filterMatchMode="contains"
+                                  label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
+                                  scrollHeight="250"
+                                  value="#{taskBean.selectedUsers}">
+                  <f:selectItems value="#{loginBean.users}" />
+              </p:selectCheckboxMenu>
             </div>
           </p:outputPanel>
         </p:outputPanel>
