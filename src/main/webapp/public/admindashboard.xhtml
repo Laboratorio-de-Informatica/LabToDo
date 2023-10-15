@@ -137,17 +137,22 @@
                 <f:selectItem itemLabel="Selecciona el tipo de tarea" itemValue="" noSelectionOption="true" />
                 <f:selectItem itemLabel="Monitor" itemValue="Monitor" />
                 <f:selectItem itemLabel="Laboratorio" itemValue="Laboratorio" />
+                <p:ajax update="user-task-selection" />
               </p:selectOneMenu>
             </div>
             <div class="field">
-              <p:outputLabel for="multiple">Usuarios</p:outputLabel>
-              <p:selectCheckboxMenu id="multiple"
-                                  filter="true" filterMatchMode="contains"
-                                  label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
-                                  scrollHeight="250"
-                                  value="#{taskBean.selectedUsers}">
-                  <f:selectItems value="#{loginBean.users}" />
-              </p:selectCheckboxMenu>
+              <p:outputPanel id="user-task-selection">
+                <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor'}">
+                  <p:outputLabel for="multiple">Usuarios</p:outputLabel>
+                  <p:selectCheckboxMenu id="multiple"
+                                      filter="true" filterMatchMode="contains"
+                                      label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
+                                      scrollHeight="250"
+                                      value="#{taskBean.selectedUsers}">
+                      <f:selectItems value="#{loginBean.userNames}" />
+                  </p:selectCheckboxMenu>
+                </p:outputPanel>
+              </p:outputPanel>
             </div>
           </p:outputPanel>
         </p:outputPanel>

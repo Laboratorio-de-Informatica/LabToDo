@@ -44,7 +44,7 @@ public class LoginBean {
     private String fullName;
     private String password;
     private User newUser;
-    private List<String> users;
+    private List<User> users;
 
     public LoginBean() {
     }
@@ -81,14 +81,18 @@ public class LoginBean {
         this.newUser = newUser;
     }
 
-    public List<String> getUsers() {
+    public List<User> getUsers() {
+        return userService.getUsers();
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<String> getUserNames() {
         List<String> fullNameusers = new ArrayList<String>();
         userService.getUsers().forEach(user -> fullNameusers.add(user.getFullName()));
         return fullNameusers;
-    }
-
-    public void setUsers(List<String> users) {
-        this.users = users;
     }
 
     /**
