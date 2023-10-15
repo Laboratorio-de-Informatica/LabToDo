@@ -119,7 +119,7 @@ public class Task {
     public String getAllUsers() {
         String allUsers = "";
         for (User user : users) {
-            allUsers += user.getUserName() + " ";
+            allUsers += user.getFullName() + " ";
         }
         return allUsers;
     }
