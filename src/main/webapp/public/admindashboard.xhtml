@@ -33,15 +33,21 @@
       <nav class="sidebar">
         <ul class="sidebar-list">
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link"  onclick="window.location.href='dashboard.xhtml'" >
+            <p:commandLink styleClass="link" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'home')}" >
               <i class="pi pi-home"></i>
               <span>Inicio</span>
             </p:commandLink>
           </li>
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link active" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName)}" >
+            <p:commandLink styleClass="link active" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'control')}" >
               <i class="pi pi-sliders-h"></i>
               <span>Control</span>
+            </p:commandLink>
+          </li>
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'config')}" >
+              <i class="pi pi-cog"></i>
+              <span>Configuración</span>
             </p:commandLink>
           </li>
           <li class="sidebar-list-element">
