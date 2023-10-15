@@ -8,7 +8,7 @@ public enum Status {
 
     INPROCESS("En Proceso"),
     FINISH("Finalizada"),
-    PENDING("Pendiente"),
+    PENDING("Por Hacer"),
     REVIEW("Revisión");
 
     private String value;

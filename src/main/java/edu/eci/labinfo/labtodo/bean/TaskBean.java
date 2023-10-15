@@ -45,6 +45,7 @@ public class TaskBean {
     private Task currentTask;
     private Comment comment;
     private String commentary;
+    private String status;
 
     public List<Task> getTasks() {
         return tasks;
@@ -80,6 +81,14 @@ public class TaskBean {
 
     public List<String> getSelectedUsers() {
         return selectedUsers;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setSelectedUsers(List<String> selectedUsers) {
@@ -160,8 +169,10 @@ public class TaskBean {
      * @param userName nombre del usuario que se va a cargar sus tareas.
      */
     public void onDatabaseLoaded(String userName) {
+        
         User user = userService.getUserByUsername(userName);
-        this.tasks = taskService.getTasksByUser(user);
+        //this.tasks = taskService.getTasksByUser(user);
+        this.tasks = taskService.getTasksByUserAndStatus(user, status);
         this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
     }
 
