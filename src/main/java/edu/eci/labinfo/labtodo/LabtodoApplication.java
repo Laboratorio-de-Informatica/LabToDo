@@ -43,9 +43,9 @@ public class LabtodoApplication {
             myUserService.deleteAllUsers();
 
             myUserService
-                    .addUser(new User("andres.onate", "mypasswd", Role.MONITOR, "andres.onate@mail.escuelaing.edu.co"));
+                    .addUser(new User("Andrés Camilo Oñate", "andres.onate", "mypasswd", Role.MONITOR));
             myUserService
-                    .addUser(new User("labinfo", "myadminpasswd", Role.ADMINISTRADOR, "labinfo@escuelaing.edu.co"));
+                    .addUser(new User("Aurora León", "labinfo", "myadminpasswd", Role.ADMINISTRADOR));
         };
     }
 

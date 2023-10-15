@@ -41,8 +41,8 @@ public class LoginBean {
     private PrimeFacesWrapper primeFacesWrapper;
 
     private String userName;
+    private String fullName;
     private String password;
-    private String email;
     private User newUser;
     private List<String> users;
 
@@ -57,20 +57,20 @@ public class LoginBean {
         this.userName = userName;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public User getNewUser() {
@@ -109,6 +109,16 @@ public class LoginBean {
     }
 
     /**
+     * Obtiene el nombre completo del usuario actual extraido de la base de datos.
+     * 
+     * @param userName el nombre del usuario a obtener.
+     * @return el nombre completo del usuario actual.
+     */
+    public String getCurrentFullName(String userName) {
+        return userService.getUserByUsername(userName).getFullName();
+    }
+
+    /**
      * Obtiene el rol del usuario actual extraido de la base de datos.
      * 
      * @param userName el nombre del usuario a obtener.
@@ -119,34 +129,14 @@ public class LoginBean {
     }
 
     /**
-     * Valida si el correo cumple con los requisitos
-     * 
-     * @param email el correo a validar
-     * @return True si el correo es valido, de lo contrario False
-     */
-    public boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,}$";
-        Pattern pattern = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.find();
-    }
-
-    /**
      * Funcion que crea una nueva cuenta de usuario
      * 
      * @return True si se crea la cuenta, de lo contrario False
      */
     public Boolean createAccount() {
-        String userEmail = this.newUser.getUserEmail();
+        String userName = this.newUser.getUserName();
         try {
-            if (!isValidEmail(userEmail)) {
-                facesContextWrapper.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo electrónico no válido", ERROR));
-                primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
-                return false;
-            }
-
-            if (userService.getUserByEmail(userEmail) != null) {
+            if (userService.getUserByUsername(userName) != null) {
                 facesContextWrapper.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, "La cuenta ya existe", ERROR));
                 primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);

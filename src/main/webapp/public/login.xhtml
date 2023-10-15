@@ -43,27 +43,23 @@
 
     <h:form id="dialogs">
       <p:dialog header="Crear cuenta" showEffect="fade" modal="true" widgetVar="createAccountDialog"
-        responsive="true" styleClass="ui-dialog-create-account create-account">
+        responsive="true" styleClass="ui-dialog-create-account create-account" draggable="false">
         <p:outputPanel id="create-account-content" class="ui-fluid">
           <p:outputPanel rendered="#{not empty loginBean.newUser}">
+            <p:outputLabel for="full-name">Nombres y Apellidos</p:outputLabel>
             <div class="create-field">
-              <p:inputText id="full-name" required="true" placeholder="Nombre de Usuario"
+              <p:inputText id="full-name" required="true"
+                styleClass="create-input-text" value="#{loginBean.newUser.fullName}"/>
+            </div>
+            <p:outputLabel for="user-name">Nombre de usuario</p:outputLabel>
+            <div class="create-field">
+              <p:inputText id="user-name" required="true" placeholder="nombre.apellido"
                 styleClass="create-input-text" value="#{loginBean.newUser.userName}"/>
             </div>
-            <div class="create-field">
-              <p:inputText id="email" required="true" placeholder="Email"
-                styleClass="create-input-text" value="#{loginBean.newUser.userEmail}"/>
-            </div>
+            <p:outputLabel for="password">Contraseña</p:outputLabel>
             <div class="create-field">
               <p:inputText id="password" type="password" required="true" styleClass="create-input-text"
-                value="#{loginBean.newUser.userPassword}" placeholder="Contraseña"/>
-            </div>
-            <div class="create-field">
-              <p:selectOneMenu id="role" value="#{loginBean.newUser.userRole}" styleClass="create-input-text">
-                <f:selectItem itemLabel="Seleccione un Rol" itemValue="" noSelectionOption="true" />
-                <f:selectItem itemLabel="Monitor" itemValue="Monitor"/>
-                <f:selectItem itemLabel="Administrador" itemValue="Administrador" />
-              </p:selectOneMenu>
+                value="#{loginBean.newUser.userPassword}"/>
             </div>
           </p:outputPanel>
         </p:outputPanel>
