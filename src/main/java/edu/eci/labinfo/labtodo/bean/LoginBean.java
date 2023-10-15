@@ -226,12 +226,20 @@ public class LoginBean {
     public Boolean getRedirectPath(String userName, String sendTo) {
         User user = userService.getUserByUsername(userName);
         ExternalContext ec = facesContextWrapper.getCurrentInstance().getExternalContext();
-        String redirectPath = "../public/dashboard.xhtml";
+        String redirectPath = "";
+        switch (sendTo) {
+            case "control":
+                redirectPath = "../public/admindashboard.xhtml";
+                break;
+            case "config":
+                redirectPath = "../public/settings.xhtml";
+                break;
+            default:
+                redirectPath = "../public/dashboard.xhtml";
+                break;
+        }
         try {
             if (user.getUserRole().equals(Role.ADMINISTRADOR.getValue())) {
-                if (!sendTo.equals("home")) {
-                    redirectPath = "../public/admindashboard.xhtml";
-                }
                 ec.redirect(ec.getRequestContextPath() + redirectPath);
                 return true;
             } else {
