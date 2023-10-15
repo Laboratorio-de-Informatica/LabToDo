@@ -82,9 +82,9 @@ public class LoginBean {
     }
 
     public List<String> getUsers() {
-        List<String> userNames = new ArrayList<String>();
-        userService.getUsers().forEach(user -> userNames.add(user.getUserName()));
-        return userNames;
+        List<String> fullNameusers = new ArrayList<String>();
+        userService.getUsers().forEach(user -> fullNameusers.add(user.getFullName()));
+        return fullNameusers;
     }
 
     public void setUsers(List<String> users) {

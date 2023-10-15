@@ -28,6 +28,13 @@ public class UserService {
         return null;
     }
 
+    public User getUserByFullName(String fullName) {
+        if (userRepository.findByFullName(fullName).isPresent()) {
+            return userRepository.findByFullName(fullName).get();
+        }
+        return null;
+    }
+
     public List<User> getUsers() {
         return userRepository.findAll();
     }
