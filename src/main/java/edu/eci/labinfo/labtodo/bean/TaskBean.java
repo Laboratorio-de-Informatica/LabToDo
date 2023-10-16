@@ -40,7 +40,7 @@ public class TaskBean {
 
     private List<Task> tasks;
     private List<Task> tasksLab;
-    private List<String> selectedUsers;
+    private List<String> selectedUsers = new ArrayList<>();
     private List<Task> filteredTasks;
     private Task currentTask;
     private Comment comment;
@@ -99,14 +99,11 @@ public class TaskBean {
 
     public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
 
-
-
-    
-
     /**
      * Metodo que crea una nueva tarea.
      */
     public void openNew() {
+        selectedUsers.clear();
         this.currentTask = new Task();
     }
 
@@ -125,18 +122,20 @@ public class TaskBean {
      * via the FacesContext object.
      * If the operation fails, an error message is displayed.
      */
-    public void saveTask() {
+    public void saveTask() {   
         String message = "";
+        List<User> selectedUsersToTask = new ArrayList<User>();
+        for (String fullName : selectedUsers) {
+            User user = userService.getUserByFullName(fullName);
+            selectedUsersToTask.add(user);
+        }    
         if (this.currentTask.getTaskId() == null) {
-            List<User> selectedUsersToTask = new ArrayList<User>();
-            for (String fullName : selectedUsers) {
-                User user = userService.getUserByFullName(fullName);
-                selectedUsersToTask.add(user);
-            }
+            this.status = "Por Hacer";
             this.currentTask.setUsers(selectedUsersToTask);
             taskService.addTask(currentTask);
             message = "Tarea creada con exito";
         } else {
+            this.currentTask.setUsers(selectedUsersToTask);
             if (taskService.updateTask(currentTask) != null) {
                 message = "Tarea actualizada con exito";
             } else {
@@ -159,7 +158,8 @@ public class TaskBean {
             taskService.updateTask(this.currentTask);
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
+            this.status = "Por Hacer";
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:tabViewMVS");
         }
     }
 
@@ -212,6 +212,11 @@ public class TaskBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Comentario agregado"));
         primeFacesWrapper.current().executeScript("PF('manageCommentDialog').hide()");
         primeFacesWrapper.current().ajax().update("form:messages", "form:comments-list");
+    }
+
+    public void loadUsers(){
+        selectedUsers.clear();
+        currentTask.getUsers().forEach(user -> selectedUsers.add(user.getFullName()));
     }
 
 }
