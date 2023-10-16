@@ -99,6 +99,10 @@ public class TaskBean {
 
     public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
 
+
+
+    
+
     /**
      * Metodo que crea una nueva tarea.
      */
@@ -160,7 +164,7 @@ public class TaskBean {
     }
 
     public void changeLoggedTaskView() {
-        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
+        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:lldt-task-lab");
     }
 
     /**
@@ -171,9 +175,8 @@ public class TaskBean {
     public void onDatabaseLoaded(String userName) {
         
         User user = userService.getUserByUsername(userName);
-        //this.tasks = taskService.getTasksByUser(user);
         this.tasks = taskService.getTasksByUserAndStatus(user, status);
-        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
+        this.tasksLab = taskService.getTaskByTypeAndStatus("Laboratorio", status);
     }
 
     /**

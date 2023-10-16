@@ -37,6 +37,10 @@ public class TaskService {
         return taskRepository.findByUserIdAndStatus(user.getUserId(), taskStatus);
     }
 
+    public List<Task> getTaskByTypeAndStatus(String typeTask, String taskStatus) {
+        return taskRepository.findByTypeAndStatus(typeTask, taskStatus);
+    }
+
     public List<Task> getTasksByStatus(String taskStatus) {
         return taskRepository.findByStatus(taskStatus);
     }
