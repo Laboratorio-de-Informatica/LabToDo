@@ -90,11 +90,12 @@
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
                     <h4 class="mb-1">#{task.title}</h4>
                     <p>#{task.description}</p>
-                    <p class="task-status">#{task.status}</p>
+                    <p class="task-status" >#{task.status} #{taskBean.getRenderedToTaskButton(loginBean.userName, task)}</p>
                   </article>
                 </p:commandLink>
-                <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
-                  oncomplete="PF('completeTaskDialog').show()">
+                <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send" 
+                  rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, task)}" styleClass="button ui-button-success  rounded-button" 
+                  oncomplete="PF('completeTaskDialog').show()" update="@this :dialogs:completeTaskDialog">
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                 </p:commandButton>
               </p:carousel>
@@ -118,11 +119,12 @@
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
                     <h4 class="mb-1">#{task.title}</h4>
                     <p>#{task.description}</p>
-                    <p class="task-status">#{task.status}</p>
+                    <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
-                <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button" 
-                 oncomplete="PF('completeTaskDialog').show()">
+                <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send" 
+                  rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, task)}" styleClass="button ui-button-success  rounded-button" 
+                  oncomplete="PF('completeTaskDialog').show()" update="@this :dialogs:completeTaskDialog">
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                 </p:commandButton>
               </p:carousel>
@@ -181,8 +183,8 @@
         <p:messages for="somekey" />
       </p:dialog>
        <!-- Dialogo para completar tarea -->
-      <p:confirmDialog widgetVar="completeTaskDialog" showEffect="fade" width="300"
-       message="Completar tarea?" header="Confirmar" severity="warn">
+      <p:confirmDialog id="completeTaskDialog" widgetVar="completeTaskDialog" showEffect="fade" width="300"
+        message="#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
           process="@this" oncomplete="PF('completeTaskDialog').hide()" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
