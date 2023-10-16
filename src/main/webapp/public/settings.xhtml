@@ -84,10 +84,10 @@
             <p:ajax event="toggleSelect" update=":form:edit-users-button" />
   
             <p:column selectionMode="multiple" exportable="false" styleClass="user-selection"/>
-            <p:column headerText="Name" filterBy="#{user.userName}">
-              <h:outputText value="#{user.userName}" />
+            <p:column headerText="Nombre Completo" filterBy="#{user.fullName}">
+              <h:outputText value="#{user.fullName}" />
             </p:column>
-            <p:column headerText="Role">
+            <p:column headerText="Rol">
               <h:outputText value="#{user.userRole}"/>
             </p:column>
           </p:dataTable>
@@ -97,7 +97,7 @@
     <h:form id="dialogs">
       <!-- Dialogo para edicion de usuarios  -->
       <p:confirmDialog id="edit-content" widgetVar="editDialog" showEffect="fade" width="300"
-        header="Confirmar"  message="Actualizar los usuarios seleccinados?" >
+        header="Seleccionar"  message="Actualizar los usuarios seleccionados?" severity="info">
         <p:outputPanel id="update-role-content">
           <p:selectOneMenu id="role" value="#{adminBean.newRole}" label="Text 2" style="width: 12rem">
             <f:selectItem itemLabel="Seleccionar nuevo rol" itemValue="" noSelectionOption="true"/>
