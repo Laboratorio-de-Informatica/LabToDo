@@ -45,6 +45,7 @@ public class TaskBean {
     private Task currentTask;
     private Comment comment;
     private String commentary;
+    private String status;
 
     public List<Task> getTasks() {
         return tasks;
@@ -82,6 +83,14 @@ public class TaskBean {
         return selectedUsers;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void setSelectedUsers(List<String> selectedUsers) {
         this.selectedUsers = selectedUsers;
     }
@@ -89,6 +98,10 @@ public class TaskBean {
     public List<Task> getTasksLab() {return tasksLab; }
 
     public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
+
+
+
+    
 
     /**
      * Metodo que crea una nueva tarea.
@@ -151,7 +164,7 @@ public class TaskBean {
     }
 
     public void changeLoggedTaskView() {
-        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
+        primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:lldt-task-lab");
     }
 
     /**
@@ -160,9 +173,10 @@ public class TaskBean {
      * @param userName nombre del usuario que se va a cargar sus tareas.
      */
     public void onDatabaseLoaded(String userName) {
+        
         User user = userService.getUserByUsername(userName);
-        this.tasks = taskService.getTasksByUser(user);
-        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
+        this.tasks = taskService.getTasksByUserAndStatus(user, status);
+        this.tasksLab = taskService.getTaskByTypeAndStatus("Laboratorio", status);
     }
 
     /**

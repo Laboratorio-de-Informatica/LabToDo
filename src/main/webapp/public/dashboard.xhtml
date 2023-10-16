@@ -73,10 +73,16 @@
           <div class="task-tabview">
           <p:tabView multiViewState="true" id="tabViewMVS" styleClass="rounded-tabview">
             <p:tab title="Mis Tareas">
+              <p:selectOneButton value="#{taskBean.status}">
+                <f:selectItem itemLabel="Por Hacer" itemValue="Por Hacer"/>
+                <f:selectItem itemLabel="En Proceso" itemValue="En Proceso"/>
+                <f:selectItem itemLabel="En Revisión" itemValue="En Revisión"/>
+                <f:selectItem itemLabel="Finalizada" itemValue="Finalizada"/>
+                <p:ajax listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" update="dt-task dt-task-lab" />
+              </p:selectOneButton>
               <p:carousel id="dt-task" var="task" value="#{taskBean.tasks}"
                 numVisible="2" numScroll="1" styleClass="dt-task"
                 responsiveOptions="#{carouselView.responsiveOptions}" >
-                <!-- Buscar usuarios -->
                 <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                   <article class="task-item">
@@ -94,6 +100,13 @@
               </p:carousel>
             </p:tab>
             <p:tab title="Tareas de laboratorio">
+              <p:selectOneButton value="#{taskBean.status}">
+                <f:selectItem itemLabel="Por Hacer" itemValue="Por Hacer"/>
+                <f:selectItem itemLabel="En Proceso" itemValue="En Proceso"/>
+                <f:selectItem itemLabel="En Revisión" itemValue="En Revisión"/>
+                <f:selectItem itemLabel="Finalizada" itemValue="Finalizada"/>
+                <p:ajax listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" update="dt-task dt-task-lab" />
+              </p:selectOneButton>
               <p:carousel id="dt-task-lab" var="task" value="#{taskBean.tasksLab}"
                  numVisible="2" numScroll="1" styleClass="dt-task"
                  responsiveOptions="#{carouselView.responsiveOptions}" >
@@ -108,8 +121,8 @@
                     <p class="task-status">#{task.status}</p>
                   </article>
                 </p:commandLink>
-                <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
-                    oncomplete="PF('completeTaskDialog').show()">
+                <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button" 
+                 oncomplete="PF('completeTaskDialog').show()">
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                 </p:commandButton>
               </p:carousel>

@@ -31,7 +31,18 @@ public class TaskService {
 
     public List<Task> getTasksByUser(User user) {
         return taskRepository.findByUsersUserId(user.getUserId());
+    }
 
+    public List<Task> getTasksByUserAndStatus(User user, String taskStatus) {
+        return taskRepository.findByUserIdAndStatus(user.getUserId(), taskStatus);
+    }
+
+    public List<Task> getTaskByTypeAndStatus(String typeTask, String taskStatus) {
+        return taskRepository.findByTypeAndStatus(typeTask, taskStatus);
+    }
+
+    public List<Task> getTasksByStatus(String taskStatus) {
+        return taskRepository.findByStatus(taskStatus);
     }
 
     public List<Task> getTaskByType(String taskType){

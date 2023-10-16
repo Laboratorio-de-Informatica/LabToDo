@@ -41,7 +41,7 @@ public class Task {
 
     public Task() {
         this.creationDate = LocalDate.now();
-        this.status = Status.INPROCESS.getValue();
+        this.status = Status.PENDING.getValue();
         this.users = new ArrayList<>();
         this.comments = new ArrayList<>();
     }
@@ -49,7 +49,7 @@ public class Task {
     public Task(String title, String description, TypeTask typeTask) {
         this.title = title;
         this.typeTask = typeTask.getValue();
-        this.status = Status.INPROCESS.getValue();
+        this.status = Status.PENDING.getValue();
         this.description = description;
         this.creationDate = LocalDate.now();
         this.users = new ArrayList<>();
