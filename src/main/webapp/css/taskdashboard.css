@@ -1,0 +1,213 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+main {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+}
+
+.team-image {
+    width: 180px;
+    height: 70px;
+    margin-left: 1em;
+}
+
+.user-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+}
+
+.user-description {
+    text-align: right;
+    margin-right: 1em;
+}
+
+.user-wrapper .username-label {
+    display: block;
+    font-weight: bold;
+}
+
+.user-wrapper .user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1rem;
+}
+
+.sidebar-list-element {
+    list-style-type: none;
+}
+
+.sidebar-list-element .link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    text-decoration: none !important;
+    color: #000000
+}
+
+.sidebar-list-element .link:hover {
+    background: linear-gradient(to left, #7dd9c5, #54b1b4);
+    border-radius: 25px;
+    color: #ffffff;
+}
+
+.sidebar-list-element .link.active {
+    color: #ffffff;
+    background: linear-gradient(to left, #8cd97d, #77b454);
+    border-radius: 25px;
+}
+
+.eci-image {
+    position: absolute;
+    bottom: 0;
+    width: 240px;
+    height: 91.4px;
+}
+
+.task-crud {
+    width: 100%;
+    background: linear-gradient(to bottom right, #7dcc7f, #3dcc63, #2b9440);
+}
+
+#form {
+    padding: 2rem;
+}
+
+.mi-toolbar {
+    border-radius: 15px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 17px 10px rgba(255, 255, 255, 0.3);
+}
+
+.dt-task {
+    border-radius: 15px !important;
+    box-shadow: 0 0 17px 10px rgba(255, 255, 255, 0.3);
+    background-color: #ffffff !important;
+    height: 100% !important;
+    margin-top: 1rem;
+}
+
+.ui-carousel-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.task-table-header {
+    border-radius: 15px 15px 0 0 !important;
+    background-color: #e1e1e1 !important;
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ui-carousel-indicators {
+    border-radius: 0 0 15px 15px !important;
+    margin-top: 1rem;
+}
+
+.card-task {
+    width: 100% !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.task-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 .5rem 0 .5rem !important;
+    border: 1px solid #8a8a8a;
+    border-radius: 15px;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.task-item:hover {
+    background-color: #d6d3d3;
+    cursor: pointer;
+}
+
+.task-image {
+    width: 10rem;
+    height: 10rem;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-bottom: .5rem;
+}
+
+.task-image-Monitor {
+    background-image: url(../img/user.png);
+}
+
+.task-image-Laboratorio {
+    background-image: url(../img/laboratory.png);
+
+}
+
+.task-type {
+    padding: .5rem;
+    border-radius: 5px;
+    font-weight: 500;
+    color: white;
+}
+
+.task-type-Laboratorio {
+    background-color: #1e815f;
+}
+
+.task-type-Monitor {
+    background-color: #3372a5;
+}
+
+.button {
+    margin: 0 .2rem 0 .2rem !important;
+}
+
+.field {
+    width: 40rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: .5rem;
+}
+
+.task-field-title {
+    height: 2rem;
+}
+
+.task-user-selection {
+    width: 1rem;
+}
+
+.task-tabview {
+    margin-top: 20px; /* Ajusta el valor según tus preferencias */
+}

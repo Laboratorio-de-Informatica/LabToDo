@@ -1,0 +1,14 @@
+.dt-task {
+    margin-top: 1rem !important;
+    box-shadow: 0 0 17px 10px rgba(255, 255, 255, 0.3);
+}
+
+.control-table-header {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+}
+
+.task-selection {
+    width: 1rem !important;
+}

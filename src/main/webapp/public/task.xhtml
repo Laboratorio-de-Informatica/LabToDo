@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  lang="es"
+>
+  <h:head>
+    <title>Dashboard</title>
+    <link rel="shortcut icon" href="../img/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
+    <link rel="stylesheet" type="text/css" href="../css/task.css" />
+  </h:head>
+  <h:body>
+    <header>
+      <img src="../img/logo.png" class="team-image" alt="TeamLogo" />
+      <h1>Laboratorio Informática LabToDo</h1>
+      <div class="user-wrapper">
+        <div class="user-description">
+          <p:outputLabel value="#{loginBean.getCurrentFullName(loginBean.userName)}" styleClass="username-label" />
+          <p:outputLabel value=" #{loginBean.getCurrentUserProfile(loginBean.userName)}" styleClass="role-label" />
+        </div>
+        <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user" />
+      </div>
+    </header>
+    <main>
+      <nav class="sidebar">
+        <ul class="sidebar-list">
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'home')}" >
+              <i class="pi pi-home"></i>
+              <span>Inicio</span>
+            </p:commandLink>
+          </li>
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'control')}" >
+              <i class="pi pi-sliders-h"></i>
+              <span>Control</span>
+            </p:commandLink>
+          </li>
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'config')}" >
+              <i class="pi pi-cog"></i>
+              <span>Configuración</span>
+            </p:commandLink>
+          </li>
+          <li class="sidebar-list-element">
+            <p:commandLink styleClass="link" oncomplete="PF('logoutDialog').show()" >
+              <i class="pi pi-sign-out"></i>
+              <span>Salir</span>
+            </p:commandLink>
+          </li>
+        </ul>
+      </nav>
+      <div class="details-task">
+        <h:form id="form">
+          <p:growl id="growl" showDetail="true" />
+          <p:toolbar styleClass="mi-toolbar">
+            <p:toolbarGroup>
+              <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button rounded-button mr-2"
+                update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()" >
+              </p:commandButton>
+              <p:commandButton value="Comentar" icon="pi pi-comments" styleClass="button ui-button-help  rounded-button mr-2"
+                actionListener="#{taskBean.openComment}" update=":dialogs:manage-comment-content" oncomplete="PF('manageCommentDialog').show()" >
+              </p:commandButton>
+              <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
+                oncomplete="PF('completeTaskDialog').show()">
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
+          <p:panel id="details-panel" styleClass="details-panel" header="Detalles de la Tarea">
+            <p:panelGrid columns="2">
+              <p:outputLabel value="Titulo: #{taskBean.currentTask.title}" />
+              <p:outputLabel value="Descripción: #{taskBean.currentTask.description}" />
+              <p:outputLabel value="Estado: #{taskBean.currentTask.status}" />
+              <p:outputLabel value="Tarea de: #{taskBean.currentTask.typeTask}" />
+              <p:outputLabel value="Creado en: #{taskBean.currentTask.creationDate}" />
+              <p:outputLabel value="Asignado a: #{taskBean.currentTask.getAllUsers()}" />
+            </p:panelGrid>
+            <p:divider />
+            <p:dataTable id="comments-list" var="comment"  value="#{taskBean.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true" rows="10" paginatorPosition="bottom"
+            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+              <f:facet name="header">
+                <div class="comments-list-header">
+                  <span style="font-weight: bold">Comentarios</span>
+                </div>
+              </f:facet>
+              <p:column headerText="Descripción">
+                <h:outputText value="#{comment.description}" />
+              </p:column>
+              <p:column headerText="Comentado el">
+                <h:outputText value="#{comment.creationDate}" />
+              </p:column>
+              <p:column headerText="Comentado por">
+                <h:outputText value="#{comment.creatorUser.userName}" />
+              </p:column>
+            </p:dataTable>
+          </p:panel>
+        </h:form>
+      </div>
+    </main>
+    <h:form id="dialogs">
+      <!-- Dialogo para cambiar detalles de la tarea -->
+      <p:dialog header="Detalles de la tarea" showEffect="fade"
+        modal="true" widgetVar="managetaskDialog" responsive="true" >
+        <p:outputPanel id="manage-task-content" class="ui-fluid dialog-manage-task">
+          <p:outputPanel rendered="#{not empty taskBean.currentTask}">
+            <div class="field">
+              <p:outputLabel for="description">Descripción</p:outputLabel>
+              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" />
+            </div>
+          </p:outputPanel>
+        </p:outputPanel>
+        <f:facet name="footer">
+          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskBean.saveTask}"
+            update="manage-task-content :form" process="manage-task-content @this"
+            oncomplete="PF('managetaskDialog').hide()" />
+          <p:commandButton value="Cancelar" onclick="PF('managetaskDialog').hide()"
+            class="ui-button-secondary" icon="pi pi-times" type="button" />
+        </f:facet>
+        <p:messages for="somekey" />
+      </p:dialog>
+      <!-- Dialogo para comentar tarea -->
+      <p:dialog header="Comentar" showEffect="fade" modal="true" widgetVar="manageCommentDialog" responsive="true">
+        <p:outputPanel id="manage-comment-content" class="ui-fluid">
+          <div class="field">
+            <p:outputLabel for="commentary">Comentario</p:outputLabel>
+            <p:inputTextarea id="commentary" required="true" value="#{taskBean.commentary}" />
+            <p style="color:red;">Una vez comentado, no puedes cambiar el comentario.</p>
+          </div>
+        </p:outputPanel>
+        <f:facet name="footer">
+          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskBean.saveComment(loginBean.userName)}"
+              update="manage-comment-content" process="manage-comment-content @this" />
+          <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCommentDialog').hide()"
+              class="ui-button-secondary" type="button" />
+        </f:facet>
+      </p:dialog>
+       <!-- Dialogo para completar tarea -->
+      <p:confirmDialog widgetVar="completeTaskDialog" showEffect="fade" width="300"
+       message="Completar tarea?" header="Confirmar" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
+          update=":form:details-panel" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
+        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+          onclick="PF('completeTaskDialog').hide()" />
+      </p:confirmDialog>
+      <!-- Dialogo para cerrar sesion -->
+      <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
+        width="300" message="Cerrar sesion?" header="Confirmar" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check" process="@this"
+          oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
+        <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+          icon="pi pi-times" onclick="PF('logoutDialog').hide()" />
+      </p:confirmDialog>
+    </h:form>
+  </h:body>
+</html>
