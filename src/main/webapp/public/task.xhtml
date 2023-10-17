@@ -55,7 +55,7 @@
           </li>
         </ul>
       </nav>
-      <div class="details-task">
+      <div class="task-crud">
         <h:form id="form">
           <p:growl id="growl" showDetail="true" />
           <p:toolbar styleClass="mi-toolbar">
@@ -66,8 +66,9 @@
               <p:commandButton value="Comentar" icon="pi pi-comments" styleClass="button ui-button-help  rounded-button mr-2"
                 actionListener="#{taskBean.openComment}" update=":dialogs:manage-comment-content" oncomplete="PF('manageCommentDialog').show()" >
               </p:commandButton>
-              <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
-                oncomplete="PF('completeTaskDialog').show()">
+              <p:commandButton id="task-button" value="#{taskBean.getMessageToTaskButton(taskBean.currentTask)}" icon="pi pi-send" 
+                rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, taskBean.currentTask)}"
+                styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()" update="@this">
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
@@ -77,25 +78,26 @@
               <p:outputLabel value="Descripción: #{taskBean.currentTask.description}" />
               <p:outputLabel value="Estado: #{taskBean.currentTask.status}" />
               <p:outputLabel value="Tarea de: #{taskBean.currentTask.typeTask}" />
-              <p:outputLabel value="Creado en: #{taskBean.currentTask.creationDate}" />
+              <p:outputLabel value="Fecha de creación: #{taskBean.currentTask.getDateText()}" />
               <p:outputLabel value="Asignado a: #{taskBean.currentTask.getAllUsers()}" />
             </p:panelGrid>
             <p:divider />
-            <p:dataTable id="comments-list" var="comment"  value="#{taskBean.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true" rows="10" paginatorPosition="bottom"
-            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+            <p:dataTable id="comments-list" var="comment"  value="#{taskBean.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true"
+              rows="5" paginatorPosition="bottom"
+              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
               <f:facet name="header">
                 <div class="comments-list-header">
                   <span style="font-weight: bold">Comentarios</span>
                 </div>
               </f:facet>
-              <p:column headerText="Descripción">
+              <p:column headerText="Fecha del Comentario">
+                <h:outputText value="#{comment.getDateText()}" />
+              </p:column>
+              <p:column headerText="Autor del Comentario">
+                <h:outputText value="#{comment.creatorUser.fullName}" />
+              </p:column>
+              <p:column headerText="Comentario">
                 <h:outputText value="#{comment.description}" />
-              </p:column>
-              <p:column headerText="Comentado el">
-                <h:outputText value="#{comment.creationDate}" />
-              </p:column>
-              <p:column headerText="Comentado por">
-                <h:outputText value="#{comment.creatorUser.userName}" />
               </p:column>
             </p:dataTable>
           </p:panel>
@@ -154,17 +156,17 @@
               class="ui-button-secondary" type="button" />
         </f:facet>
       </p:dialog>
-       <!-- Dialogo para completar tarea -->
+       <!-- Dialogo para iniciar/revisar/completar tarea -->
       <p:confirmDialog widgetVar="completeTaskDialog" showEffect="fade" width="300"
-       message="Completar tarea?" header="Confirmar" severity="warn">
+       message="¿#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar Avance" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
-          update=":form:details-panel" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
+          update="form" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
           onclick="PF('completeTaskDialog').hide()" />
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
-        width="300" message="Cerrar sesion?" header="Confirmar" severity="warn">
+        width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
           oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"

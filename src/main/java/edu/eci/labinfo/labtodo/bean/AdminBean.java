@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.Role;
+import edu.eci.labinfo.labtodo.model.Status;
 import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.TypeTask;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
@@ -85,6 +87,9 @@ public class AdminBean {
         }
         try {
             for (Task task : selectedTasks) {
+                if (this.newState.equals(Status.FINISH.getValue()) && task.getTypeTask().equals(TypeTask.LABORATORIO.getValue())) {
+                    task.setUsers(taskService.getUsersWhoCommentedTask(task.getTaskId()));
+                }
                 task.setStatus(this.newState);
                 taskService.updateTask(task);
             }
@@ -92,8 +97,8 @@ public class AdminBean {
             e.printStackTrace();
         } finally {
             int size = this.selectedTasks.size();
-            String summary = size > 1 ? size + " tareas actualizadas con exito" : size + " tarea actualizada con exito";
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Exito"));
+            String summary = size > 1 ? size + " tareas actualizadas con éxito" : size + " tarea actualizada con éxito";
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update(":form:dt-task", ":form:messages");
             selectedTasks.clear();
         }
@@ -121,9 +126,9 @@ public class AdminBean {
             e.printStackTrace();
         } finally {
             int size = this.selectedUsers.size();
-            String summary = size > 1 ? size + " usuarios actualizados con exito" : size + " usuario actualizado con exito";
+            String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
             selectedUsers.clear();
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Exito"));
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", ":role-label", "form:edit-users-button");
         }
         return true;

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.User;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -21,4 +22,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("SELECT t FROM Task t WHERE t.typeTask = :typeTask AND  t.status = :status")
     List<Task> findByTypeAndStatus(@Param("typeTask") String typeTask, @Param("status") String status);
+
+    @Query("SELECT DISTINCT c.creatorUser FROM Task t JOIN t.comments c WHERE t.taskId = :taskId")
+    List<User> findUsersWhoCommented(Long taskId);
+
 }

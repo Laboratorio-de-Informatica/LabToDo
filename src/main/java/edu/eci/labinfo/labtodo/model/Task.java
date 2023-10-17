@@ -1,8 +1,11 @@
 package edu.eci.labinfo.labtodo.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -110,6 +113,12 @@ public class Task {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getDateText() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
+                .withLocale(new Locale("es", "ES"));
+        return creationDate.format(formatter);
     }
 
     public void setUsers(List<User> users) {

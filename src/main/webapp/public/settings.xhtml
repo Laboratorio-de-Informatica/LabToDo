@@ -84,7 +84,7 @@
             <p:ajax event="toggleSelect" update=":form:edit-users-button" />
   
             <p:column selectionMode="multiple" exportable="false" styleClass="user-selection"/>
-            <p:column headerText="Nombre Completo" filterBy="#{user.fullName}">
+            <p:column headerText="Nombre Completo" filterBy="#{user.fullName}" filterMatchMode="contains">
               <h:outputText value="#{user.fullName}" />
             </p:column>
             <p:column headerText="Rol">
@@ -96,11 +96,11 @@
     </main>
     <h:form id="dialogs">
       <!-- Dialogo para edicion de usuarios  -->
-      <p:confirmDialog id="edit-content" widgetVar="editDialog" showEffect="fade" width="300"
-        header="Seleccionar"  message="Actualizar los usuarios seleccionados?" severity="info">
+      <p:confirmDialog id="edit-content" widgetVar="editDialog" showEffect="fade" width="350"
+        header="Actualizar Rol"  message="Seleccione el nuevo rol para los usuarios seleccionados" severity="info">
         <p:outputPanel id="update-role-content">
-          <p:selectOneMenu id="role" value="#{adminBean.newRole}" label="Text 2" style="width: 12rem">
-            <f:selectItem itemLabel="Seleccionar nuevo rol" itemValue="" noSelectionOption="true"/>
+          <p:selectOneMenu id="role" value="#{adminBean.newRole}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
+            <f:selectItem itemLabel="Rol" itemValue="" noSelectionOption="true"/>
             <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
             <f:selectItem itemLabel="Monitor" itemValue="Monitor"/>
           </p:selectOneMenu>
@@ -112,7 +112,7 @@
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
-        width="300" message="Cerrar sesion?" header="Confirmar" severity="warn">
+        width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
           oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"

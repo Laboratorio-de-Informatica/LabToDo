@@ -1,6 +1,10 @@
 package edu.eci.labinfo.labtodo.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,6 +62,12 @@ public class Comment {
 
     public LocalDate getCreationDate() {
         return creationDate;
+    }
+
+    public String getDateText() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
+                .withLocale(new Locale("es", "ES"));
+        return creationDate.format(formatter);
     }
 
     public void setCreationDate(LocalDate creationDate) {

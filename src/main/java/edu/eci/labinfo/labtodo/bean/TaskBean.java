@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import edu.eci.labinfo.labtodo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,19 +131,25 @@ public class TaskBean {
             selectedUsersToTask.add(user);
         }    
         if (this.currentTask.getTaskId() == null) {
-            this.status = "Por Hacer";
+            List<User> selectedUsersToTask = new ArrayList<User>();
+            if (selectedUsers != null) {
+                for (String fullName : selectedUsers) {
+                    User user = userService.getUserByFullName(fullName);
+                    selectedUsersToTask.add(user);
+                }
+                selectedUsers.clear();
+            }
             this.currentTask.setUsers(selectedUsersToTask);
             taskService.addTask(currentTask);
-            message = "Tarea creada con exito";
+            message = "Tarea creada con éxito";
         } else {
             this.currentTask.setUsers(selectedUsersToTask);
             if (taskService.updateTask(currentTask) != null) {
-                message = "Tarea actualizada con exito";
+                message = "Tarea actualizada con éxito";
             } else {
                 message = "Error al actualizar";
             }
         }
-        selectedUsers.clear();
         facesContextWrapper.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
         primeFacesWrapper.current().ajax().update("form:growl");
@@ -152,14 +159,19 @@ public class TaskBean {
      * Metodo que avisa al usuario que la tarea ha sido completada.
      */
     public void completedMessage() {
-        String summary = Status.FINISH.getValue();
         if (this.currentTask != null) {
-            this.currentTask.setStatus(summary);
+            Status state = Status.findByValue(this.currentTask.getStatus());
+            String newState = state.next().getValue();
+            if (newState.equals(Status.FINISH.getValue())) {
+                currentTask.setUsers(taskService.getUsersWhoCommentedTask(currentTask.getTaskId()));
+            }
+            this.currentTask.setStatus(newState);
             taskService.updateTask(this.currentTask);
+            String summary = "Tarea " + state.next().getValue();
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            this.status = "Por Hacer";
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:tabViewMVS");
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:tabViewMVS", "form:task-button");
+
         }
     }
 
@@ -217,6 +229,34 @@ public class TaskBean {
     public void loadUsers(){
         selectedUsers.clear();
         currentTask.getUsers().forEach(user -> selectedUsers.add(user.getFullName()));
+    }
+    public String getMessageToTaskButton(Task task) {
+        String message = "";
+        if (task != null) {
+            if (task.getStatus().equals(Status.PENDING.getValue())) {
+                message = "Iniciar";
+            } else if (task.getStatus().equals(Status.INPROCESS.getValue())) {
+                message = "A revisión";
+            } else {
+                message = "Completar";
+            }
+        }
+        return message;
+    }
+
+    public Boolean getRenderedToTaskButton(String userName, Task task) {
+        Boolean rendered = true;
+        User user = userService.getUserByUsername(userName);
+        if (task != null) {
+            if (task.getStatus().equals(Status.FINISH.getValue())) {
+                rendered = false;
+            }
+            if (task.getStatus().equals(Status.REVIEW.getValue())
+                    && user.getUserRole().equals(Role.MONITOR.getValue())) {
+                rendered = false;
+            }
+        }
+        return rendered;
     }
 
 }

@@ -53,6 +53,10 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+    public List<User> getUsersWhoCommentedTask(Long taskId) {
+        return taskRepository.findUsersWhoCommented(taskId);
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     public Task updateTask(Task task) {
         if (taskRepository.existsById(task.getTaskId())) {
