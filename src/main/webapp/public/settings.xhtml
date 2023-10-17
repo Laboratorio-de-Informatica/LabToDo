@@ -84,7 +84,7 @@
             <p:ajax event="toggleSelect" update=":form:edit-users-button" />
   
             <p:column selectionMode="multiple" exportable="false" styleClass="user-selection"/>
-            <p:column headerText="Nombre Completo" filterBy="#{user.fullName}">
+            <p:column headerText="Nombre Completo" filterBy="#{user.fullName}" filterMatchMode="contains">
               <h:outputText value="#{user.fullName}" />
             </p:column>
             <p:column headerText="Rol">
@@ -112,7 +112,7 @@
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
-        width="300" message="Cerrar sesion?" header="Confirmar" severity="warn">
+        width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
           oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"

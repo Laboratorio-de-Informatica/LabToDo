@@ -100,10 +100,6 @@ public class TaskBean {
 
     public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
 
-
-
-    
-
     /**
      * Metodo que crea una nueva tarea.
      */
@@ -139,7 +135,7 @@ public class TaskBean {
             }
             this.currentTask.setUsers(selectedUsersToTask);
             taskService.addTask(currentTask);
-            message = "Tarea creada con exito";
+            message = "Tarea creada con éxito";
         } else {
             if (taskService.updateTask(currentTask) != null) {
                 message = "Tarea actualizada con éxito";
@@ -158,7 +154,11 @@ public class TaskBean {
     public void completedMessage() {
         if (this.currentTask != null) {
             Status state = Status.findByValue(this.currentTask.getStatus());
-            this.currentTask.setStatus(state.next().getValue());
+            String newState = state.next().getValue();
+            if (newState.equals(Status.FINISH.getValue())) {
+                currentTask.setUsers(taskService.getUsersWhoCommentedTask(currentTask.getTaskId()));
+            }
+            this.currentTask.setStatus(newState);
             taskService.updateTask(this.currentTask);
             String summary = "Tarea " + state.next().getValue();
             facesContextWrapper.getCurrentInstance().addMessage(null,
