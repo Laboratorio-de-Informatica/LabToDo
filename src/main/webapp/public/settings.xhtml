@@ -96,11 +96,11 @@
     </main>
     <h:form id="dialogs">
       <!-- Dialogo para edicion de usuarios  -->
-      <p:confirmDialog id="edit-content" widgetVar="editDialog" showEffect="fade" width="300"
-        header="Seleccionar"  message="Actualizar los usuarios seleccionados?" severity="info">
+      <p:confirmDialog id="edit-content" widgetVar="editDialog" showEffect="fade" width="350"
+        header="Actualizar Rol"  message="Seleccione el nuevo rol para los usuarios seleccionados" severity="info">
         <p:outputPanel id="update-role-content">
-          <p:selectOneMenu id="role" value="#{adminBean.newRole}" label="Text 2" style="width: 12rem">
-            <f:selectItem itemLabel="Seleccionar nuevo rol" itemValue="" noSelectionOption="true"/>
+          <p:selectOneMenu id="role" value="#{adminBean.newRole}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
+            <f:selectItem itemLabel="Rol" itemValue="" noSelectionOption="true"/>
             <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
             <f:selectItem itemLabel="Monitor" itemValue="Monitor"/>
           </p:selectOneMenu>

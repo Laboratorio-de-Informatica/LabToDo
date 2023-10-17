@@ -137,7 +137,7 @@
     <h:form id="dialogs">
       <!-- Dialogo para CrearTarea -->
       <p:dialog header="Detalles de la tarea" showEffect="fade"
-        modal="true" widgetVar="managetaskDialog" responsive="true" >
+        modal="true" widgetVar="managetaskDialog" responsive="true" resizable="false" draggable="false">
         <p:outputPanel id="manage-task-content" class="ui-fluid dialog-manage-task">
           <p:outputPanel rendered="#{not empty taskBean.currentTask}">
             <div class="field">
@@ -160,12 +160,13 @@
             <div class="field">
               <p:outputPanel id="user-task-selection">
                 <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor'}">
-                  <p:outputLabel for="multiple">Usuarios</p:outputLabel>
+                  <p:outputLabel for="multiple">Monitor(es) a asignar</p:outputLabel>
                   <p:selectCheckboxMenu id="multiple"
                                       filter="true" filterMatchMode="contains"
                                       label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
                                       scrollHeight="250"
-                                      value="#{taskBean.selectedUsers}">
+                                      value="#{taskBean.selectedUsers}"
+                                      style="margin-top: 10px;">
                       <f:selectItems value="#{loginBean.userNames}" />
                   </p:selectCheckboxMenu>
                 </p:outputPanel>
@@ -192,7 +193,7 @@
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
-        width="300" message="Cerrar sesion?" header="Confirmar" severity="warn">
+        width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
           oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
