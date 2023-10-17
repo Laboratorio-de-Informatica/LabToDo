@@ -92,8 +92,8 @@ public class AdminBean {
             e.printStackTrace();
         } finally {
             int size = this.selectedTasks.size();
-            String summary = size > 1 ? size + " tareas actualizadas con exito" : size + " tarea actualizada con exito";
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Exito"));
+            String summary = size > 1 ? size + " tareas actualizadas con éxito" : size + " tarea actualizada con éxito";
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update(":form:dt-task", ":form:messages");
             selectedTasks.clear();
         }
@@ -121,9 +121,9 @@ public class AdminBean {
             e.printStackTrace();
         } finally {
             int size = this.selectedUsers.size();
-            String summary = size > 1 ? size + " usuarios actualizados con exito" : size + " usuario actualizado con exito";
+            String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
             selectedUsers.clear();
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Exito"));
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", ":role-label", "form:edit-users-button");
         }
         return true;

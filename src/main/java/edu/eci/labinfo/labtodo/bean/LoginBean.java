@@ -181,7 +181,7 @@ public class LoginBean {
         // error y salir temprano
         if (userToLogin == null || !password.equals(userToLogin.getUserPassword())) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña no es correcta.", ERROR));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña es incorrecta.", ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }

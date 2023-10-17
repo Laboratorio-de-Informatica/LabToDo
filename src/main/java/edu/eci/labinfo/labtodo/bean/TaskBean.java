@@ -138,7 +138,7 @@ public class TaskBean {
             message = "Tarea creada con exito";
         } else {
             if (taskService.updateTask(currentTask) != null) {
-                message = "Tarea actualizada con exito";
+                message = "Tarea actualizada con éxito";
             } else {
                 message = "Error al actualizar";
             }

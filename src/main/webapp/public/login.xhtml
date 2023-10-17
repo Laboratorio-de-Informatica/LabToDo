@@ -43,7 +43,7 @@
 
     <h:form id="dialogs">
       <p:dialog header="Crear cuenta" showEffect="fade" modal="true" widgetVar="createAccountDialog"
-        responsive="true" styleClass="ui-dialog-create-account create-account" draggable="false">
+        responsive="true" styleClass="ui-dialog-create-account create-account" draggable="false" resizable="false">
         <p:outputPanel id="create-account-content" class="ui-fluid">
           <p:outputPanel rendered="#{not empty loginBean.newUser}">
             <p:outputLabel for="full-name">Nombres y Apellidos</p:outputLabel>

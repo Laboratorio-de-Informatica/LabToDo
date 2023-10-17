@@ -71,7 +71,7 @@
               </p:commandButton>
               <!-- Botón Completar Tarea -->
               <p:commandButton id="complete-task-button" value="#{adminBean.updateButtonMessage}"
-                icon="pi pi-send" oncomplete="PF('stateTaskDialog').show()" process="@this"
+                icon="pi pi-send" oncomplete="PF('stateTaskDialog').show()" process="@this" class="ui-button"
                 styleClass="rounded-button ui-button-success" disabled="#{!adminBean.hasSelectedTasks()}">
               </p:commandButton>
             </p:toolbarGroup>
@@ -92,16 +92,16 @@
             <p:ajax event="toggleSelect" update=":form:complete-task-button" />
 
             <p:column selectionMode="multiple" exportable="false" styleClass="task-selection"/>
-            <p:column headerText="Titulo">
-              <h:outputText value="#{task.title}"/>
+            <p:column headerText="Fecha de Creación" sortBy="#{task.creationDate}">
+              <h:outputText value="#{task.getDateText()}"/>
             </p:column>
-            <p:column headerText="Tipo" sortBy="#{task.typeTask}">
+            <p:column headerText="Tipo de tarea" filterBy="#{task.typeTask}" filterMatchMode="contains">
               <h:outputText value="#{task.typeTask}"/>
             </p:column>
-            <p:column headerText="Creado el" sortBy="#{task.creationDate}">
-              <h:outputText value="#{task.creationDate}"/>
+            <p:column headerText="Nombre de la tarea" filterBy="#{task.title}" filterMatchMode="contains">
+              <h:outputText value="#{task.title}"/>
             </p:column>
-            <p:column headerText="Estado" filterBy="#{task.status}">
+            <p:column headerText="Estado" filterBy="#{task.status}" filterMatchMode="contains">
               <h:outputText value="#{task.status}"/>
             </p:column>
             <p:column headerText="Asignado a" filterBy="#{task.getAllUsers()}" filterMatchMode="contains">
@@ -120,7 +120,7 @@
     <h:form id="dialogs">
       <!-- Dialogo para CrearTarea -->
       <p:dialog header="Detalles de la tarea" showEffect="fade"
-        modal="true" widgetVar="managetaskDialog" responsive="true" >
+        modal="true" widgetVar="managetaskDialog" responsive="true" resizable="false" draggable="false">
         <p:outputPanel id="manage-task-content" class="ui-fluid dialog-manage-task">
           <p:outputPanel rendered="#{not empty taskBean.currentTask}">
             <div class="field">
@@ -143,12 +143,13 @@
             <div class="field">
               <p:outputPanel id="user-task-selection">
                 <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor'}">
-                  <p:outputLabel for="multiple">Usuarios</p:outputLabel>
+                  <p:outputLabel for="multiple">Monitor(es) a asignar</p:outputLabel>
                   <p:selectCheckboxMenu id="multiple"
                                       filter="true" filterMatchMode="contains"
                                       label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
                                       scrollHeight="250"
-                                      value="#{taskBean.selectedUsers}">
+                                      value="#{taskBean.selectedUsers}"
+                                      style="margin-top: 10px;">
                       <f:selectItems value="#{loginBean.userNames}" />
                   </p:selectCheckboxMenu>
                 </p:outputPanel>
@@ -166,14 +167,14 @@
         <p:messages for="somekey" />
       </p:dialog>
       <!-- Dialogo para completar tarea -->
-      <p:confirmDialog widgetVar="stateTaskDialog" showEffect="fade" width="300"
-      message="Estado de tarea?" header="Seleccionar" severity="info">
+      <p:confirmDialog widgetVar="stateTaskDialog" showEffect="fade" width="350"
+      message="Seleccione el nuevo estado de la tarea" header="Actualizar Estado" severity="info">
         <p:outputPanel id="update-status-content">
-          <p:selectOneMenu id="status" value="#{adminBean.newState}" label="Text 2">
-            <f:selectItem itemLabel="Seleccionar estado" itemValue="" noSelectionOption="true"/>
-            <f:selectItem itemLabel="En Proceso" itemValue="En Proceso"/>
+          <p:selectOneMenu id="status" value="#{adminBean.newState}" label="Text 2" style="width: 12rem; margin-bottom: 10px;">
+            <f:selectItem itemLabel="Estado" itemValue="" noSelectionOption="true"/>
             <f:selectItem itemLabel="Por Hacer" itemValue="Por Hacer"/>
-            <f:selectItem itemLabel="Revisión" itemValue="Revisión"/>
+            <f:selectItem itemLabel="En Proceso" itemValue="En Proceso"/>
+            <f:selectItem itemLabel="En Revisión" itemValue="Revisión"/>
             <f:selectItem itemLabel="Finalizada" itemValue="Finalizada"/>
           </p:selectOneMenu>
         </p:outputPanel>
@@ -184,7 +185,7 @@
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
-        width="300" message="Cerrar sesion?" header="Confirmar" >
+        width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
           oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
