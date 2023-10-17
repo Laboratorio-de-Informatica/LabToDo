@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.Role;
+import edu.eci.labinfo.labtodo.model.Status;
 import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.TypeTask;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
@@ -85,6 +87,9 @@ public class AdminBean {
         }
         try {
             for (Task task : selectedTasks) {
+                if (this.newState.equals(Status.FINISH.getValue()) && task.getTypeTask().equals(TypeTask.LABORATORIO.getValue())) {
+                    task.setUsers(taskService.getUsersWhoCommentedTask(task.getTaskId()));
+                }
                 task.setStatus(this.newState);
                 taskService.updateTask(task);
             }
