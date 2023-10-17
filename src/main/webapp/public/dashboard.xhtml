@@ -81,8 +81,7 @@
                 <p:ajax listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" update="dt-task dt-task-lab" />
               </p:selectOneButton>
               <p:carousel id="dt-task" var="task" value="#{taskBean.tasks}"
-                numVisible="2" numScroll="1" styleClass="dt-task"
-                responsiveOptions="#{carouselView.responsiveOptions}" >
+                numVisible="2" numScroll="1" styleClass="dt-task">
                 <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                   <article class="task-item">
@@ -90,7 +89,7 @@
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
                     <h4 class="mb-1">#{task.title}</h4>
                     <p>#{task.description}</p>
-                    <p class="task-status" >#{task.status} #{taskBean.getRenderedToTaskButton(loginBean.userName, task)}</p>
+                    <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
                 <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send" 
@@ -109,8 +108,7 @@
                 <p:ajax listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" update="dt-task dt-task-lab" />
               </p:selectOneButton>
               <p:carousel id="dt-task-lab" var="task" value="#{taskBean.tasksLab}"
-                 numVisible="2" numScroll="1" styleClass="dt-task"
-                 responsiveOptions="#{carouselView.responsiveOptions}" >
+                 numVisible="2" numScroll="1" styleClass="dt-task">
                 <!-- Buscar usuarios -->
                 <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
@@ -185,7 +183,7 @@
       </p:dialog>
        <!-- Dialogo para completar tarea -->
       <p:confirmDialog id="completeTaskDialog" widgetVar="completeTaskDialog" showEffect="fade" width="300"
-        message="#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar" severity="warn">
+        message="¿#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar Avance" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
           process="@this" oncomplete="PF('completeTaskDialog').hide()" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"

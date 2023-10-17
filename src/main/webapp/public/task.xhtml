@@ -143,7 +143,7 @@
       </p:dialog>
        <!-- Dialogo para iniciar/revisar/completar tarea -->
       <p:confirmDialog widgetVar="completeTaskDialog" showEffect="fade" width="300"
-       message="#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar" severity="warn">
+       message="¿#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar Avance" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
           update="form" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
@@ -151,7 +151,7 @@
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
-        width="300" message="Cerrar sesion?" header="Confirmar" severity="warn">
+        width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
           oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
