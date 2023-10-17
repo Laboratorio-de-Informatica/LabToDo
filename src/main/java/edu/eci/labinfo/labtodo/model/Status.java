@@ -6,10 +6,10 @@ package edu.eci.labinfo.labtodo.model;
  */
 public enum Status {
 
-    INPROCESS("En Proceso"),
-    FINISH("Finalizada"),
     PENDING("Por Hacer"),
-    REVIEW("Revisión");
+    INPROCESS("En Proceso"),
+    REVIEW("En Revisión"),
+    FINISH("Finalizada");
 
     private String value;
 
@@ -38,5 +38,9 @@ public enum Status {
             }
         }
         return response;
+    }
+
+    public Status next() {
+        return Status.values()[ordinal() + 1];
     }
 }

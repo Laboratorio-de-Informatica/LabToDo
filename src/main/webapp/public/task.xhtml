@@ -55,7 +55,7 @@
           </li>
         </ul>
       </nav>
-      <div class="details-task">
+      <div class="task-crud">
         <h:form id="form">
           <p:growl id="growl" showDetail="true" />
           <p:toolbar styleClass="mi-toolbar">
@@ -66,8 +66,9 @@
               <p:commandButton value="Comentar" icon="pi pi-comments" styleClass="button ui-button-help  rounded-button mr-2"
                 actionListener="#{taskBean.openComment}" update=":dialogs:manage-comment-content" oncomplete="PF('manageCommentDialog').show()" >
               </p:commandButton>
-              <p:commandButton value="Completar" icon="pi pi-send" styleClass="button ui-button-success  rounded-button"
-                oncomplete="PF('completeTaskDialog').show()">
+              <p:commandButton id="task-button" value="#{taskBean.getMessageToTaskButton(taskBean.currentTask)}" icon="pi pi-send" 
+                rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, taskBean.currentTask)}"
+                styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()" update="@this">
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
@@ -81,8 +82,9 @@
               <p:outputLabel value="Asignado a: #{taskBean.currentTask.getAllUsers()}" />
             </p:panelGrid>
             <p:divider />
-            <p:dataTable id="comments-list" var="comment"  value="#{taskBean.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true" rows="10" paginatorPosition="bottom"
-            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+            <p:dataTable id="comments-list" var="comment"  value="#{taskBean.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true"
+              rows="5" paginatorPosition="bottom"
+              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
               <f:facet name="header">
                 <div class="comments-list-header">
                   <span style="font-weight: bold">Comentarios</span>
@@ -139,11 +141,11 @@
               class="ui-button-secondary" type="button" />
         </f:facet>
       </p:dialog>
-       <!-- Dialogo para completar tarea -->
+       <!-- Dialogo para iniciar/revisar/completar tarea -->
       <p:confirmDialog widgetVar="completeTaskDialog" showEffect="fade" width="300"
-       message="Completar tarea?" header="Confirmar" severity="warn">
+       message="#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
-          update=":form:details-panel" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
+          update="form" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
           onclick="PF('completeTaskDialog').hide()" />
       </p:confirmDialog>

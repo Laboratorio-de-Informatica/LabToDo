@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import edu.eci.labinfo.labtodo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,9 +130,12 @@ public class TaskBean {
         String message = "";
         if (this.currentTask.getTaskId() == null) {
             List<User> selectedUsersToTask = new ArrayList<User>();
-            for (String fullName : selectedUsers) {
-                User user = userService.getUserByFullName(fullName);
-                selectedUsersToTask.add(user);
+            if (selectedUsers != null) {
+                for (String fullName : selectedUsers) {
+                    User user = userService.getUserByFullName(fullName);
+                    selectedUsersToTask.add(user);
+                }
+                selectedUsers.clear();
             }
             this.currentTask.setUsers(selectedUsersToTask);
             taskService.addTask(currentTask);
@@ -143,7 +147,6 @@ public class TaskBean {
                 message = "Error al actualizar";
             }
         }
-        selectedUsers.clear();
         facesContextWrapper.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
         primeFacesWrapper.current().ajax().update("form:growl");
@@ -153,13 +156,14 @@ public class TaskBean {
      * Metodo que avisa al usuario que la tarea ha sido completada.
      */
     public void completedMessage() {
-        String summary = Status.FINISH.getValue();
         if (this.currentTask != null) {
-            this.currentTask.setStatus(summary);
+            Status state = Status.findByValue(this.currentTask.getStatus());
+            this.currentTask.setStatus(state.next().getValue());
             taskService.updateTask(this.currentTask);
+            String summary = "Tarea " + state.next().getValue();
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab");
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:task-button");
         }
     }
 
@@ -212,6 +216,35 @@ public class TaskBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Comentario agregado"));
         primeFacesWrapper.current().executeScript("PF('manageCommentDialog').hide()");
         primeFacesWrapper.current().ajax().update("form:messages", "form:comments-list");
+    }
+
+    public String getMessageToTaskButton(Task task) {
+        String message = "";
+        if (task != null) {
+            if (task.getStatus().equals(Status.PENDING.getValue())) {
+                message = "Iniciar";
+            } else if (task.getStatus().equals(Status.INPROCESS.getValue())) {
+                message = "A revisión";
+            } else {
+                message = "Completar";
+            }
+        }
+        return message;
+    }
+
+    public Boolean getRenderedToTaskButton(String userName, Task task) {
+        Boolean rendered = true;
+        User user = userService.getUserByUsername(userName);
+        if (task != null) {
+            if (task.getStatus().equals(Status.FINISH.getValue())) {
+                rendered = false;
+            }
+            if (task.getStatus().equals(Status.REVIEW.getValue())
+                    && user.getUserRole().equals(Role.MONITOR.getValue())) {
+                rendered = false;
+            }
+        }
+        return rendered;
     }
 
 }
