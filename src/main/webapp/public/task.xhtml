@@ -115,12 +115,13 @@
             <div class="field">
               <p:outputPanel id="user-task-selection">
                 <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor' and loginBean.isAdmin(loginBean.userName)}">
-                  <p:outputLabel for="multiple">Usuarios</p:outputLabel>
+                  <p:outputLabel for="multiple">Monitor(es) a asignar</p:outputLabel>
                   <p:selectCheckboxMenu id="multiple"
                                       filter="true" filterMatchMode="contains"
                                       label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
                                       scrollHeight="250"
-                                      value="#{taskBean.selectedUsers}">
+                                      value="#{taskBean.selectedUsers}"
+                                      style="margin-top: 10px;">
                       <f:selectItems value="#{loginBean.userNames}" />
                   </p:selectCheckboxMenu>
                 </p:outputPanel>
