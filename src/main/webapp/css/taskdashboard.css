@@ -95,6 +95,7 @@ body .ui-button-success {
 .task-crud {
     width: 100%;
     background: linear-gradient(to bottom right, #7dcc7f, #3dcc63, #2b9440);
+    overflow: auto;
 }
 
 #form {
