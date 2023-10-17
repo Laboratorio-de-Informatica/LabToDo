@@ -13,6 +13,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContextWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.Role;
@@ -168,6 +169,7 @@ public class LoginBean {
      * @return True si el inicio de sesión es exitoso, de lo contrario False
      */
     public Boolean login() {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // Verificar que se ingresó un nombre de usuario y una contraseña
         if (password == null || userName == null) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
@@ -179,7 +181,7 @@ public class LoginBean {
         User userToLogin = userService.getUserByUsername(userName);
         // Si el usuario no existe o la contraseña es incorrecta, mostrar un mensaje de
         // error y salir temprano
-        if (userToLogin == null || !password.equals(userToLogin.getUserPassword())) {
+        if (userToLogin == null || !passwordEncoder.matches(password, userToLogin.getUserPassword())) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña es incorrecta.", ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);

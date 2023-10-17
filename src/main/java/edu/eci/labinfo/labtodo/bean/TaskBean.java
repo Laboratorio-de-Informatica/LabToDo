@@ -41,7 +41,7 @@ public class TaskBean {
 
     private List<Task> tasks;
     private List<Task> tasksLab;
-    private List<String> selectedUsers;
+    private List<String> selectedUsers = new ArrayList<>();
     private List<Task> filteredTasks;
     private Task currentTask;
     private Comment comment;
@@ -104,6 +104,7 @@ public class TaskBean {
      * Metodo que crea una nueva tarea.
      */
     public void openNew() {
+        selectedUsers.clear();
         this.currentTask = new Task();
     }
 
@@ -122,8 +123,13 @@ public class TaskBean {
      * via the FacesContext object.
      * If the operation fails, an error message is displayed.
      */
-    public void saveTask() {
+    public void saveTask() {   
         String message = "";
+        List<User> selectedUsersToTask = new ArrayList<User>();
+        for (String fullName : selectedUsers) {
+            User user = userService.getUserByFullName(fullName);
+            selectedUsersToTask.add(user);
+        }    
         if (this.currentTask.getTaskId() == null) {
             List<User> selectedUsersToTask = new ArrayList<User>();
             if (selectedUsers != null) {
@@ -137,6 +143,7 @@ public class TaskBean {
             taskService.addTask(currentTask);
             message = "Tarea creada con éxito";
         } else {
+            this.currentTask.setUsers(selectedUsersToTask);
             if (taskService.updateTask(currentTask) != null) {
                 message = "Tarea actualizada con éxito";
             } else {
@@ -163,7 +170,8 @@ public class TaskBean {
             String summary = "Tarea " + state.next().getValue();
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
-            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:task-button");
+            primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:tabViewMVS", "form:task-button");
+
         }
     }
 
@@ -218,6 +226,10 @@ public class TaskBean {
         primeFacesWrapper.current().ajax().update("form:messages", "form:comments-list");
     }
 
+    public void loadUsers(){
+        selectedUsers.clear();
+        currentTask.getUsers().forEach(user -> selectedUsers.add(user.getFullName()));
+    }
     public String getMessageToTaskButton(Task task) {
         String message = "";
         if (task != null) {
