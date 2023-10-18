@@ -68,7 +68,7 @@
               </p:commandButton>
               <p:commandButton id="task-button" value="#{taskBean.getMessageToTaskButton(taskBean.currentTask)}" icon="pi pi-send" 
                 rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, taskBean.currentTask)}"
-                styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()" update="@this">
+                styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()" update="@this :dialogs:completeTaskDialog">
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
@@ -157,7 +157,7 @@
         </f:facet>
       </p:dialog>
        <!-- Dialogo para iniciar/revisar/completar tarea -->
-      <p:confirmDialog widgetVar="completeTaskDialog" showEffect="fade" width="300"
+      <p:confirmDialog id="completeTaskDialog" widgetVar="completeTaskDialog" showEffect="fade" width="300"
        message="¿#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar Avance" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
           update="form" process="@this" oncomplete="PF('completeTaskDialog').hide()" />

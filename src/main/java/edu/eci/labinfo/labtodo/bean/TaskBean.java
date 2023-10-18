@@ -131,12 +131,7 @@ public class TaskBean {
             selectedUsersToTask.add(user);
         }    
         if (this.currentTask.getTaskId() == null) {
-            List<User> selectedUsersToTask = new ArrayList<User>();
             if (selectedUsers != null) {
-                for (String fullName : selectedUsers) {
-                    User user = userService.getUserByFullName(fullName);
-                    selectedUsersToTask.add(user);
-                }
                 selectedUsers.clear();
             }
             this.currentTask.setUsers(selectedUsersToTask);
