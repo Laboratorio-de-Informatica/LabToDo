@@ -146,7 +146,7 @@
             </div>
             <div class="field">
               <p:outputLabel for="description">Descripción</p:outputLabel>
-              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" />
+              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}"  maxlength="255"/>
             </div>
             <div class="field">
               <p:outputLabel for="typeTask">Tipo de Tarea</p:outputLabel>
