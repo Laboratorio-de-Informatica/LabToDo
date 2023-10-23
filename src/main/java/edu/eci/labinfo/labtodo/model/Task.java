@@ -30,6 +30,7 @@ public class Task {
     private Long taskId;
     private String title;
     private String status;
+    @Column(length = 700)
     private String description;
     private String typeTask;
     @Column(name = "creationDate")

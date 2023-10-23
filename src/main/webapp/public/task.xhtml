@@ -145,7 +145,7 @@
         <p:outputPanel id="manage-comment-content" class="ui-fluid">
           <div class="field">
             <p:outputLabel for="commentary">Comentario</p:outputLabel>
-            <p:inputTextarea id="commentary" required="true" value="#{taskBean.commentary}" />
+            <p:inputTextarea id="commentary" required="true" value="#{taskBean.commentary}" maxlength="500"/>
             <p style="color:red;">Una vez comentado, no puedes cambiar el comentario.</p>
           </div>
         </p:outputPanel>
