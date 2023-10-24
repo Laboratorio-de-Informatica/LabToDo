@@ -69,6 +69,12 @@
                 oncomplete="PF('managetaskDialog').show()" styleClass="rounded-button" >
                 <p:resetInput target=":dialogs:manage-task-content" />
               </p:commandButton>
+              <!-- Botón Nuevo Periodo Academico-->
+              <p:commandButton value="Crear Periodo Academico" icon="pi pi-plus"
+                actionListener="#{taskBean.openNewYear}" update=":dialogs:manage-task-content"
+                oncomplete="PF('semesterDialog').show()" styleClass="rounded-button" >
+                <p:resetInput target=":dialogs:manage-task-content" />
+              </p:commandButton>
               <!-- Botón Completar Tarea -->
               <p:commandButton id="complete-task-button" value="#{adminBean.updateButtonMessage}"
                 icon="pi pi-send" oncomplete="PF('stateTaskDialog').show()" process="@this" class="ui-button"

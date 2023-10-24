@@ -41,9 +41,11 @@ public class TaskBean {
 
     private List<Task> tasks;
     private List<Task> tasksLab;
+    private List<Semester> semesters;
     private List<String> selectedUsers = new ArrayList<>();
     private List<Task> filteredTasks;
     private Task currentTask;
+    private Semester currenSemester;
     private Comment comment;
     private String commentary;
     private String status;
@@ -106,6 +108,11 @@ public class TaskBean {
     public void openNew() {
         selectedUsers.clear();
         this.currentTask = new Task();
+    }
+
+    public void openNewYear(){
+        selectedUsers.clear();
+        this.currenSemester = new Semester();
     }
 
     /**
