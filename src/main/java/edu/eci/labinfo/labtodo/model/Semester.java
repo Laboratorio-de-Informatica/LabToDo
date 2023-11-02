@@ -1,12 +1,17 @@
 package edu.eci.labinfo.labtodo.model;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
 
@@ -16,19 +21,22 @@ public class Semester {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long periodId;
 
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "semester")
+    private List<Task> tasks;
+
     @Column(name = "name")
     private String semesterName;
 
     @Column(name = "startDate")
     private Date startDate;
-    
+
     @Column(name = "endDate")
     private Date endDate;
 
     public Long getPeriodId() {
         return periodId;
     }
-    
+
     @Override
     public String toString() {
         return "Semester [periodId=" + periodId + ", startDate=" + startDate + ", endDate=" + endDate + "]";
@@ -90,5 +98,13 @@ public class Semester {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
+    public String getSemesterName() {
+        return semesterName;
+    }
+
+    public void setSemesterName(String semesterName) {
+        this.semesterName = semesterName;
+    }
+
 }
