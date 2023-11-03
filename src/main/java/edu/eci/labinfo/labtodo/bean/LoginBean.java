@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import edu.eci.labinfo.labtodo.model.AccountType;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
@@ -146,6 +147,7 @@ public class LoginBean {
                 return false;
             }
             this.newUser.setUserRole(Role.MONITOR.getValue());
+            this.newUser.setAccountType(AccountType.SIN_VERIFICAR.getValue());
             userService.addUser(this.newUser);
 
             facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage("Cuenta creada exitosamente"));
@@ -182,6 +184,13 @@ public class LoginBean {
         if (userToLogin == null || !passwordEncoder.matches(password, userToLogin.getUserPassword())) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña es incorrecta.", ERROR));
+            primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
+            return false;
+        }
+        // Si el usuario no ha verificado su cuenta, mostrar un mensaje de error y salir temprano
+        if (userToLogin.getAccountType().equals(AccountType.SIN_VERIFICAR.getValue())) {
+            facesContextWrapper.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta no ha sido verificada.", ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
