@@ -7,3 +7,8 @@
     margin-top: 1rem !important;
     box-shadow: 0 0 17px 10px rgba(255, 255, 255, 0.3);
 }
+
+.ui-datatable .table-comment {
+    width:  111px;
+    word-wrap: break-word !important;
+}

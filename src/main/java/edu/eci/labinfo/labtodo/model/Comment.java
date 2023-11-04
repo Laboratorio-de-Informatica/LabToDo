@@ -22,6 +22,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
+    @Column(length = 500)
     private String description;
     @Column(name = "creationDate")
     private LocalDate creationDate;

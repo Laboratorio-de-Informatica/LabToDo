@@ -87,8 +87,10 @@
                   <article class="task-item">
                     <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
-                    <h4 class="mb-1">#{task.title}</h4>
-                    <p>#{task.description}</p>
+                    <div class="task-details">
+                      <h4 class="mb-1">#{task.title}</h4>
+                      <p>#{task.description}</p>
+                    </div>
                     <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
@@ -115,8 +117,10 @@
                   <article class="task-item">
                     <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
-                    <h4 class="mb-1">#{task.title}</h4>
-                    <p>#{task.description}</p>
+                    <div class="task-details">
+                      <h4 class="mb-1">#{task.title}</h4>
+                      <p>#{task.description}</p>
+                    </div>
                     <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
@@ -144,7 +148,7 @@
             </div>
             <div class="field">
               <p:outputLabel for="description">Descripción</p:outputLabel>
-              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" />
+              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" maxlength="650"/>
             </div>
             <div class="field">
               <p:outputLabel for="typeTask">Tipo de Tarea</p:outputLabel>
