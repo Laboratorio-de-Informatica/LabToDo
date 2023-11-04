@@ -93,6 +93,13 @@ public class SemesterBean {
     }
 
     public void saveSemester() {
+        // verificar que la fecha de inicio sea menor a la fecha de fin
+        if (startDate.isAfter(endDate)) {
+            facesContextWrapper.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "La fecha de inicio debe ser menor a la fecha de fin", null));
+            primeFacesWrapper.current().ajax().update("form:growl");
+            return;
+        }
         String message = "";
         currentSemester.setSemesterName(semesterName);
         currentSemester.setStartDate(startDate);
