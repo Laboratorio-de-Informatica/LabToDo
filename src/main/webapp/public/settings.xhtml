@@ -66,6 +66,12 @@
                 styleClass="rounded-button ui-button-success" disabled="#{!adminBean.hasSelectedUsers()}">
               </p:commandButton>
             </p:toolbarGroup>
+            <p:toolbarGroup>
+              <p:commandButton id="account-users-button" value="#{adminBean.accountButtonMessage}"
+                icon="pi pi-id-card" oncomplete="PF('verifyDialog').show()" process="@this"
+                styleClass="rounded-button ui-button-help" disabled="#{!adminBean.hasSelectedUsers()}">
+              </p:commandButton>
+            </p:toolbarGroup>
           </p:toolbar>
   
           <p:dataTable id="users-list" reflow="true" widgetVar="tableUsers" var="user" value="#{loginBean.users}" styleClass="users-list"
@@ -77,11 +83,11 @@
               </div>
             </f:facet>
   
-            <p:ajax event="rowSelect" update=":form:edit-users-button" />
-            <p:ajax event="rowUnselect" update=":form:edit-users-button" />
-            <p:ajax event="rowSelectCheckbox" update=":form:edit-users-button" />
-            <p:ajax event="rowUnselectCheckbox" update=":form:edit-users-button" />
-            <p:ajax event="toggleSelect" update=":form:edit-users-button" />
+            <p:ajax event="rowSelect" update=":form:edit-users-button :form:account-users-button" />
+            <p:ajax event="rowUnselect" update=":form:edit-users-button :form:account-users-button" />
+            <p:ajax event="rowSelectCheckbox" update=":form:edit-users-button :form:account-users-button" />
+            <p:ajax event="rowUnselectCheckbox" update=":form:edit-users-button :form:account-users-button" />
+            <p:ajax event="toggleSelect" update=":form:edit-users-button :form:account-users-button" />
   
             <p:column selectionMode="multiple" exportable="false" styleClass="user-selection"/>
             <p:column headerText="Nombre Completo" filterBy="#{user.fullName}" filterMatchMode="contains">
@@ -89,6 +95,9 @@
             </p:column>
             <p:column headerText="Rol">
               <h:outputText value="#{user.userRole}"/>
+            </p:column>
+            <p:column headerText="Estado">
+              <h:outputText value="#{user.accountType}"/>
             </p:column>
           </p:dataTable>
         </h:form>
@@ -109,6 +118,21 @@
         actionListener="#{adminBean.modifyUserRole()}" update="update-role-content"/>
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
             onclick="PF('editDialog').hide()" />
+      </p:confirmDialog>
+      <!-- Dialogo para verificacion de usuarios  -->
+      <p:confirmDialog id="edit-account-content" widgetVar="verifyDialog" showEffect="fade" width="350"
+        header="Estado de cuenta de usuario"  message="Seleccione el nuevo estado de cuenta para los usuarios seleccionados" severity="info">
+        <p:outputPanel id="update-account-content">
+          <p:selectOneMenu id="accountType" value="#{adminBean.newAccountType}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
+            <f:selectItem itemLabel="Estado" itemValue="" noSelectionOption="true"/>
+            <f:selectItem itemLabel="Activo" itemValue="Activo"/>
+            <f:selectItem itemLabel="Inactivo" itemValue="Inactivo"/>
+          </p:selectOneMenu>
+        </p:outputPanel>
+        <p:commandButton value="Si" icon="pi pi-check" process="update-account-content @this" oncomplete="PF('verifyDialog').hide()"
+        actionListener="#{adminBean.modifyUserAccountType()}" update="update-account-content"/>
+        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+            onclick="PF('verifyDialog').hide()" />
       </p:confirmDialog>
       <!-- Dialogo para cerrar sesion -->
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"

@@ -10,6 +10,7 @@ import javax.faces.context.FacesContextWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import edu.eci.labinfo.labtodo.model.AccountType;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.Status;
 import edu.eci.labinfo.labtodo.model.Task;
@@ -18,10 +19,14 @@ import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
+import lombok.Getter;
+import lombok.Setter;
 
 @Component
 @ManagedBean(name = "adminBean")
 @SessionScoped
+@Getter
+@Setter
 public class AdminBean {
 
     @Autowired
@@ -40,38 +45,7 @@ public class AdminBean {
     private List<User> selectedUsers;
     private String newState = "";
     private String newRole = "";
-
-    public List<Task> getSelectedTasks() {
-        return selectedTasks;
-    }
-
-    public void setSelectedTasks(List<Task> selectedTasks) {
-        this.selectedTasks = selectedTasks;
-    }
-
-    public List<User> getSelectedUsers() {
-        return selectedUsers;
-    }
-
-    public void setSelectedUsers(List<User> selectedUsers) {
-        this.selectedUsers = selectedUsers;
-    }
-
-    public String getNewState() {
-        return newState;
-    }
-
-    public void setNewState(String newState) {
-        this.newState = newState;
-    }
-
-    public String getNewRole() {
-        return newRole;
-    }
-
-    public void setNewRole(String newRole) {
-        this.newRole = newRole;
-    }
+    private String newAccountType = "";
 
     /**
      * Metodo que cambia el estado de las tareas seleccionadas.
@@ -134,6 +108,30 @@ public class AdminBean {
         return true;
     }
 
+    public Boolean modifyUserAccountType() {
+        if (this.newAccountType == null || this.newAccountType.isEmpty()) {
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Por favor, selecciona un rol de usuario.", "Error"));
+            primeFacesWrapper.current().ajax().update("form:messages");
+            return false;
+        }
+        try {
+            for (User user : selectedUsers) {
+                user.setAccountType(AccountType.findByValue(newAccountType).getValue());
+                userService.updateUser(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            int size = this.selectedUsers.size();
+            String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
+            selectedUsers.clear();
+            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
+            primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", "form:account-users-button");
+        }
+        return true;
+    }
+
     /**
      * Metodo que retorna el mensaje que se muestra en el boton de actualizar
      * para cambiar el estado de las tareas seleccionadas.
@@ -157,6 +155,20 @@ public class AdminBean {
      */
     public String getRoleButtonMessage() {
         String message = "Cambiar rol de";
+        if (hasSelectedUsers()) {
+            int size = this.selectedUsers.size();
+            return size > 1 ? message + " " + size + " usuarios seleccionados" : message + " 1 usuario seleccionado";
+        }
+        return message;
+    }
+
+    /**
+     * Metodo que retorna el mensaje que se muestra en el boton de verificacion
+     * para verificar las cuentas de los usuarios seleccionados.
+     * @return mensaje que se muestra en el boton de verificacion.
+     */
+    public String getaccountButtonMessage() {
+        String message = "Estado de cuenta de ";
         if (hasSelectedUsers()) {
             int size = this.selectedUsers.size();
             return size > 1 ? message + " " + size + " usuarios seleccionados" : message + " 1 usuario seleccionado";
