@@ -1,10 +1,8 @@
 package edu.eci.labinfo.labtodo.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,25 +11,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
-
 @Entity
 public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long periodId;
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "semester")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "semester")
     private List<Task> tasks;
 
     @Column(name = "name")
     private String semesterName;
 
     @Column(name = "startDate")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "endDate")
-    private Date endDate;
+    private LocalDate endDate;
 
     public Long getPeriodId() {
         return periodId;
@@ -83,19 +79,19 @@ public class Semester {
         this.periodId = periodId;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

@@ -8,7 +8,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import edu.eci.labinfo.labtodo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.service.CommentService;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
+import edu.eci.labinfo.labtodo.service.SemesterService;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
 
@@ -34,6 +34,9 @@ public class TaskBean {
     CommentService commentService;
 
     @Autowired
+    SemesterService semesterService;
+
+    @Autowired
     private static FacesContextWrapper facesContextWrapper;
 
     @Autowired
@@ -45,7 +48,6 @@ public class TaskBean {
     private List<String> selectedUsers = new ArrayList<>();
     private List<Task> filteredTasks;
     private Task currentTask;
-    private Semester currenSemester;
     private Comment comment;
     private String commentary;
     private String status;
@@ -110,11 +112,6 @@ public class TaskBean {
         this.currentTask = new Task();
     }
 
-    public void openNewYear(){
-        selectedUsers.clear();
-        this.currenSemester = new Semester();
-    }
-
     /**
      * Metodo que crea un nuevo comentario.
      */
@@ -141,7 +138,9 @@ public class TaskBean {
             if (selectedUsers != null) {
                 selectedUsers.clear();
             }
+            Semester currentSemester = semesterService.getCurrentSemester();
             this.currentTask.setUsers(selectedUsersToTask);
+            this.currentTask.setSemester(currentSemester);
             taskService.addTask(currentTask);
             message = "Tarea creada con éxito";
         } else {
@@ -187,7 +186,6 @@ public class TaskBean {
      * @param userName nombre del usuario que se va a cargar sus tareas.
      */
     public void onDatabaseLoaded(String userName) {
-        
         User user = userService.getUserByUsername(userName);
         this.tasks = taskService.getTasksByUserAndStatus(user, status);
         this.tasksLab = taskService.getTaskByTypeAndStatus("Laboratorio", status);
@@ -232,6 +230,7 @@ public class TaskBean {
         selectedUsers.clear();
         currentTask.getUsers().forEach(user -> selectedUsers.add(user.getFullName()));
     }
+
     public String getMessageToTaskButton(Task task) {
         String message = "";
         if (task != null) {
@@ -259,6 +258,10 @@ public class TaskBean {
             }
         }
         return rendered;
+    }
+
+    public Boolean isThereASemester() {
+        return semesterService.getCurrentSemester() != null;
     }
 
 }

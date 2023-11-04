@@ -61,7 +61,7 @@
             <!-- Botón Nueva Tarea-->
             <p:commandButton value="Crear Tarea" icon="pi pi-plus" actionListener="#{taskBean.openNew}"
               update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()"
-              styleClass="rounded-button mr-2">
+              styleClass="rounded-button mr-2" disabled="#{!taskBean.isThereASemester()}">
               <p:resetInput target=":dialogs:manage-task-content" />
             </p:commandButton>
             <!-- Botón Nuevo Semestre-->

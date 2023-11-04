@@ -1,6 +1,6 @@
 package edu.eci.labinfo.labtodo.bean;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +34,9 @@ public class SemesterBean {
 
     private List<Semester> semesters;
     private String semesterName;
-    private Date startDate;
+    private LocalDate startDate;
     private Semester currentSemester;
-    private Date endDate;
+    private LocalDate endDate;
     private List<String> selectedUsers = new ArrayList<>();
 
     public Semester getCurrentSemester() {
@@ -47,19 +47,19 @@ public class SemesterBean {
         this.currentSemester = currentSemester;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

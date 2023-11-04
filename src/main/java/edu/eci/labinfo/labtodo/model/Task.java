@@ -203,4 +203,14 @@ public class Task {
         comments.add(comment);
     }
 
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    
+
 }
