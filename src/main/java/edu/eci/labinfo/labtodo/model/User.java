@@ -10,10 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Esta es una entidad que representa a un usuario en la base de datos.
  */
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 public class User {
 
     @Id
@@ -22,6 +29,7 @@ public class User {
     private String fullName;
     private String userName;
     private String userRole;
+    private String accountType;
     private String userPassword;
 
     @ManyToMany(mappedBy = "users")
@@ -30,67 +38,19 @@ public class User {
     @OneToMany(mappedBy = "creatorUser")
     List<Comment> comments = new ArrayList<>();
 
-    public User(String fullName, String userName, String password, Role role) {
+    public User() {}
+
+    public User(String fullName, String userName, String password, Role role, AccountType accountType) {
         this.fullName = fullName;
         this.userName = userName;
         this.userPassword = password;
         this.userRole = role.getValue();
+        this.accountType = accountType.getValue();
         this.tasks = new ArrayList<>();
-    }
-
-    public User() {
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
     }
 
     public void addTask(Task taskToAdd) {
         tasks.add(taskToAdd);
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setIdeas(List<Task> task) {
-        this.tasks = task;
     }
 
     @Override

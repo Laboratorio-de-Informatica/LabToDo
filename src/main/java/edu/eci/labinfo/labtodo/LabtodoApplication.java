@@ -12,6 +12,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 
+import edu.eci.labinfo.labtodo.model.AccountType;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.CommentService;
@@ -43,9 +44,9 @@ public class LabtodoApplication {
             myUserService.deleteAllUsers();
 
             myUserService
-                    .addUser(new User("Andrés Camilo Oñate", "andres.onate", "mypasswd", Role.MONITOR));
+                    .addUser(new User("Andrés Camilo Oñate", "andres.onate", "mypasswd", Role.MONITOR, AccountType.SIN_VERIFICAR));
             myUserService
-                    .addUser(new User("Aurora León", "labinfo", "myadminpasswd", Role.ADMINISTRADOR));
+                    .addUser(new User("Aurora León", "labinfo", "myadminpasswd", Role.ADMINISTRADOR, AccountType.ACTIVO));
         };
     }
 

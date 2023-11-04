@@ -18,10 +18,14 @@ import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.SemesterService;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
+import lombok.Getter;
+import lombok.Setter;
 
 @ManagedBean
 @Component
 @ApplicationScoped
+@Getter
+@Setter
 public class TaskBean {
 
     @Autowired
@@ -51,58 +55,6 @@ public class TaskBean {
     private Comment comment;
     private String commentary;
     private String status;
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public List<Task> getFilteredTasks() {
-        return filteredTasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public void setFilteredTasks(List<Task> filteredTasks) {
-        this.filteredTasks = filteredTasks;
-    }
-
-    public Task getCurrentTask() {
-        return currentTask;
-    }
-
-    public void setCurrentTask(Task currentTask) {
-        this.currentTask = currentTask;
-    }
-
-    public String getCommentary() {
-        return commentary;
-    }
-
-    public void setCommentary(String commentary) {
-        this.commentary = commentary;
-    }
-
-    public List<String> getSelectedUsers() {
-        return selectedUsers;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setSelectedUsers(List<String> selectedUsers) {
-        this.selectedUsers = selectedUsers;
-    }
-
-    public List<Task> getTasksLab() {return tasksLab; }
-
-    public void setTasksLab(List<Task> taskLab) { this.tasksLab = taskLab; }
 
     /**
      * Metodo que crea una nueva tarea.

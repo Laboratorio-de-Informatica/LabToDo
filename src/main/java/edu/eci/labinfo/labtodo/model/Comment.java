@@ -13,15 +13,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Esta es una entidad que representa a un comentario en la base de datos.
  */
 @Entity
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
+    @Column(length = 500)
     private String description;
     @Column(name = "creationDate")
     private LocalDate creationDate;
@@ -44,50 +54,10 @@ public class Comment {
         this.task = task;
     }
 
-    public Long getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
     public String getDateText() {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
                 .withLocale(new Locale("es", "ES"));
         return creationDate.format(formatter);
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public User getCreatorUser() {
-        return creatorUser;
-    }
-
-    public void setCreatorUser(User creatorUser) {
-        this.creatorUser = creatorUser;
     }
 
 }

@@ -82,10 +82,12 @@
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                   <article class="task-item">
                     <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
-                    <span class="task-type task-type-#{task.typeTask}">#{task.typeTask}</span>
-                    <h4 class="mb-1">#{task.title}</h4>
-                    <p>#{task.description}</p>
-                    <p class="task-status">#{task.status}</p>
+                    <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
+                    <div class="task-details">
+                      <h4 class="mb-1">#{task.title}</h4>
+                      <p>#{task.description}</p>
+                    </div>
+                    <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
                 <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send"
@@ -111,10 +113,12 @@
                   <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
                   <article class="task-item">
                     <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
-                    <span class="task-type task-type-#{task.typeTask}">#{task.typeTask}</span>
-                    <h4 class="mb-1">#{task.title}</h4>
-                    <p>#{task.description}</p>
-                    <p class="task-status">#{task.status}</p>
+                    <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
+                    <div class="task-details">
+                      <h4 class="mb-1">#{task.title}</h4>
+                      <p>#{task.description}</p>
+                    </div>
+                    <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
                 <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send"
