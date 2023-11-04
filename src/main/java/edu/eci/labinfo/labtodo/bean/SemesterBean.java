@@ -1,6 +1,5 @@
 package edu.eci.labinfo.labtodo.bean;
 
-import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.faces.context.FacesContextWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import edu.eci.labinfo.labtodo.data.SemesterRepository;
 import edu.eci.labinfo.labtodo.model.Semester;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.SemesterService;

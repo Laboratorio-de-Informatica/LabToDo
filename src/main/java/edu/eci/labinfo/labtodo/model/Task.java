@@ -99,14 +99,5 @@ public class Task {
         return "Task [id=" + taskId + ", title=" + title + ", status=" + status + ", description=" + description
                 + ", creationDate=" + creationDate + ", users=" + users + "]";
     }
-
-    public Semester getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
     
 }

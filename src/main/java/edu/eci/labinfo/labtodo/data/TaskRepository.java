@@ -11,8 +11,8 @@ import edu.eci.labinfo.labtodo.model.User;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
+    
     boolean existsById(Long taskId);
-
     List<Task> findByUsersUserId(Long userId);
     List<Task> findByTypeTask(String typeTask);
     List<Task> findByStatus(String status);

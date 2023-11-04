@@ -11,6 +11,7 @@ import edu.eci.labinfo.labtodo.model.Semester;
 
 @Repository
 public interface SemesterRepository extends JpaRepository<Semester, Long> {
+    
     boolean existsById(Long semesterId);
 
     @Query("SELECT s FROM Semester s WHERE s.startDate <= :date AND s.endDate >= :date")

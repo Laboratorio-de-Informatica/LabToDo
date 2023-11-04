@@ -9,8 +9,8 @@ import edu.eci.labinfo.labtodo.model.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    boolean existsById(Long commentId);
 
+    boolean existsById(Long commentId);
     List<Comment> findByTaskTaskId(Long taskId);
 
 }
