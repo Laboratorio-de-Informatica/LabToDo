@@ -66,7 +66,13 @@
               <!-- Botón Nueva Tarea-->
               <p:commandButton value="Crear Tarea" icon="pi pi-plus"
                 actionListener="#{taskBean.openNew}" update=":dialogs:manage-task-content"
-                oncomplete="PF('managetaskDialog').show()" styleClass="rounded-button" >
+                oncomplete="PF('managetaskDialog').show()" styleClass="rounded-button" disabled="#{!taskBean.isThereASemester()}">
+                <p:resetInput target=":dialogs:manage-task-content" />
+              </p:commandButton>
+              <!-- Botón Nuevo Periodo Academico-->
+              <p:commandButton value="Crear Periodo Academico" icon="pi pi-calendar-plus" style="margin: 10px;"
+                actionListener="#{semesterBean.openNewYear}" update=":dialogs:manage-task-content"
+                oncomplete="PF('semesterDialog').show()" styleClass="rounded-button ui-button-help" >
                 <p:resetInput target=":dialogs:manage-task-content" />
               </p:commandButton>
               <!-- Botón Completar Tarea -->
@@ -165,6 +171,30 @@
             class="ui-button-secondary" icon="pi pi-times" type="button" />
         </f:facet>
         <p:messages for="somekey" />
+      </p:dialog>
+      <!-- Dialogo para Añadir Periodo Academico-->
+      <p:dialog header="Crear nuevo semestre Academico" showEffect="fade" modal="true" widgetVar="semesterDialog"
+      responsive="true" resizable="false" draggable="false">
+        <p:outputPanel id="semester-dialog" class="ui-fluid dialog-manage-task">
+          <div class="field">
+            <p:outputLabel for="semesterName">Nombre del Semestre o Periodo</p:outputLabel>
+            <p:inputText id="semesterName" required="true" value="#{semesterBean.semesterName}" />
+          </div>
+          <div class="field">
+            <p:outputLabel for="startDate">Fecha de Inicio</p:outputLabel>
+            <p:calendar  id="startDate" required="true" value="#{semesterBean.startDate}" />
+          </div>
+          <div class="field">
+            <p:outputLabel for="endDate">Fecha de Finalización</p:outputLabel>
+            <p:calendar  id="endDate" required="true" value="#{semesterBean.endDate}" />
+          </div>
+        </p:outputPanel>
+        <f:facet name="footer">
+          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{semesterBean.saveSemester}" update = "semester-dialog :form" process="semester-dialog @this" oncomplete="PF('semesterDialog').hide()"/>
+          <p:commandButton value="Cancelar" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+          onclick="PF('semesterDialog').hide()" />
+        </f:facet>
+        <p:messages for="somekey"/>
       </p:dialog>
       <!-- Dialogo para completar tarea -->
       <p:confirmDialog widgetVar="stateTaskDialog" showEffect="fade" width="350"
