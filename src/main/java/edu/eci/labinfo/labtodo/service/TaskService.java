@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.eci.labinfo.labtodo.data.TaskRepository;
+import edu.eci.labinfo.labtodo.model.Semester;
 import edu.eci.labinfo.labtodo.model.Task;
 import edu.eci.labinfo.labtodo.model.User;
 
@@ -47,6 +48,22 @@ public class TaskService {
 
     public List<Task> getTaskByType(String taskType){
         return  taskRepository.findByTypeTask(taskType);
+    }
+
+    public List<Task> getTasksByTypeAndStatusAndSemester(String typeTask, String taskStatus, Semester semester) {
+        return taskRepository.findByTypeTaskAndStatusAndSemesterPeriodId(typeTask, taskStatus, semester.getPeriodId());
+    }
+
+    public List<Task> getTaskByUserAndStatusAndSemester(User user, String taskStatus, Semester semester) {
+        return taskRepository.findByUsersUserIdAndStatusAndSemesterPeriodId(user.getUserId(), taskStatus, semester.getPeriodId());
+    }
+
+    public List<Task> getTasksBySemester(Semester semester) {
+        return taskRepository.findBySemesterPeriodId(semester.getPeriodId());
+    }
+
+    public List<Task> getTasksByTypeAndSemester(String typeTask, Semester semester) {
+        return taskRepository.findByTypeTaskAndSemesterPeriodId(typeTask, semester.getPeriodId());
     }
 
     public List<Task> getAllTask() {
