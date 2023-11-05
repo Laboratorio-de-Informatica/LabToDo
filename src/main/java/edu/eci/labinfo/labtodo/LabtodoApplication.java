@@ -16,6 +16,7 @@ import edu.eci.labinfo.labtodo.model.AccountType;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.CommentService;
+import edu.eci.labinfo.labtodo.service.SemesterService;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
 
@@ -31,6 +32,9 @@ public class LabtodoApplication {
     @Autowired
     CommentService myCommentService;
 
+    @Autowired
+    SemesterService mySemesterService;
+
     public static void main(String[] args) {
         SpringApplication.run(LabtodoApplication.class, args);
     }
@@ -42,6 +46,7 @@ public class LabtodoApplication {
             myCommentService.deleteAllComments();
             myTaskService.deleteAllTasks();
             myUserService.deleteAllUsers();
+            mySemesterService.deleteAllSemesters();
 
             myUserService
                     .addUser(new User("Andrés Camilo Oñate", "andres.onate", "mypasswd", Role.MONITOR, AccountType.SIN_VERIFICAR));

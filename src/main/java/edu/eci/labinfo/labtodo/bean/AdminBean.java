@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.AccountType;
+import edu.eci.labinfo.labtodo.model.LabToDoExeption;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.Status;
 import edu.eci.labinfo.labtodo.model.Task;
@@ -55,7 +56,7 @@ public class AdminBean {
     public Boolean modifyStateTaks() {
         if (this.newState == null || this.newState.isEmpty()) {
             facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Por favor, selecciona un estado.", "Error"));
+                    LabToDoExeption.NO_STATE_SELECTED, "Error"));
             primeFacesWrapper.current().ajax().update(":form:messages");
             return false;
         }
@@ -87,7 +88,7 @@ public class AdminBean {
     public Boolean modifyUserRole() {
         if (this.newRole == null || this.newRole.isEmpty()) {
             facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Por favor, selecciona un rol de usuario.", "Error"));
+                    LabToDoExeption.NO_ROLE_SELECTED, "Error"));
             primeFacesWrapper.current().ajax().update("form:messages");
             return false;
         }
@@ -111,7 +112,7 @@ public class AdminBean {
     public Boolean modifyUserAccountType() {
         if (this.newAccountType == null || this.newAccountType.isEmpty()) {
             facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Por favor, selecciona un rol de usuario.", "Error"));
+                    LabToDoExeption.NO_ACCOUNT_TYPE_SELECTED, "Error"));
             primeFacesWrapper.current().ajax().update("form:messages");
             return false;
         }

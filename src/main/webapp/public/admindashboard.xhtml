@@ -71,7 +71,7 @@
               </p:commandButton>
               <!-- Botón Nuevo Periodo Academico-->
               <p:commandButton value="Crear Periodo Academico" icon="pi pi-calendar-plus" style="margin: 10px;"
-                actionListener="#{semesterBean.openNewYear}" update=":dialogs:manage-task-content"
+                actionListener="#{semesterBean.openNewYear}" update=":dialogs:manage-task-content" disabled="#{taskBean.isThereASemester()}"
                 oncomplete="PF('semesterDialog').show()" styleClass="rounded-button ui-button-help" >
                 <p:resetInput target=":dialogs:manage-task-content" />
               </p:commandButton>
@@ -176,6 +176,8 @@
       <p:dialog header="Crear nuevo semestre Academico" showEffect="fade" modal="true" widgetVar="semesterDialog"
       responsive="true" resizable="false" draggable="false">
         <p:outputPanel id="semester-dialog" class="ui-fluid dialog-manage-task">
+          <p style="color: red;">Una vez cree el semeste no podrá crear otro hasta que el previo finalice,</p>
+          <p style="color: red;">verifique las fechas antes de confirmar la creación</p>
           <div class="field">
             <p:outputLabel for="semesterName">Nombre del Semestre o Periodo</p:outputLabel>
             <p:inputText id="semesterName" required="true" value="#{semesterBean.semesterName}" />

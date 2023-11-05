@@ -183,6 +183,11 @@ public class TaskBean {
         currentTask.getUsers().forEach(user -> selectedUsers.add(user.getFullName()));
     }
 
+    /**
+     * Metodo que obtiene el mensaje que se va a mostrar en el boton de la tarea
+     * @param task tarea de la cual se va a obtener el mensaje
+     * @return mensaje que se va a mostrar en el boton de la tarea
+     */
     public String getMessageToTaskButton(Task task) {
         String message = "";
         if (task != null) {
@@ -197,6 +202,12 @@ public class TaskBean {
         return message;
     }
 
+    /**
+     * Metodo activa o desactiva el boton de la tarea dependiendo del estado de la tarea
+     * @param userName nombre del usuario que esta logueado
+     * @param task tarea a renderizar el boton
+     * @return True si se renderiza el boton, de lo contrario False
+     */
     public Boolean getRenderedToTaskButton(String userName, Task task) {
         Boolean rendered = true;
         User user = userService.getUserByUsername(userName);
@@ -212,6 +223,10 @@ public class TaskBean {
         return rendered;
     }
 
+    /**
+     * Metodo que verifica si hay un semestre activo
+     * @return True si hay un semestre activo, de lo contrario False
+     */
     public Boolean isThereASemester() {
         return semesterService.getCurrentSemester() != null;
     }

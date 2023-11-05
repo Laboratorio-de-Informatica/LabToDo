@@ -15,14 +15,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.AccountType;
+import edu.eci.labinfo.labtodo.model.LabToDoExeption;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.UserService;
+import lombok.Getter;
+import lombok.Setter;
 
 @Component
 @ManagedBean(name = "loginBean")
 @SessionScoped
+@Getter
+@Setter
 public class LoginBean {
 
     private static final String LOGIN_FORM_MESSAGES = "login-form:messages";
@@ -49,44 +54,8 @@ public class LoginBean {
     public LoginBean() {
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public User getNewUser() {
-        return newUser;
-    }
-
-    public void setNewUser(User newUser) {
-        this.newUser = newUser;
-    }
-
     public List<User> getUsers() {
         return userService.getUsers();
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public List<String> getUserNames() {
@@ -142,7 +111,7 @@ public class LoginBean {
         try {
             if (userService.getUserByUsername(userName) != null) {
                 facesContextWrapper.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "La cuenta ya existe", ERROR));
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.EXISTING_USER, ERROR));
                 primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
                 return false;
             }
@@ -156,7 +125,7 @@ public class LoginBean {
 
         } catch (Exception e) {
             facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Se produjo un error al crear la cuenta", ERROR));
+                    LabToDoExeption.ERROR_CREATING_ACCOUNT, ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             e.printStackTrace();
         }
@@ -173,7 +142,7 @@ public class LoginBean {
         // Verificar que se ingresó un nombre de usuario y una contraseña
         if (password == null || userName == null) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor complete todos los campos", ERROR));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.INCOMPLETE_FIELDS, ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
@@ -183,14 +152,14 @@ public class LoginBean {
         // error y salir temprano
         if (userToLogin == null || !passwordEncoder.matches(password, userToLogin.getUserPassword())) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta o contraseña es incorrecta.", ERROR));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.CREDENTIALS_INCORRECT, ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
         // Si el usuario no ha verificado su cuenta, mostrar un mensaje de error y salir temprano
         if (userToLogin.getAccountType().equals(AccountType.SIN_VERIFICAR.getValue())) {
             facesContextWrapper.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Su cuenta no ha sido verificada.", ERROR));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.UNVERIFIED_ACCOUNT, ERROR));
             primeFacesWrapper.current().ajax().update(LOGIN_FORM_MESSAGES);
             return false;
         }
