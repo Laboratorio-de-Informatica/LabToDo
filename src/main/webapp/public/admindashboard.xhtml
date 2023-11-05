@@ -66,19 +66,21 @@
               <!-- Botón Nueva Tarea-->
               <p:commandButton value="Crear Tarea" icon="pi pi-plus"
                 actionListener="#{taskBean.openNew}" update=":dialogs:manage-task-content"
-                oncomplete="PF('managetaskDialog').show()" styleClass="rounded-button" disabled="#{!taskBean.isThereASemester()}">
-                <p:resetInput target=":dialogs:manage-task-content" />
-              </p:commandButton>
-              <!-- Botón Nuevo Periodo Academico-->
-              <p:commandButton value="Crear Periodo Academico" icon="pi pi-calendar-plus" style="margin: 10px;"
-                actionListener="#{semesterBean.openNewYear}" update=":dialogs:manage-task-content" disabled="#{taskBean.isThereASemester()}"
-                oncomplete="PF('semesterDialog').show()" styleClass="rounded-button ui-button-help" >
+                oncomplete="PF('managetaskDialog').show()" styleClass="rounded-button" disabled="#{!semesterBean.isThereASemester()}">
                 <p:resetInput target=":dialogs:manage-task-content" />
               </p:commandButton>
               <!-- Botón Completar Tarea -->
               <p:commandButton id="complete-task-button" value="#{adminBean.updateButtonMessage}"
                 icon="pi pi-send" oncomplete="PF('stateTaskDialog').show()" process="@this" class="ui-button"
                 styleClass="rounded-button ui-button-success" disabled="#{!adminBean.hasSelectedTasks()}">
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup>
+              <!-- Botón Nuevo Periodo Academico-->
+              <p:commandButton value="Crear Nuevo Periodo" icon="pi pi-calendar-plus" style="margin: 10px;"
+                actionListener="#{semesterBean.openNewYear}" update=":dialogs:manage-task-content" disabled="#{semesterBean.isThereASemester()}"
+                oncomplete="PF('semesterDialog').show()" styleClass="rounded-button ui-button-help" >
+                <p:resetInput target=":dialogs:manage-task-content" />
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
@@ -88,6 +90,14 @@
             <f:facet name="header">
               <div class="control-table-header">
                 <span>Tareas</span>
+                <div>
+                  <p:selectOneMenu value="#{taskBean.selectedSemester}">
+                    <f:selectItem itemLabel="Ver tareas por periodo" itemValue=""/>
+                    <f:selectItems value="#{semesterBean.semestersLikeItems}" />
+                    <p:ajax listener="#{taskBean.onControlQuerySemester()}" update="form:messages"/>
+                  </p:selectOneMenu>
+                  <i class="pi pi-filter"></i>
+                </div>
               </div>
             </f:facet>
 
@@ -180,15 +190,15 @@
           <p style="color: red;">verifique las fechas antes de confirmar la creación</p>
           <div class="field">
             <p:outputLabel for="semesterName">Nombre del Semestre o Periodo</p:outputLabel>
-            <p:inputText id="semesterName" required="true" value="#{semesterBean.semesterName}" />
+            <p:inputText id="semesterName" value="#{semesterBean.semesterName}" required="true"/>
           </div>
           <div class="field">
             <p:outputLabel for="startDate">Fecha de Inicio</p:outputLabel>
-            <p:calendar  id="startDate" required="true" value="#{semesterBean.startDate}" />
+            <p:calendar id="startDate" required="true" value="#{semesterBean.startDate}" />
           </div>
           <div class="field">
             <p:outputLabel for="endDate">Fecha de Finalización</p:outputLabel>
-            <p:calendar  id="endDate" required="true" value="#{semesterBean.endDate}" />
+            <p:calendar id="endDate" required="true" value="#{semesterBean.endDate}" />
           </div>
         </p:outputPanel>
         <f:facet name="footer">
