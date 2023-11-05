@@ -4,10 +4,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.ManagedBean;
+import javax.faces.bean.ManagedBean;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContextWrapper;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,8 @@ import edu.eci.labinfo.labtodo.service.SemesterService;
 import lombok.Getter;
 import lombok.Setter;
 
-@ManagedBean
 @Component
+@ManagedBean(name = "semesterBean")
 @ApplicationScoped
 @Getter
 @Setter
@@ -69,9 +70,28 @@ public class SemesterBean {
                 message = "Error al Actualizar";
             }
         }
+        semesterName = null;
+        startDate = null;
+        endDate = null;
         facesContextWrapper.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
         primeFacesWrapper.current().ajax().update("form:growl");
+    }
+
+    /**
+     * Metodo que verifica si hay un semestre activo
+     * @return True si hay un semestre activo, de lo contrario False
+     */
+    public Boolean isThereASemester() {
+        return semesterService.getCurrentSemester() != null;
+    }
+
+    public List<SelectItem> getSemestersLikeItems() {
+        List<SelectItem> semesterItems = new ArrayList<SelectItem>();
+        for (Semester semester : semesterService.getAllSemesters()) {
+            semesterItems.add(new SelectItem(semester.getSemesterName()));
+        }
+        return semesterItems;
     }
 
 }

@@ -48,13 +48,12 @@ public class TaskBean {
 
     private List<Task> tasks;
     private List<Task> tasksLab;
-    private List<Semester> semesters;
     private List<String> selectedUsers = new ArrayList<>();
-    private List<Task> filteredTasks;
     private Task currentTask;
     private Comment comment;
     private String commentary;
     private String status;
+    private String selectedSemester;
 
     /**
      * Metodo que crea una nueva tarea.
@@ -139,8 +138,11 @@ public class TaskBean {
      */
     public void onDatabaseLoaded(String userName) {
         User user = userService.getUserByUsername(userName);
-        this.tasks = taskService.getTasksByUserAndStatus(user, status);
-        this.tasksLab = taskService.getTaskByTypeAndStatus("Laboratorio", status);
+        Semester currentSemester = semesterService.getCurrentSemester();
+        if (currentSemester != null) {
+            this.tasks = taskService.getTaskByUserAndStatusAndSemester(user, status, currentSemester);
+            this.tasksLab = taskService.getTasksByTypeAndStatusAndSemester(TypeTask.LABORATORIO.getValue(), status, currentSemester);
+        }
     }
 
     /**
@@ -148,8 +150,22 @@ public class TaskBean {
      * control de tareas.
      */
     public void onControlLoaded() {
-        this.tasks = taskService.getAllTask();
-        this.tasksLab = taskService.getTaskByType(TypeTask.LABORATORIO.getValue());
+        Semester currentSemester = semesterService.getCurrentSemester();
+        if (this.selectedSemester != null) {
+            currentSemester = semesterService.getSemesterByName(this.selectedSemester);
+        }
+        if (currentSemester != null) {
+            this.tasks = taskService.getTasksBySemester(currentSemester);
+            this.tasksLab = taskService.getTasksByTypeAndSemester(TypeTask.LABORATORIO.getValue(), currentSemester);
+        }
+    }
+
+    /**
+     * Metodo que hcae busqueda de las tareas por semestre de la base de datos
+     * cuando se va a realizar un control de tareas.
+     */
+    public void onControlQuerySemester() {
+        primeFacesWrapper.current().ajax().update("form:messages", "form:dt-task", "form:lldt-task-lab");
     }
 
     /**
@@ -221,14 +237,6 @@ public class TaskBean {
             }
         }
         return rendered;
-    }
-
-    /**
-     * Metodo que verifica si hay un semestre activo
-     * @return True si hay un semestre activo, de lo contrario False
-     */
-    public Boolean isThereASemester() {
-        return semesterService.getCurrentSemester() != null;
     }
 
 }

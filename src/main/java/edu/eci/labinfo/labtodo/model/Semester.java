@@ -24,18 +24,12 @@ public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long periodId;
+    private String semesterName;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "semester")
     private List<Task> tasks;
-
-    @Column(name = "name")
-    private String semesterName;
-
-    @Column(name = "startDate")
-    private LocalDate startDate;
-
-    @Column(name = "endDate")
-    private LocalDate endDate;
 
     public Semester() {}
 

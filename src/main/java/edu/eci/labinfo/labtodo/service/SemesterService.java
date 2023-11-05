@@ -2,6 +2,7 @@ package edu.eci.labinfo.labtodo.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,9 +29,21 @@ public class SemesterService {
         return semesterRepository.findById(semesterId).get();
     }
 
+    public Semester getSemesterByName(String semesterName) {
+        Optional<Semester> semester = semesterRepository.findBySemesterName(semesterName);
+        if (semester.isPresent()) {
+            return semester.get();
+        }
+        return null;
+    }
+
     public Semester getCurrentSemester() {
         LocalDate date = LocalDate.now();
-        return semesterRepository.findByStartDateAndEndDate(date);
+        Optional<Semester> semester = semesterRepository.findByStartDateAndEndDate(date);
+        if (semester.isPresent()) {
+            return semester.get();
+        }
+        return null;
     }
 
     public List<Semester> getAllSemesters() {
