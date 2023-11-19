@@ -114,6 +114,9 @@
             <p:column headerText="Tipo de tarea" filterBy="#{task.typeTask}" filterMatchMode="contains">
               <h:outputText value="#{task.typeTask}"/>
             </p:column>
+            <p:column headerText="Tema" filterBy="#{task.topicTask}" filterMatchMode="contains">
+              <h:outputText value="#{task.topicTask}"/>
+            </p:column>
             <p:column headerText="Nombre de la tarea" filterBy="#{task.title}" filterMatchMode="contains">
               <h:outputText value="#{task.title}"/>
             </p:column>

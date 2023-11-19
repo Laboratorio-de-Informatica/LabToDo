@@ -41,6 +41,7 @@ public class Task {
     @Column(length = 700)
     private String description;
     private String typeTask;
+    private String topicTask;
     @Column(name = "creationDate")
     private LocalDate creationDate;
 
@@ -62,9 +63,10 @@ public class Task {
         this.comments = new ArrayList<>();
     }
 
-    public Task(String title, String description, TypeTask typeTask) {
+    public Task(String title, String description, TypeTask typeTask, TopicTask topicTask) {
         this.title = title;
         this.typeTask = typeTask.getValue();
+        this.topicTask = topicTask.getValue();
         this.status = Status.PENDING.getValue();
         this.description = description;
         this.creationDate = LocalDate.now();

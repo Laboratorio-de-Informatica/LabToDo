@@ -159,6 +159,18 @@
             </p:selectOneMenu>
           </div>
           <div class="field">
+            <p:outputLabel for="topicTask">Tema de la Tarea</p:outputLabel>
+            <p:selectOneMenu id="topicTask" value="#{taskBean.currentTask.topicTask}" required="true">
+              <f:selectItem itemLabel="Selecciona el tema de la tarea" itemValue="" noSelectionOption="true" />
+              <f:selectItem itemLabel="Desarrollo de Software" itemValue="Desarrollo de Software" />
+              <f:selectItem itemLabel="Desarrollo Web" itemValue="Desarrollo Web" />
+              <f:selectItem itemLabel="Estadisticas" itemValue="Estadisticas" />
+              <f:selectItem itemLabel="Encuestas" itemValue="Encuestas" />
+              <f:selectItem itemLabel="Mantenimiento" itemValue="Mantenimiento" />
+              <f:selectItem itemLabel="Redes" itemValue="Redes" />
+            </p:selectOneMenu>
+          </div>
+          <div class="field">
             <p:outputPanel id="user-task-selection">
               <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor'}">
                 <p:outputLabel for="multiple">Monitor(es) a asignar</p:outputLabel>
