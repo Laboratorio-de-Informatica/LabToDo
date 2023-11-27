@@ -3,59 +3,45 @@ package edu.eci.labinfo.labtodo.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-/**
- * Esta es una entidad que representa a un usuario en la base de datos.
- */
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String fullName;
     private String userName;
-    private String userRole;
+    private String role;
     private String accountType;
-    private String userPassword;
+    private String password;
 
     @ManyToMany(mappedBy = "users")
+    @ToString.Exclude
     List<Task> tasks;
-
+    
     @OneToMany(mappedBy = "creatorUser")
+    @ToString.Exclude
     List<Comment> comments = new ArrayList<>();
-
-    public User() {}
-
-    public User(String fullName, String userName, String password, Role role, AccountType accountType) {
-        this.fullName = fullName;
-        this.userName = userName;
-        this.userPassword = password;
-        this.userRole = role.getValue();
-        this.accountType = accountType.getValue();
-        this.tasks = new ArrayList<>();
-    }
 
     public void addTask(Task taskToAdd) {
         tasks.add(taskToAdd);
-    }
-
-    @Override
-    public String toString() {
-        return "Nombre: " + fullName + ", Usuario: " + userName + ", Rol: " + userRole;
     }
 
 }

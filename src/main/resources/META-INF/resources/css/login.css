@@ -28,31 +28,9 @@ main {
     width: 30rem;
 }
 
-.login {
-    padding: 2rem;
-}
-
-.title-containter {
-    display: flex;
-    flex-direction: column;
-}
-
 .lab-img {
     width: 300px;
     height: 120px;
-}
-
-.title {
-    text-align: center;
-}
-
-.login-section {
-    display: flex;
-    flex-direction: column;
-}
-
-.login-section h2.login-title {
-    margin-bottom: 15px 0;
 }
 
 .buttons-container {

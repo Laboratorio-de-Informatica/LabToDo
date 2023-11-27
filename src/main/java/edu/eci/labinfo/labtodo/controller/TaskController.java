@@ -1,33 +1,34 @@
-package edu.eci.labinfo.labtodo.bean;
+package edu.eci.labinfo.labtodo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.ManagedBean;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextWrapper;
-
-import edu.eci.labinfo.labtodo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 
+import edu.eci.labinfo.labtodo.model.Comment;
+import edu.eci.labinfo.labtodo.model.Role;
+import edu.eci.labinfo.labtodo.model.Semester;
+import edu.eci.labinfo.labtodo.model.Status;
+import edu.eci.labinfo.labtodo.model.Task;
+import edu.eci.labinfo.labtodo.model.TypeTask;
+import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.CommentService;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.SemesterService;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import lombok.Data;
 
-@ManagedBean
 @Component
-@ApplicationScoped
-@Getter
-@Setter
-public class TaskBean {
+@Data
+@SessionScope
+public class TaskController {
 
+    
     @Autowired
     TaskService taskService;
 
@@ -39,9 +40,6 @@ public class TaskBean {
 
     @Autowired
     SemesterService semesterService;
-
-    @Autowired
-    private static FacesContextWrapper facesContextWrapper;
 
     @Autowired
     private PrimeFacesWrapper primeFacesWrapper;
@@ -102,7 +100,7 @@ public class TaskBean {
                 message = "Error al actualizar";
             }
         }
-        facesContextWrapper.getCurrentInstance().addMessage(null,
+        FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
         primeFacesWrapper.current().ajax().update("form:growl");
     }
@@ -120,7 +118,7 @@ public class TaskBean {
             this.currentTask.setStatus(newState);
             taskService.updateTask(this.currentTask);
             String summary = "Tarea " + state.next().getValue();
-            facesContextWrapper.getCurrentInstance().addMessage(null,
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null));
             primeFacesWrapper.current().ajax().update("form:growl", "form:dt-task", "form:dt-task-lab", "form:tabViewMVS", "form:task-button");
 
@@ -137,7 +135,7 @@ public class TaskBean {
      * @param userName nombre del usuario que se va a cargar sus tareas.
      */
     public void onDatabaseLoaded(String userName) {
-        User user = userService.getUserByUsername(userName);
+        User user = userService.getUserByUserName(userName);
         Semester currentSemester = semesterService.getCurrentSemester();
         if (currentSemester != null) {
             this.tasks = taskService.getTaskByUserAndStatusAndSemester(user, status, currentSemester);
@@ -183,7 +181,7 @@ public class TaskBean {
      * @param userName nombre del usuario que realiza el comentario
      */
     public void saveComment(String userName) {
-        User userOpinion = userService.getUserByUsername(userName);
+        User userOpinion = userService.getUserByUserName(userName);
         this.comment.setDescription(commentary);
         this.comment.setTask(currentTask);
         this.comment.setCreatorUser(userOpinion);
@@ -226,17 +224,17 @@ public class TaskBean {
      */
     public Boolean getRenderedToTaskButton(String userName, Task task) {
         Boolean rendered = true;
-        User user = userService.getUserByUsername(userName);
+        User user = userService.getUserByUserName(userName);
         if (task != null) {
             if (task.getStatus().equals(Status.FINISH.getValue())) {
                 rendered = false;
             }
             if (task.getStatus().equals(Status.REVIEW.getValue())
-                    && user.getUserRole().equals(Role.MONITOR.getValue())) {
+                    && user.getRole().equals(Role.MONITOR.getValue())) {
                 rendered = false;
             }
         }
         return rendered;
     }
-
+    
 }

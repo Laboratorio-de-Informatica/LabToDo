@@ -1,15 +1,8 @@
-package edu.eci.labinfo.labtodo.bean;
+package edu.eci.labinfo.labtodo.controller;
 
 import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContextWrapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import edu.eci.labinfo.labtodo.model.AccountType;
 import edu.eci.labinfo.labtodo.model.LabToDoExeption;
 import edu.eci.labinfo.labtodo.model.Role;
@@ -20,24 +13,21 @@ import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.TaskService;
 import edu.eci.labinfo.labtodo.service.UserService;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import lombok.Data;
 
 @Component
-@ManagedBean(name = "adminBean")
 @SessionScoped
-@Getter
-@Setter
-public class AdminBean {
+@Data
+public class AdminController {
 
     @Autowired
     TaskService taskService;
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    static FacesContextWrapper facesContextWrapper;
 
     @Autowired
     PrimeFacesWrapper primeFacesWrapper;
@@ -55,7 +45,7 @@ public class AdminBean {
      */
     public Boolean modifyStateTaks() {
         if (this.newState == null || this.newState.isEmpty()) {
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     LabToDoExeption.NO_STATE_SELECTED, "Error"));
             primeFacesWrapper.current().ajax().update(":form:messages");
             return false;
@@ -73,7 +63,7 @@ public class AdminBean {
         } finally {
             int size = this.selectedTasks.size();
             String summary = size > 1 ? size + " tareas actualizadas con éxito" : size + " tarea actualizada con éxito";
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update(":form:dt-task", ":form:messages");
             selectedTasks.clear();
         }
@@ -87,15 +77,15 @@ public class AdminBean {
      */
     public Boolean modifyUserRole() {
         if (this.newRole == null || this.newRole.isEmpty()) {
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     LabToDoExeption.NO_ROLE_SELECTED, "Error"));
             primeFacesWrapper.current().ajax().update("form:messages");
             return false;
         }
         try {
             for (User user : selectedUsers) {
-                user.setUserRole(Role.findByValue(newRole).getValue());
-                userService.updateUser(user);
+                user.setRole(Role.findByValue(newRole).getValue());
+                userService.addUser(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,7 +93,7 @@ public class AdminBean {
             int size = this.selectedUsers.size();
             String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
             selectedUsers.clear();
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", ":role-label", "form:edit-users-button");
         }
         return true;
@@ -111,7 +101,7 @@ public class AdminBean {
 
     public Boolean modifyUserAccountType() {
         if (this.newAccountType == null || this.newAccountType.isEmpty()) {
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     LabToDoExeption.NO_ACCOUNT_TYPE_SELECTED, "Error"));
             primeFacesWrapper.current().ajax().update("form:messages");
             return false;
@@ -119,7 +109,7 @@ public class AdminBean {
         try {
             for (User user : selectedUsers) {
                 user.setAccountType(AccountType.findByValue(newAccountType).getValue());
-                userService.updateUser(user);
+                userService.addUser(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +117,7 @@ public class AdminBean {
             int size = this.selectedUsers.size();
             String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
             selectedUsers.clear();
-            facesContextWrapper.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
             primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", "form:account-users-button");
         }
         return true;
@@ -196,3 +186,4 @@ public class AdminBean {
     }
 
 }
+

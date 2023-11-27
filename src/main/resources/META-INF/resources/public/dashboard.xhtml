@@ -2,13 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
   xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" lang="es">
 <f:metadata>
-  <f:event type="preRenderView" listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" />
+  <f:event type="preRenderView" listener="#{taskController.onDatabaseLoaded(loginController.userName)}" />
 </f:metadata>
 <h:head>
   <title>Dashboard</title>
   <link rel="shortcut icon" href="../img/favicon.png" />
   <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
   <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
+  <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
 </h:head>
 <h:body>
   <header>
@@ -16,8 +17,8 @@
     <h1>Laboratorio Informática LabToDo</h1>
     <div class="user-wrapper">
       <div class="user-description">
-        <p:outputLabel value="#{loginBean.getCurrentFullName(loginBean.userName)}" styleClass="username-label" />
-        <p:outputLabel value=" #{loginBean.getCurrentUserProfile(loginBean.userName)}" styleClass="role-label" />
+        <p:outputLabel value="#{loginController.getCurrentFullName(loginController.userName)}" styleClass="username-label" />
+        <p:outputLabel value=" #{loginController.getCurrentUserProfile(loginController.userName)}" styleClass="role-label" />
       </div>
       <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user" />
     </div>
@@ -26,21 +27,21 @@
     <nav class="sidebar">
       <ul class="sidebar-list">
         <li class="sidebar-list-element">
-          <p:commandLink styleClass="link active"
-            actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'home')}">
+          <p:commandLink styleClass="link active" actionListener="#{loginController.getRedirectPath(loginController.userName, 'home')}">
+            <i class="pi pi-home"></i>
             <span>Inicio</span>
           </p:commandLink>
         </li>
         <li class="sidebar-list-element">
-          <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}"
-            actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'control')}">
+          <p:commandLink styleClass="link" rendered="#{loginController.isAdmin(loginController.userName)}"
+            actionListener="#{loginController.getRedirectPath(loginController.userName, 'control')}">
             <i class="pi pi-sliders-h"></i>
             <span>Control</span>
           </p:commandLink>
         </li>
         <li class="sidebar-list-element">
-          <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}"
-            actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'config')}">
+          <p:commandLink styleClass="link" rendered="#{loginController.isAdmin(loginController.userName)}"
+            actionListener="#{loginController.getRedirectPath(loginController.userName, 'config')}">
             <i class="pi pi-cog"></i>
             <span>Configuración</span>
           </p:commandLink>
@@ -59,9 +60,9 @@
         <p:toolbar styleClass="mi-toolbar">
           <p:toolbarGroup>
             <!-- Botón Nueva Tarea-->
-            <p:commandButton value="Crear Tarea" icon="pi pi-plus" actionListener="#{taskBean.openNew}"
+            <p:commandButton value="Crear Tarea" icon="pi pi-plus" actionListener="#{taskController.openNew}"
               update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()"
-              styleClass="rounded-button mr-2" disabled="#{!semesterBean.isThereASemester()}">
+              styleClass="rounded-button mr-2" disabled="#{!semesterController.isThereASemester()}">
               <p:resetInput target=":dialogs:manage-task-content" />
             </p:commandButton>
           </p:toolbarGroup>
@@ -69,17 +70,17 @@
         <div class="task-tabview">
           <p:tabView multiViewState="true" id="tabViewMVS" styleClass="rounded-tabview">
             <p:tab title="Mis Tareas">
-              <p:selectOneButton value="#{taskBean.status}">
+              <p:selectOneButton value="#{taskController.status}">
                 <f:selectItem itemLabel="Por Hacer" itemValue="Por Hacer" />
                 <f:selectItem itemLabel="En Proceso" itemValue="En Proceso" />
                 <f:selectItem itemLabel="En Revisión" itemValue="En Revisión" />
                 <f:selectItem itemLabel="Finalizada" itemValue="Finalizada" />
-                <p:ajax listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" update="dt-task dt-task-lab" />
+                <p:ajax listener="#{taskController.onDatabaseLoaded(loginController.userName)}" update="dt-task dt-task-lab" />
               </p:selectOneButton>
-              <p:carousel id="dt-task" var="task" value="#{taskBean.tasks}" numVisible="2" numScroll="1"
+              <p:carousel id="dt-task" var="task" value="#{taskController.tasks}" numVisible="2" numScroll="1"
                 styleClass="dt-task">
                 <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
-                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                  <f:setPropertyActionListener target="#{taskController.currentTask}" value="#{task}" />
                   <article class="task-item">
                     <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
@@ -90,27 +91,27 @@
                     <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
-                <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send"
-                  rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, task)}"
+                <p:commandButton value="#{taskController.getMessageToTaskButton(task)}" icon="pi pi-send"
+                  rendered="#{taskController.getRenderedToTaskButton(loginController.userName, task)}"
                   styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()"
                   update="@this :dialogs:completeTaskDialog">
-                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                  <f:setPropertyActionListener target="#{taskController.currentTask}" value="#{task}" />
                 </p:commandButton>
               </p:carousel>
             </p:tab>
             <p:tab title="Tareas de laboratorio">
-              <p:selectOneButton value="#{taskBean.status}">
+              <p:selectOneButton value="#{taskController.status}">
                 <f:selectItem itemLabel="Por Hacer" itemValue="Por Hacer" />
                 <f:selectItem itemLabel="En Proceso" itemValue="En Proceso" />
                 <f:selectItem itemLabel="En Revisión" itemValue="En Revisión" />
                 <f:selectItem itemLabel="Finalizada" itemValue="Finalizada" />
-                <p:ajax listener="#{taskBean.onDatabaseLoaded(loginBean.userName)}" update="dt-task dt-task-lab" />
+                <p:ajax listener="#{taskController.onDatabaseLoaded(loginController.userName)}" update="dt-task dt-task-lab" />
               </p:selectOneButton>
-              <p:carousel id="dt-task-lab" var="task" value="#{taskBean.tasksLab}" numVisible="2" numScroll="1"
+              <p:carousel id="dt-task-lab" var="task" value="#{taskController.tasksLab}" numVisible="2" numScroll="1"
                 styleClass="dt-task">
                 <!-- Buscar usuarios -->
                 <p:commandLink styleClass="card-task" action="task.xhtml?faces-redirect=true">
-                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                  <f:setPropertyActionListener target="#{taskController.currentTask}" value="#{task}" />
                   <article class="task-item">
                     <div class="mb-3 task-image task-image-#{task.typeTask}"></div>
                     <span class="task-type task-type-#{task.typeTask}" >#{task.typeTask}</span>
@@ -121,11 +122,11 @@
                     <p class="task-status" >#{task.status}</p>
                   </article>
                 </p:commandLink>
-                <p:commandButton value="#{taskBean.getMessageToTaskButton(task)}" icon="pi pi-send"
-                  rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, task)}"
+                <p:commandButton value="#{taskController.getMessageToTaskButton(task)}" icon="pi pi-send"
+                  rendered="#{taskController.getRenderedToTaskButton(loginController.userName, task)}"
                   styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()"
                   update="@this :dialogs:completeTaskDialog">
-                  <f:setPropertyActionListener target="#{taskBean.currentTask}" value="#{task}" />
+                  <f:setPropertyActionListener target="#{taskController.currentTask}" value="#{task}" />
                 </p:commandButton>
               </p:carousel>
             </p:tab>
@@ -139,19 +140,19 @@
     <p:dialog header="Detalles de la tarea" showEffect="fade" modal="true" widgetVar="managetaskDialog"
       responsive="true" resizable="false" draggable="false">
       <p:outputPanel id="manage-task-content" class="ui-fluid dialog-manage-task">
-        <p:outputPanel rendered="#{not empty taskBean.currentTask}">
+        <p:outputPanel rendered="#{not empty taskController.currentTask}">
           <div class="field">
             <p:outputLabel for="title">Nombre de la tarea</p:outputLabel>
-            <p:inputTextarea id="title" required="true" value="#{taskBean.currentTask.title}"
+            <p:inputTextarea id="title" required="true" value="#{taskController.currentTask.title}"
               styleClass="task-field-title" />
           </div>
           <div class="field">
             <p:outputLabel for="description">Descripción</p:outputLabel>
-            <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" />
+            <p:inputTextarea id="description" required="true" value="#{taskController.currentTask.description}" />
           </div>
           <div class="field">
             <p:outputLabel for="typeTask">Tipo de Tarea</p:outputLabel>
-            <p:selectOneMenu id="typeTask" value="#{taskBean.currentTask.typeTask}" required="true">
+            <p:selectOneMenu id="typeTask" value="#{taskController.currentTask.typeTask}" required="true">
               <f:selectItem itemLabel="Selecciona el tipo de tarea" itemValue="" noSelectionOption="true" />
               <f:selectItem itemLabel="Monitor" itemValue="Monitor" />
               <f:selectItem itemLabel="Laboratorio" itemValue="Laboratorio" />
@@ -160,7 +161,7 @@
           </div>
           <div class="field">
             <p:outputLabel for="topicTask">Tema de la Tarea</p:outputLabel>
-            <p:selectOneMenu id="topicTask" value="#{taskBean.currentTask.topicTask}" required="true">
+            <p:selectOneMenu id="topicTask" value="#{taskController.currentTask.topicTask}" required="true">
               <f:selectItem itemLabel="Selecciona el tema de la tarea" itemValue="" noSelectionOption="true" />
               <f:selectItem itemLabel="Desarrollo de Software" itemValue="Desarrollo de Software" />
               <f:selectItem itemLabel="Desarrollo Web" itemValue="Desarrollo Web" />
@@ -172,12 +173,12 @@
           </div>
           <div class="field">
             <p:outputPanel id="user-task-selection">
-              <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor'}">
+              <p:outputPanel rendered="#{taskController.currentTask.typeTask == 'Monitor'}">
                 <p:outputLabel for="multiple">Monitor(es) a asignar</p:outputLabel>
                 <p:selectCheckboxMenu id="multiple" filter="true" filterMatchMode="contains" label="Monitores"
                   multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true" scrollHeight="250"
-                  value="#{taskBean.selectedUsers}" style="margin-top: 10px;">
-                  <f:selectItems value="#{loginBean.userNames}" />
+                  value="#{taskController.selectedUsers}" style="margin-top: 10px;">
+                  <f:selectItems value="#{loginController.userNames}" />
                 </p:selectCheckboxMenu>
               </p:outputPanel>
             </p:outputPanel>
@@ -185,7 +186,7 @@
         </p:outputPanel>
       </p:outputPanel>
       <f:facet name="footer">
-        <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskBean.saveTask}"
+        <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskController.saveTask}"
           update="manage-task-content :form" process="manage-task-content @this"
           oncomplete="PF('managetaskDialog').hide()" />
         <p:commandButton value="Cancelar" onclick="PF('managetaskDialog').hide()" class="ui-button-secondary"
@@ -195,9 +196,9 @@
     </p:dialog>
     <!-- Dialogo para completar tarea -->
     <p:confirmDialog id="completeTaskDialog" widgetVar="completeTaskDialog" showEffect="fade" width="300"
-      message="¿#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar Avance"
+      message="¿#{taskController.getMessageToTaskButton(taskController.currentTask)} la tarea?" header="Confirmar Avance"
       severity="warn">
-      <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}" process="@this"
+      <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskController.completedMessage}" process="@this"
         oncomplete="PF('completeTaskDialog').hide()" />
       <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
         onclick="PF('completeTaskDialog').hide()" />
@@ -206,7 +207,7 @@
     <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade" width="300"
       message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
       <p:commandButton value="Si" icon="pi pi-check" process="@this" oncomplete="PF('upvoteInitiativeDialog').hide()"
-        actionListener="#{loginBean.logout}" />
+        actionListener="#{loginController.logout}" />
       <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
         onclick="PF('logoutDialog').hide()" />
     </p:confirmDialog>

@@ -1,7 +1,10 @@
 package edu.eci.labinfo.labtodo.model;
 
+/**
+ * Enumeración que representa los temas de una tarea.
+ * Cada estado tiene un valor asociado que se utiliza para identificarlo.
+ */
 public enum TopicTask {
-
 
     MANTENIMIENTO("Mantenimiento"),
     DESARROLLODESOFTWARE("Desarrollo de Software"),

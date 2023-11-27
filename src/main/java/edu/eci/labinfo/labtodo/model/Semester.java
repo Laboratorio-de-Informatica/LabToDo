@@ -3,39 +3,34 @@ package edu.eci.labinfo.labtodo.model;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class Semester {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long periodId;
     private String semesterName;
     private LocalDate startDate;
     private LocalDate endDate;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "semester")
+    @ToString.Exclude
     private List<Task> tasks;
-
-    public Semester() {}
-
-    @Override
-    public String toString() {
-        return "Semester [periodId=" + periodId + ", startDate=" + startDate + ", endDate=" + endDate + "]";
-    }
-
+    
 }

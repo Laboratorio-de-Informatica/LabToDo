@@ -15,11 +15,7 @@ import edu.eci.labinfo.labtodo.model.Semester;
 public class SemesterService {
 
     @Autowired
-    private final SemesterRepository semesterRepository;
-
-    public SemesterService(SemesterRepository semesterRepository) {
-        this.semesterRepository = semesterRepository;
-    }
+    private SemesterRepository semesterRepository;
 
     public Semester addSemester(Semester semester) {
         return semesterRepository.save(semester);

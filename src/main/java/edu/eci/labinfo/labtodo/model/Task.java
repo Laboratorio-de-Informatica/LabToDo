@@ -7,34 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
-/**
- * Esta es una entidad que representa una tarea en la base de datos.
- */
 @Entity
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
+@ToString
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
     private String title;
     private String status;
@@ -47,9 +43,11 @@ public class Task {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "task_user", joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "taskId"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"))
-    List<User> users;
+    @ToString.Exclude
+    private List<User> users;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+    @ToString.Exclude
     private List<Comment> comments;
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -83,8 +81,7 @@ public class Task {
     }
 
     public String getDateText() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)
-                .withLocale(new Locale("es", "ES"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(new Locale("es", "ES"));
         return creationDate.format(formatter);
     }
 
@@ -94,12 +91,6 @@ public class Task {
             allUsers += user.getFullName() + " ";
         }
         return allUsers;
-    }
-
-    @Override
-    public String toString() {
-        return "Task [id=" + taskId + ", title=" + title + ", status=" + status + ", description=" + description
-                + ", creationDate=" + creationDate + ", users=" + users + "]";
     }
     
 }

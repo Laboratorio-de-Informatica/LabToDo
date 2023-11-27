@@ -1,14 +1,8 @@
-package edu.eci.labinfo.labtodo.bean;
+package edu.eci.labinfo.labtodo.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.context.FacesContextWrapper;
-import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,21 +11,21 @@ import edu.eci.labinfo.labtodo.model.LabToDoExeption;
 import edu.eci.labinfo.labtodo.model.Semester;
 import edu.eci.labinfo.labtodo.service.PrimeFacesWrapper;
 import edu.eci.labinfo.labtodo.service.SemesterService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
 import lombok.Getter;
 import lombok.Setter;
 
 @Component
-@ManagedBean(name = "semesterBean")
 @ApplicationScoped
 @Getter
 @Setter
-public class SemesterBean {
+public class SemesterController {
 
     @Autowired
     SemesterService semesterService;
-
-    @Autowired
-    private static FacesContextWrapper facesContextWrapper;
 
     @Autowired
     private PrimeFacesWrapper primeFacesWrapper;
@@ -51,7 +45,7 @@ public class SemesterBean {
     public void saveSemester() {
         // verificar que la fecha de inicio sea menor a la fecha de fin
         if (startDate.isAfter(endDate)) {
-            facesContextWrapper.getCurrentInstance().addMessage(null,
+            FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, LabToDoExeption.INVALID_DATE, null));
             primeFacesWrapper.current().ajax().update("form:growl");
             return;
@@ -73,7 +67,7 @@ public class SemesterBean {
         semesterName = null;
         startDate = null;
         endDate = null;
-        facesContextWrapper.getCurrentInstance().addMessage(null,
+        FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
         primeFacesWrapper.current().ajax().update("form:growl");
     }

@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
     <link rel="stylesheet" type="text/css" href="../css/settings.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
   </h:head>
   <h:body>
     <header>
@@ -20,8 +21,8 @@
       <h1>Laboratorio Informática LabToDo</h1>
       <div class="user-wrapper">
         <div class="user-description">
-          <p:outputLabel value="#{loginBean.getCurrentUserName(loginBean.userName)}" styleClass="username-label" />
-          <p:outputLabel value=" #{loginBean.getCurrentUserProfile(loginBean.userName)}" styleClass="role-label" />
+          <p:outputLabel value="#{loginController.getCurrentFullName(loginController.userName)}" styleClass="username-label" />
+          <p:outputLabel value=" #{loginController.getCurrentUserProfile(loginController.userName)}" styleClass="role-label" />
         </div>
         <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user" />
       </div>
@@ -30,19 +31,19 @@
       <nav class="sidebar">
         <ul class="sidebar-list">
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'home')}" >
+            <p:commandLink styleClass="link" actionListener="#{loginController.getRedirectPath(loginController.userName, 'home')}" >
               <i class="pi pi-home"></i>
               <span>Inicio</span>
             </p:commandLink>
           </li>
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'control')}" >
+            <p:commandLink styleClass="link" rendered="#{loginController.isAdmin(loginController.userName)}" actionListener="#{loginController.getRedirectPath(loginController.userName, 'control')}" >
               <i class="pi pi-sliders-h"></i>
               <span>Control</span>
             </p:commandLink>
           </li>
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link active" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'config')}" >
+            <p:commandLink styleClass="link active" rendered="#{loginController.isAdmin(loginController.userName)}" actionListener="#{loginController.getRedirectPath(loginController.userName, 'config')}" >
               <i class="pi pi-cog"></i>
               <span>Configuración</span>
             </p:commandLink>
@@ -61,21 +62,21 @@
   
           <p:toolbar styleClass="mi-toolbar">
             <p:toolbarGroup>
-              <p:commandButton id="edit-users-button" value="#{adminBean.roleButtonMessage}"
+              <p:commandButton id="edit-users-button" value="#{adminController.roleButtonMessage}"
                 icon="pi pi-user-edit" oncomplete="PF('editDialog').show()" process="@this"
-                styleClass="rounded-button ui-button-success" disabled="#{!adminBean.hasSelectedUsers()}">
+                styleClass="rounded-button ui-button-success" disabled="#{!adminController.hasSelectedUsers()}">
               </p:commandButton>
             </p:toolbarGroup>
             <p:toolbarGroup>
-              <p:commandButton id="account-users-button" value="#{adminBean.accountButtonMessage}"
+              <p:commandButton id="account-users-button" value="#{adminController.accountButtonMessage}"
                 icon="pi pi-id-card" oncomplete="PF('verifyDialog').show()" process="@this"
-                styleClass="rounded-button ui-button-help" disabled="#{!adminBean.hasSelectedUsers()}">
+                styleClass="rounded-button ui-button-help" disabled="#{!adminController.hasSelectedUsers()}">
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
   
-          <p:dataTable id="users-list" reflow="true" widgetVar="tableUsers" var="user" value="#{loginBean.users}" styleClass="users-list"
-            rowKey="#{user.userId}" paginator="true" rows="10" paginatorPosition="bottom" selection="#{adminBean.selectedUsers}"
+          <p:dataTable id="users-list" reflow="true" widgetVar="tableUsers" var="user" value="#{loginController.users}" styleClass="users-list"
+            rowKey="#{user.userId}" paginator="true" rows="10" paginatorPosition="bottom" selection="#{adminController.selectedUsers}"
             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
             <f:facet name="header" styleClass="header-datatable">
               <div class="users-list-header">
@@ -94,7 +95,7 @@
               <h:outputText value="#{user.fullName}" />
             </p:column>
             <p:column headerText="Rol">
-              <h:outputText value="#{user.userRole}"/>
+              <h:outputText value="#{user.role}"/>
             </p:column>
             <p:column headerText="Estado">
               <h:outputText value="#{user.accountType}"/>
@@ -108,14 +109,14 @@
       <p:confirmDialog id="edit-content" widgetVar="editDialog" showEffect="fade" width="350"
         header="Actualizar Rol"  message="Seleccione el nuevo rol para los usuarios seleccionados" severity="info">
         <p:outputPanel id="update-role-content">
-          <p:selectOneMenu id="role" value="#{adminBean.newRole}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
+          <p:selectOneMenu id="role" value="#{adminController.newRole}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
             <f:selectItem itemLabel="Rol" itemValue="" noSelectionOption="true"/>
             <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
             <f:selectItem itemLabel="Monitor" itemValue="Monitor"/>
           </p:selectOneMenu>
         </p:outputPanel>
         <p:commandButton value="Si" icon="pi pi-check" process="update-role-content @this" oncomplete="PF('editDialog').hide()"
-        actionListener="#{adminBean.modifyUserRole()}" update="update-role-content"/>
+        actionListener="#{adminController.modifyUserRole()}" update="update-role-content"/>
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
             onclick="PF('editDialog').hide()" />
       </p:confirmDialog>
@@ -123,14 +124,14 @@
       <p:confirmDialog id="edit-account-content" widgetVar="verifyDialog" showEffect="fade" width="350"
         header="Estado de cuenta de usuario"  message="Seleccione el nuevo estado de cuenta para los usuarios seleccionados" severity="info">
         <p:outputPanel id="update-account-content">
-          <p:selectOneMenu id="accountType" value="#{adminBean.newAccountType}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
+          <p:selectOneMenu id="accountType" value="#{adminController.newAccountType}" label="Text 2" style="width: 12rem; margin-bottom: 15px;">
             <f:selectItem itemLabel="Estado" itemValue="" noSelectionOption="true"/>
             <f:selectItem itemLabel="Activo" itemValue="Activo"/>
             <f:selectItem itemLabel="Inactivo" itemValue="Inactivo"/>
           </p:selectOneMenu>
         </p:outputPanel>
         <p:commandButton value="Si" icon="pi pi-check" process="update-account-content @this" oncomplete="PF('verifyDialog').hide()"
-        actionListener="#{adminBean.modifyUserAccountType()}" update="update-account-content"/>
+        actionListener="#{adminController.modifyUserAccountType()}" update="update-account-content"/>
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
             onclick="PF('verifyDialog').hide()" />
       </p:confirmDialog>
@@ -138,7 +139,7 @@
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
         width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
-          oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
+          oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginController.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
           icon="pi pi-times" onclick="PF('logoutDialog').hide()" />
       </p:confirmDialog>

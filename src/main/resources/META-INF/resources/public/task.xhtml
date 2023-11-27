@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
     <link rel="stylesheet" type="text/css" href="../css/task.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
   </h:head>
   <h:body>
     <header>
@@ -20,8 +21,8 @@
       <h1>Laboratorio Informática LabToDo</h1>
       <div class="user-wrapper">
         <div class="user-description">
-          <p:outputLabel value="#{loginBean.getCurrentFullName(loginBean.userName)}" styleClass="username-label" />
-          <p:outputLabel value=" #{loginBean.getCurrentUserProfile(loginBean.userName)}" styleClass="role-label" />
+          <p:outputLabel value="#{loginController.getCurrentFullName(loginController.userName)}" styleClass="username-label" />
+          <p:outputLabel value=" #{loginController.getCurrentUserProfile(loginController.userName)}" styleClass="role-label" />
         </div>
         <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user" />
       </div>
@@ -30,19 +31,19 @@
       <nav class="sidebar">
         <ul class="sidebar-list">
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'home')}" >
+            <p:commandLink styleClass="link" actionListener="#{loginController.getRedirectPath(loginController.userName, 'home')}" >
               <i class="pi pi-home"></i>
               <span>Inicio</span>
             </p:commandLink>
           </li>
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'control')}" >
+            <p:commandLink styleClass="link" rendered="#{loginController.isAdmin(loginController.userName)}" actionListener="#{loginController.getRedirectPath(loginController.userName, 'control')}" >
               <i class="pi pi-sliders-h"></i>
               <span>Control</span>
             </p:commandLink>
           </li>
           <li class="sidebar-list-element">
-            <p:commandLink styleClass="link" rendered="#{loginBean.isAdmin(loginBean.userName)}" actionListener="#{loginBean.getRedirectPath(loginBean.userName, 'config')}" >
+            <p:commandLink styleClass="link" rendered="#{loginController.isAdmin(loginController.userName)}" actionListener="#{loginController.getRedirectPath(loginController.userName, 'config')}" >
               <i class="pi pi-cog"></i>
               <span>Configuración</span>
             </p:commandLink>
@@ -61,29 +62,29 @@
           <p:toolbar styleClass="mi-toolbar">
             <p:toolbarGroup>
               <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="button rounded-button mr-2" 
-                update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()" action="#{taskBean.loadUsers()}" >
+                update=":dialogs:manage-task-content" oncomplete="PF('managetaskDialog').show()" action="#{taskController.loadUsers()}" >
               </p:commandButton>
               <p:commandButton value="Comentar" icon="pi pi-comments" styleClass="button ui-button-help  rounded-button mr-2"
-                actionListener="#{taskBean.openComment}" update=":dialogs:manage-comment-content" oncomplete="PF('manageCommentDialog').show()" >
+                actionListener="#{taskController.openComment}" update=":dialogs:manage-comment-content" oncomplete="PF('manageCommentDialog').show()" >
               </p:commandButton>
-              <p:commandButton id="task-button" value="#{taskBean.getMessageToTaskButton(taskBean.currentTask)}" icon="pi pi-send" 
-                rendered="#{taskBean.getRenderedToTaskButton(loginBean.userName, taskBean.currentTask)}"
+              <p:commandButton id="task-button" value="#{taskController.getMessageToTaskButton(taskController.currentTask)}" icon="pi pi-send" 
+                rendered="#{taskController.getRenderedToTaskButton(loginController.userName, taskController.currentTask)}"
                 styleClass="button ui-button-success  rounded-button" oncomplete="PF('completeTaskDialog').show()" update="@this :dialogs:completeTaskDialog">
               </p:commandButton>
             </p:toolbarGroup>
           </p:toolbar>
           <p:panel id="details-panel" styleClass="details-panel" header="Detalles de la Tarea">
             <p:panelGrid columns="2">
-              <p:outputLabel value="Titulo: #{taskBean.currentTask.title}" />
-              <p:outputLabel value="Descripción: #{taskBean.currentTask.description}" />
-              <p:outputLabel value="Estado: #{taskBean.currentTask.status}" />
-              <p:outputLabel value="Tarea de: #{taskBean.currentTask.typeTask}" />
-              <p:outputLabel value="Tema: #{taskBean.currentTask.topicTask}" />
-              <p:outputLabel value="Fecha de creación: #{taskBean.currentTask.getDateText()}" />
-              <p:outputLabel value="Asignado a: #{taskBean.currentTask.getAllUsers()}" />
+              <p:outputLabel value="Titulo: #{taskController.currentTask.title}" />
+              <p:outputLabel value="Descripción: #{taskController.currentTask.description}" />
+              <p:outputLabel value="Estado: #{taskController.currentTask.status}" />
+              <p:outputLabel value="Tarea de: #{taskController.currentTask.typeTask}" />
+              <p:outputLabel value="Tema: #{taskController.currentTask.topicTask}" />
+              <p:outputLabel value="Fecha de creación: #{taskController.currentTask.getDateText()}" />
+              <p:outputLabel value="Asignado a: #{taskController.currentTask.getAllUsers()}" />
             </p:panelGrid>
             <p:divider />
-            <p:dataTable id="comments-list" var="comment"  value="#{taskBean.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true"
+            <p:dataTable id="comments-list" var="comment"  value="#{taskController.getCurrentTaskComments()}" reflow="true" rowKey="#{comment.commentId}" paginator="true"
               rows="5" paginatorPosition="bottom"
               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
               <f:facet name="header">
@@ -110,22 +111,22 @@
       <p:dialog header="Detalles de la tarea" showEffect="fade"
         modal="true" widgetVar="managetaskDialog" responsive="true" >
         <p:outputPanel id="manage-task-content" class="ui-fluid dialog-manage-task">
-          <p:outputPanel rendered="#{not empty taskBean.currentTask}">
+          <p:outputPanel rendered="#{not empty taskController.currentTask}">
             <div class="field">
               <p:outputLabel for="description">Descripción</p:outputLabel>
-              <p:inputTextarea id="description" required="true" value="#{taskBean.currentTask.description}" />
+              <p:inputTextarea id="description" required="true" value="#{taskController.currentTask.description}" />
             </div>
             <div class="field">
               <p:outputPanel id="user-task-selection">
-                <p:outputPanel rendered="#{taskBean.currentTask.typeTask == 'Monitor' and loginBean.isAdmin(loginBean.userName)}">
+                <p:outputPanel rendered="#{taskController.currentTask.typeTask == 'Monitor' and loginController.isAdmin(loginController.userName)}">
                   <p:outputLabel for="multiple">Monitor(es) a asignar</p:outputLabel>
                   <p:selectCheckboxMenu id="multiple"
                                       filter="true" filterMatchMode="contains"
                                       label="Monitores" multiple="true" emptyLabel="Seleccione Monitor..." updateLabel="true"
                                       scrollHeight="250"
-                                      value="#{taskBean.selectedUsers}"
+                                      value="#{taskController.selectedUsers}"
                                       style="margin-top: 10px;">
-                      <f:selectItems value="#{loginBean.userNames}" />
+                      <f:selectItems value="#{loginController.userNames}" />
                   </p:selectCheckboxMenu>
                 </p:outputPanel>
               </p:outputPanel>
@@ -133,7 +134,7 @@
           </p:outputPanel>
         </p:outputPanel>
         <f:facet name="footer">
-          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskBean.saveTask}"
+          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskController.saveTask}"
             update="manage-task-content :form" process="manage-task-content @this"
             oncomplete="PF('managetaskDialog').hide()" />
           <p:commandButton value="Cancelar" onclick="PF('managetaskDialog').hide()"
@@ -146,12 +147,12 @@
         <p:outputPanel id="manage-comment-content" class="ui-fluid">
           <div class="field">
             <p:outputLabel for="commentary">Comentario</p:outputLabel>
-            <p:inputTextarea id="commentary" required="true" value="#{taskBean.commentary}" maxlength="500"/>
+            <p:inputTextarea id="commentary" required="true" value="#{taskController.commentary}" maxlength="500"/>
             <p style="color:red;">Una vez comentado, no puedes cambiar el comentario.</p>
           </div>
         </p:outputPanel>
         <f:facet name="footer">
-          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskBean.saveComment(loginBean.userName)}"
+          <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{taskController.saveComment(loginController.userName)}"
               update="manage-comment-content" process="manage-comment-content @this" />
           <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCommentDialog').hide()"
               class="ui-button-secondary" type="button" />
@@ -159,8 +160,8 @@
       </p:dialog>
        <!-- Dialogo para iniciar/revisar/completar tarea -->
       <p:confirmDialog id="completeTaskDialog" widgetVar="completeTaskDialog" showEffect="fade" width="300"
-       message="¿#{taskBean.getMessageToTaskButton(taskBean.currentTask)} la tarea?" header="Confirmar Avance" severity="warn">
-        <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskBean.completedMessage}"
+       message="¿#{taskController.getMessageToTaskButton(taskController.currentTask)} la tarea?" header="Confirmar Avance" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check" actionListener="#{taskController.completedMessage}"
           update="form" process="@this" oncomplete="PF('completeTaskDialog').hide()" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
           onclick="PF('completeTaskDialog').hide()" />
@@ -169,7 +170,7 @@
       <p:confirmDialog id="logout-content" widgetVar="logoutDialog" showEffect="fade"
         width="300" message="¿Desea cerrar sesión?" header="Confirmar cierre" severity="warn">
         <p:commandButton value="Si" icon="pi pi-check" process="@this"
-          oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginBean.logout}" />
+          oncomplete="PF('upvoteInitiativeDialog').hide()" actionListener="#{loginController.logout}" />
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
           icon="pi pi-times" onclick="PF('logoutDialog').hide()" />
       </p:confirmDialog>

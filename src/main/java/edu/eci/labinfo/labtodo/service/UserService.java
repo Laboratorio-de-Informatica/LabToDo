@@ -22,12 +22,12 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getUserPassword());
-        user.setUserPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
-    public User getUserByUsername(String username) {
+    public User getUserByUserName(String username) {
         if (userRepository.findByUserName(username).isPresent()) {
             return userRepository.findByUserName(username).get();
         }
@@ -54,7 +54,7 @@ public class UserService {
     }
 
     public void deleteUser(String userName) {
-        userRepository.delete(getUserByUsername(userName));
+        userRepository.delete(getUserByUserName(userName));
     }
 
     public void deleteAllUsers() {
@@ -62,3 +62,4 @@ public class UserService {
     }
 
 }
+

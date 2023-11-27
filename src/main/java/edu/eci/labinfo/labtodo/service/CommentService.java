@@ -3,9 +3,9 @@ package edu.eci.labinfo.labtodo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import edu.eci.labinfo.labtodo.data.CommentRepository;
 import edu.eci.labinfo.labtodo.model.Comment;
@@ -15,11 +15,7 @@ import edu.eci.labinfo.labtodo.model.Task;
 public class CommentService {
 
     @Autowired
-    private final CommentRepository commentRepository;
-
-    public CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
+    private CommentRepository commentRepository;
 
     public Comment addComment(Comment comment) {
         return commentRepository.save(comment);
@@ -52,5 +48,5 @@ public class CommentService {
     public void deleteAllComments() {
         commentRepository.deleteAll();
     }
-
+    
 }
