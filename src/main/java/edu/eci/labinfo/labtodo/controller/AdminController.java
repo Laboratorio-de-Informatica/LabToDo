@@ -94,7 +94,7 @@ public class AdminController {
             String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
             selectedUsers.clear();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
-            primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", ":role-label", "form:edit-users-button");
+            primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", ":role-label", "form:account-users-button", "form:edit-users-button");
         }
         return true;
     }
@@ -118,7 +118,7 @@ public class AdminController {
             String summary = size > 1 ? size + " usuarios actualizados con éxito" : size + " usuario actualizado con éxito";
             selectedUsers.clear();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, "Éxito"));
-            primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", "form:account-users-button");
+            primeFacesWrapper.current().ajax().update("form:users-list", "form:messages", "form:account-users-button", "form:edit-users-button");
         }
         return true;
     }
