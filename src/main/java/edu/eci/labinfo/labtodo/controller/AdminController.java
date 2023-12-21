@@ -85,7 +85,7 @@ public class AdminController {
         try {
             for (User user : selectedUsers) {
                 user.setRole(Role.findByValue(newRole).getValue());
-                userService.addUser(user);
+                userService.updateUser(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,7 +109,7 @@ public class AdminController {
         try {
             for (User user : selectedUsers) {
                 user.setAccountType(AccountType.findByValue(newAccountType).getValue());
-                userService.addUser(user);
+                userService.updateUser(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
