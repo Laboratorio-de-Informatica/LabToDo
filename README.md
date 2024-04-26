@@ -6,6 +6,15 @@ LabToDo es una aplicación web que permite a los usuarios gestionar las tareas d
 
 La aplicación también cuenta con un sistema de autenticación, permitiendo a los usuarios iniciar sesión en sus cuentas. Además, los usuarios tienen roles específicos que determinan sus permisos dentro de la aplicación. Esta estructura de roles permite una gestión de tareas flexible y segura, adaptándose a las necesidades de diferentes tipos de usuarios.
 
+![image](https://github.com/Laboratorio-de-Informatica/LabToDo/assets/99996670/bac9a28d-cda7-49d7-b54f-89041af449ca)
+
+![image](https://github.com/Laboratorio-de-Informatica/LabToDo/assets/99996670/074833ee-da91-438f-a4e1-cdc6a1c636a7)
+
+![image](https://github.com/Laboratorio-de-Informatica/LabToDo/assets/99996670/5ea7ee3c-45c9-4ce3-a53c-0db596720474)
+
+![image](https://github.com/Laboratorio-de-Informatica/LabToDo/assets/99996670/4be2f839-8533-4761-a1f4-c8705143bfb0)
+
+
 ## Comenzando 🚀
 
 Las siguientes instrucciones le permitirán obtener una copia del proyecto en funcionamiento en su máquina local para fines de desarrollo y prueba.
@@ -39,9 +48,6 @@ Realice los siguientes pasos para clonar el proyecto en su máquina local.
     docker run -p 3306:3306 --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
     ```
 
-    > [!NOTE]  
-    > El anterior comando creará un contenedor con MySQL en el puerto 3306, el nombre del contenedor será `some-mysql` y la contraseña del usuario root será `my-secret-pw`.
-
     En caso de que tengas una base de datos MySQL disponible, puedes cambiar las propiedades de la base de datos en el archivo `application.properties` que se encuentra en la ruta `src\main\resources\` para que la aplicación se conecte a tu base de datos.
 
     Ejemplo de ejecución local con un contenedor de Docker:
@@ -58,6 +64,22 @@ Realice los siguientes pasos para clonar el proyecto en su máquina local.
 
     ```bash
     mvn clean compile spring-boot:run
+    ```
+
+    Podrás encontrar tu aplicacion en http://localhost:8080/login.xhtml, deberas crear un usuario provisional registrando un usuario y dandole permisos de `Administrador` y estado de cuenta `Activo` con un    cliente de base de datos como [DBeaver](https://dbeaver.io/)
+
+   ![image](https://github.com/Laboratorio-de-Informatica/LabToDo/assets/99996670/f9a0a379-b090-4e1b-beb0-f5e89e3e5039)
+
+5. Si desea empaquetar en un jar asegurate de tener el `application.properties` configuardo con la base de datos a la que te vas a conectar luego de eso ejecuta el comando:
+
+    ```bash
+    mvn clean package
+    ```
+
+6. Para ejectuar la aplicacion usa el siguiente comando:
+
+    ```bash
+    java -jar target/labtodo.jar
     ```
 
 ## Dependencias 🛠️
