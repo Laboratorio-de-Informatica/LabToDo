@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:ui="jakarta.faces.facelets"
   xmlns:p="http://primefaces.org/ui"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:pe="http://primefaces.org/ui/extensions"
   lang="es"
 >
   <f:metadata>
@@ -12,15 +14,15 @@
   </f:metadata>
   <h:head>
     <title>Dashboard</title>
-    <link rel="shortcut icon" href="../img/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
-    <link rel="stylesheet" type="text/css" href="../css/admindashboard.css" />
+    <link rel="shortcut icon" href="img/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/taskdashboard.css" />
+    <link rel="stylesheet" type="text/css" href="css/admindashboard.css" />
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
   </h:head>
   <h:body>
     <header>
-      <img src="../img/logo.png" class="team-image" alt="TeamLogo" />
+      <img src="img/logo.png" class="team-image" alt="TeamLogo" />
       <h1>Laboratorio Informática LabToDo</h1>
       <div class="user-wrapper">
         <div class="user-description">
@@ -158,6 +160,19 @@
                 <f:selectItem itemLabel="Monitor" itemValue="Monitor" />
                 <f:selectItem itemLabel="Laboratorio" itemValue="Laboratorio" />
                 <p:ajax update="user-task-selection" />
+              </p:selectOneMenu>
+            </div>
+            <div class="field">
+              <p:outputLabel for="topicTask">Tema de la Tarea</p:outputLabel>
+              <p:selectOneMenu id="topicTask" value="#{taskController.currentTask.topicTask}" required="true">
+                <f:selectItem itemLabel="Selecciona el tema de la tarea" itemValue="" noSelectionOption="true" />
+                <f:selectItem itemLabel="Desarrollo de Software" itemValue="Desarrollo de Software" />
+                <f:selectItem itemLabel="Desarrollo Web" itemValue="Desarrollo Web" />
+                <f:selectItem itemLabel="Estadisticas" itemValue="Estadisticas" />
+                <f:selectItem itemLabel="Encuestas" itemValue="Encuestas" />
+                <f:selectItem itemLabel="Mantenimiento" itemValue="Mantenimiento" />
+                <f:selectItem itemLabel="Redes" itemValue="Redes" />
+                <f:selectItem itemLabel="Otro" itemValue="Otro" />
               </p:selectOneMenu>
             </div>
             <div class="field">

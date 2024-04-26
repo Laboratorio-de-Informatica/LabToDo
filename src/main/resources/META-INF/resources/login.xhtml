@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<h:html
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:p="http://primefaces.org/ui"
-    lang="es">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:ui="jakarta.faces.facelets"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:pe="http://primefaces.org/ui/extensions"
+  lang="es"
+>
 <h:head>
     <title>Bienvenido!</title>
-    <link rel="shortcut icon" href="../img/favicon.png" />
-    <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="../css/login.css" />
+    <link rel="shortcut icon" href="img/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css" />
 </h:head>
 <h:body>
@@ -17,7 +22,7 @@
             <div class="illustration-to-do"></div>
             <div class="p-2">
                 <div class="flex flex-column">
-                    <img class="lab-img" src="../img/logo.png" alt="LabInformatica" />
+                    <img class="lab-img" src="img/logo.png" alt="LabInformatica" />
                     <h2 class="text-center">Bienvenido al Sistema de Actividades</h2>
                 </div>
                 <h:form id="login-form" class="flex flex-column" styleClass="login-section">
@@ -51,7 +56,7 @@
                 <p:outputPanel id="create-account-content" class="ui-fluid">
                     <div class="field">
                         <p:outputLabel for="full-name">Nombres y Apellidos</p:outputLabel>
-                        <p:inputText id="full-name" required="true" 
+                        <p:inputText id="full-name" required="true"  placeholder="Nombre completo" 
                         value="#{loginController.createdUserAccount.fullName}"/>
                     </div>
                     <div class="field">
@@ -61,7 +66,7 @@
                     </div>
                     <div class="field">
                         <p:outputLabel for="password">Contraseña</p:outputLabel>
-                        <p:inputText id="password" type="password" required="true"
+                        <p:inputText id="password" type="password" required="true" placeholder="Contraseña" 
                         value="#{loginController.createdUserAccount.password}" />
                     </div>
                 </p:outputPanel>
@@ -79,4 +84,4 @@
         </h:form>
     </main>
 </h:body>
-</h:html>
+</html>
