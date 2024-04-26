@@ -6,7 +6,6 @@ import java.util.List;
 import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -16,7 +15,6 @@ import edu.eci.labinfo.labtodo.model.LabToDoExeption;
 import edu.eci.labinfo.labtodo.model.Role;
 import edu.eci.labinfo.labtodo.model.User;
 import edu.eci.labinfo.labtodo.service.UserService;
-import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -27,8 +25,6 @@ import lombok.Data;
 @SessionScope
 public class LoginController {
 
-    @Autowired
-    UserService userService;
     private User createdUserAccount;
     private String userName;
     private String password;
@@ -37,9 +33,10 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     private static final String LOGIN_FORM_MESSAGES = "login-form:messages";
     private static final String ERROR = "Error";
+    private final UserService userService;
 
-    @PostConstruct
-    public void init() {
+    public LoginController(UserService userService) {
+        this.userService = userService;
     }
 
     public List<User> getUsers() {
@@ -47,7 +44,7 @@ public class LoginController {
     }
 
     public List<String> getUserNames() {
-        List<String> fullNameusers = new ArrayList<String>();
+        List<String> fullNameusers = new ArrayList<>();
         userService.getUsers().forEach(user -> fullNameusers.add(user.getFullName()));
         return fullNameusers;
     }
@@ -102,7 +99,7 @@ public class LoginController {
         try {
             password = null;
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            String redirectPath = "../public/dashboard.xhtml";
+            String redirectPath = "./dashboard.xhtml";
             ec.redirect(ec.getRequestContextPath() + redirectPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -149,7 +146,7 @@ public class LoginController {
         userName = null;
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            String redirectPath = "../public/login.xhtml";
+            String redirectPath = "./login.xhtml";
             ec.redirect(ec.getRequestContextPath() + redirectPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -169,13 +166,13 @@ public class LoginController {
         String redirectPath = "";
         switch (sendTo) {
             case "control":
-                redirectPath = "../public/admindashboard.xhtml";
+                redirectPath = "./admindashboard.xhtml";
                 break;
             case "config":
-                redirectPath = "../public/settings.xhtml";
+                redirectPath = "./settings.xhtml";
                 break;
             default:
-                redirectPath = "../public/dashboard.xhtml";
+                redirectPath = "./dashboard.xhtml";
                 break;
         }
         try {

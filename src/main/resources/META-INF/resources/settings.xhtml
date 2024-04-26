@@ -1,23 +1,25 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="jakarta.faces.core"
+  xmlns:ui="jakarta.faces.facelets"
   xmlns:p="http://primefaces.org/ui"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:pe="http://primefaces.org/ui/extensions"
   lang="es"
 >
   <h:head>
     <title>Dashboard</title>
-    <link rel="shortcut icon" href="../img/favicon.png"/>
-    <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="../css/taskdashboard.css" />
-    <link rel="stylesheet" type="text/css" href="../css/settings.css" />
+    <link rel="shortcut icon" href="img/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/taskdashboard.css" />
+    <link rel="stylesheet" type="text/css" href="css/settings.css" />
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
   </h:head>
   <h:body>
     <header>
-      <img src="../img/logo.png" class="team-image" alt="TeamLogo" />
+      <img src="img/logo.png" class="team-image" alt="TeamLogo" />
       <h1>Laboratorio Informática LabToDo</h1>
       <div class="user-wrapper">
         <div class="user-description">
@@ -66,6 +68,10 @@
                 icon="pi pi-user-edit" oncomplete="PF('editDialog').show()" process="@this"
                 styleClass="rounded-button ui-button-success" disabled="#{!adminController.hasSelectedUsers()}">
               </p:commandButton>
+              <p:commandButton id="delete-users-button" value="#{adminController.deleteButtonMessage}"
+                icon="pi pi-trash" oncomplete="PF('deleteDialog').show()" process="@this"
+                styleClass="rounded-button ui-button-danger" disabled="#{!adminController.hasSelectedUsers()}">
+              </p:commandButton>
             </p:toolbarGroup>
             <p:toolbarGroup>
               <p:commandButton id="account-users-button" value="#{adminController.accountButtonMessage}"
@@ -84,20 +90,20 @@
               </div>
             </f:facet>
   
-            <p:ajax event="rowSelect" update=":form:edit-users-button :form:account-users-button" />
-            <p:ajax event="rowUnselect" update=":form:edit-users-button :form:account-users-button" />
-            <p:ajax event="rowSelectCheckbox" update=":form:edit-users-button :form:account-users-button" />
-            <p:ajax event="rowUnselectCheckbox" update=":form:edit-users-button :form:account-users-button" />
-            <p:ajax event="toggleSelect" update=":form:edit-users-button :form:account-users-button" />
+            <p:ajax event="rowSelect" update=":form:edit-users-button :form:delete-users-button :form:account-users-button" />
+            <p:ajax event="rowUnselect" update=":form:edit-users-button :form:delete-users-button  :form:account-users-button" />
+            <p:ajax event="rowSelectCheckbox" update=":form:edit-users-button :form:delete-users-button  :form:account-users-button" />
+            <p:ajax event="rowUnselectCheckbox" update=":form:edit-users-button :form:delete-users-button  :form:account-users-button" />
+            <p:ajax event="toggleSelect" update=":form:edit-users-button :form:delete-users-button  :form:account-users-button" />
   
             <p:column selectionMode="multiple" exportable="false" styleClass="user-selection"/>
             <p:column headerText="Nombre Completo" filterBy="#{user.fullName}" filterMatchMode="contains">
               <h:outputText value="#{user.fullName}" />
             </p:column>
-            <p:column headerText="Rol">
+            <p:column headerText="Rol" filterBy="#{user.role}" filterMatchMode="contains">
               <h:outputText value="#{user.role}"/>
             </p:column>
-            <p:column headerText="Estado">
+            <p:column headerText="Estado"  filterBy="#{user.accountType}" filterMatchMode="contains">
               <h:outputText value="#{user.accountType}"/>
             </p:column>
           </p:dataTable>
@@ -119,6 +125,14 @@
         actionListener="#{adminController.modifyUserRole()}" update="update-role-content"/>
         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
             onclick="PF('editDialog').hide()" />
+      </p:confirmDialog>
+      <!-- Dialogo para eliminar usuarios -->
+      <p:confirmDialog id="delete-content" widgetVar="deleteDialog" showEffect="fade"
+        width="300" message="¿Eliminar usuarios seleciionados?" header="Confirmar" severity="warn">
+        <p:commandButton value="Si" icon="pi pi-check" process="@this" 
+          oncomplete="PF('deleteDialog').hide()" actionListener="#{adminController.deleteUsers()}" />
+        <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+          icon="pi pi-times" onclick="PF('deleteDialog').hide()" />
       </p:confirmDialog>
       <!-- Dialogo para verificacion de usuarios  -->
       <p:confirmDialog id="edit-account-content" widgetVar="verifyDialog" showEffect="fade" width="350"

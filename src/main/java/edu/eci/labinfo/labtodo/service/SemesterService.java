@@ -4,18 +4,21 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
+
 import edu.eci.labinfo.labtodo.data.SemesterRepository;
 import edu.eci.labinfo.labtodo.model.Semester;
 
 @Service
 public class SemesterService {
 
-    @Autowired
     private SemesterRepository semesterRepository;
+
+    public SemesterService (SemesterRepository semesterRepository){
+        this.semesterRepository = semesterRepository;
+    }
 
     public Semester addSemester(Semester semester) {
         return semesterRepository.save(semester);

@@ -3,7 +3,6 @@ package edu.eci.labinfo.labtodo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -28,22 +27,6 @@ import lombok.Data;
 @SessionScope
 public class TaskController {
 
-    
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    CommentService commentService;
-
-    @Autowired
-    SemesterService semesterService;
-
-    @Autowired
-    private PrimeFacesWrapper primeFacesWrapper;
-
     private List<Task> tasks;
     private List<Task> tasksLab;
     private List<String> selectedUsers = new ArrayList<>();
@@ -52,6 +35,20 @@ public class TaskController {
     private String commentary;
     private String status;
     private String selectedSemester;
+
+    private final TaskService taskService;
+    private final UserService userService;
+    private final CommentService commentService;
+    private final SemesterService semesterService;
+    private final PrimeFacesWrapper primeFacesWrapper;
+
+    public TaskController(TaskService taskService, UserService userService, CommentService commentService, SemesterService semesterService, PrimeFacesWrapper primeFacesWrapper){
+        this.taskService = taskService;
+        this.userService = userService;
+        this.commentService = commentService;
+        this.semesterService = semesterService;
+        this.primeFacesWrapper = primeFacesWrapper;
+    }
 
     /**
      * Metodo que crea una nueva tarea.
@@ -78,7 +75,7 @@ public class TaskController {
      */
     public void saveTask() {   
         String message = "";
-        List<User> selectedUsersToTask = new ArrayList<User>();
+        List<User> selectedUsersToTask = new ArrayList<>();
         for (String fullName : selectedUsers) {
             User user = userService.getUserByFullName(fullName);
             selectedUsersToTask.add(user);

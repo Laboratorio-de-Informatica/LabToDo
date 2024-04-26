@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.eci.labinfo.labtodo.model.LabToDoExeption;
@@ -24,18 +23,21 @@ import lombok.Setter;
 @Setter
 public class SemesterController {
 
-    @Autowired
-    SemesterService semesterService;
-
-    @Autowired
-    private PrimeFacesWrapper primeFacesWrapper;
-
     private List<Semester> semesters;
     private String semesterName;
     private LocalDate startDate;
     private Semester currentSemester;
     private LocalDate endDate;
     private List<String> selectedUsers = new ArrayList<>();
+
+    private final SemesterService semesterService;
+    private final PrimeFacesWrapper primeFacesWrapper;
+
+    public SemesterController(SemesterService semesterService, PrimeFacesWrapper primeFacesWrapper) {
+        this.semesterService = semesterService;
+        this.primeFacesWrapper = primeFacesWrapper;
+    }
+
 
     public void openNewYear() {
         selectedUsers.clear();
@@ -81,7 +83,7 @@ public class SemesterController {
     }
 
     public List<SelectItem> getSemestersLikeItems() {
-        List<SelectItem> semesterItems = new ArrayList<SelectItem>();
+        List<SelectItem> semesterItems = new ArrayList<>();
         for (Semester semester : semesterService.getAllSemesters()) {
             semesterItems.add(new SelectItem(semester.getSemesterName()));
         }

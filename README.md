@@ -6,29 +6,23 @@ LabToDo es una aplicación web que permite a los usuarios gestionar las tareas d
 
 La aplicación también cuenta con un sistema de autenticación, permitiendo a los usuarios iniciar sesión en sus cuentas. Además, los usuarios tienen roles específicos que determinan sus permisos dentro de la aplicación. Esta estructura de roles permite una gestión de tareas flexible y segura, adaptándose a las necesidades de diferentes tipos de usuarios.
 
-## Estructura del Proyecto
+## Comenzando 🚀
 
-- `src/main/java/edu/eci/labinfo/labtodo/`: Contiene el código fuente de la aplicación.
-  - `data/`: Contiene las interfaces de los repositorios para interactuar con la base de datos.
-    - [`UserRepository.java`](src/main/java/edu/eci/labinfo/labtodo/data/UserRepository.java)
-    - [`TaskRepository.java`](src/main/java/edu/eci/labinfo/labtodo/data/TaskRepository.java)
-    - [`SemesterRepository.java`](src/main/java/edu/eci/labinfo/labtodo/data/SemesterRepository.java)
-    - [`CommentRepository.java`](src/main/java/edu/eci/labinfo/labtodo/data/CommentRepository.java)
-  - `controller/`: Contiene los controladores de la aplicación.
-    - [`TaskController.java`](src/main/java/edu/eci/labinfo/labtodo/controller/TaskController.java)
-    - [`SemesterController.java`](src/main/java/edu/eci/labinfo/labtodo/controller/SemesterController.java)
-    - [`LoginController.java`](src/main/java/edu/eci/labinfo/labtodo/controller/LoginController.java)
-    - [`AdminController.java`](src/main/java/edu/eci/labinfo/labtodo/controller/AdminController.java)
-  - `service/`: Contiene los servicios de la aplicación.
-    - [`CommentService.java`](src/main/java/edu/eci/labinfo/labtodo/service/CommentService.java)
-    - [`SemesterService.java`](src/main/java/edu/eci/labinfo/labtodo/service/SemesterService.java)
-    - [`UserService.java`](src/main/java/edu/eci/labinfo/labtodo/service/UserService.java)
-    - [`TaskService.java`](src/main/java/edu/eci/labinfo/labtodo/service/TaskService.java)
-- `src/main/resources/`: Contiene los archivos de configuración de la aplicación.
-  - [`application.properties`](src/main/resources/application.properties)
-- [`pom.xml`](pom.xml): Archivo de configuración de Maven para la construcción y gestión del proyecto.
+Las siguientes instrucciones le permitirán obtener una copia del proyecto en funcionamiento en su máquina local para fines de desarrollo y prueba.
 
-## Cómo Construir y Ejecutar el Proyecto
+### Requisitos 📋
+
+- [Git](https://git-scm.com/) - Control de versiones
+- [Maven](https://maven.apache.org/) - Manejador de dependencias
+- [Java](https://www.oracle.com/java/technologies/downloads/#java17) - Lenguaje de programación
+- [Docker](https://www.docker.com/) - Contenedor de aplicaciones
+
+> [!IMPORTANT]
+> Es necesario tener instalado Git, Maven, Docker y Java 17 para poder ejecutar el proyecto con efectos de desarrollo.
+
+### Instalación 🔧
+
+Realice los siguientes pasos para clonar el proyecto en su máquina local.
 
 1. Descarga el código del proyecto utilizando
 
@@ -45,13 +39,10 @@ La aplicación también cuenta con un sistema de autenticación, permitiendo a l
     docker run -p 3306:3306 --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
     ```
 
-    En caso de que tengas una base de datos MySQL disponible, puedes cambiar las propiedades de la base de datos en el archivo `application.properties` que se encuentra en la ruta `src\main\resources\` para que la aplicación se conecte a tu base de datos.
+    > [!NOTE]  
+    > El anterior comando creará un contenedor con MySQL en el puerto 3306, el nombre del contenedor será `some-mysql` y la contraseña del usuario root será `my-secret-pw`.
 
-    ```properties
-    spring.datasource.url=${MYSQL_URL}
-    spring.datasource.username=${MYSQL_USERNAME}
-    spring.datasource.password=${MYSQL_PASSWORD}
-    ```
+    En caso de que tengas una base de datos MySQL disponible, puedes cambiar las propiedades de la base de datos en el archivo `application.properties` que se encuentra en la ruta `src\main\resources\` para que la aplicación se conecte a tu base de datos.
 
     Ejemplo de ejecución local con un contenedor de Docker:
 
@@ -66,16 +57,10 @@ La aplicación también cuenta con un sistema de autenticación, permitiendo a l
 3. Si cambias propiedades de la base de datos como la contraseña o el usuario en el archivo `application.properties`, debes compilar el proyecto de nuevo con Maven. Para hacerlo, utiliza el comando:
 
     ```bash
-    mvn package
+    mvn clean compile spring-boot:run
     ```
 
-4. Una vez compilado el proyecto, puedes ejecutarlo con el comando:
-
-    ```bash
-    java -jar target/labtodo.jar
-    ```
-
-## Dependencias
+## Dependencias 🛠️
 
 Se está utilizando el framework de Spring Boot para el desarrollo de la aplicación. Las dependencias utilizadas son:
 
@@ -115,16 +100,34 @@ Se está utilizando el framework de Spring Boot para el desarrollo de la aplicac
 
     Lombok es la dependencia utilizada para la generación de getters, setters, constructores y otros métodos. La versión de Lombok indicada es la versión utilizada para el desarrollo de la aplicación.
 
-**Nota:**
-
-Si se desea utilizar una versión diferente de las dependencias indicadas, se debe cambiar la versión en el archivo `pom.xml` que se encuentra en la raíz del proyecto. Luego de esto se debe compilar el proyecto de nuevo con Maven.
+> [!TIP]
+> Si se desea utilizar una versión diferente de las dependencias indicadas, se debe cambiar la versión en el archivo `pom.xml` que se encuentra en la raíz del proyecto. Luego de esto se debe compilar el proyecto de nuevo con Maven.
 
 ## Diagramas
 
 Los casos de uso de la aplicación son los siguientes:
 
-![Casos de Uso](diagrams/Casos%20de%20Uso.png)
+![Casos de Uso](diagrams/CasosdeUso.png)
 
 El diagrama de conceptos es el siguiente:
 
 ![Diagrama de Conceptos](diagrams/Conceptos.png)
+
+El diagrama de despliegue de la aplicación es el siguiente:
+
+![Diagrama de Despligue](diagrams/Despliegue.png)
+
+## Autores ✒️
+
+Equipo de monitores del laboratorio de informática de la Universidad Escuela Colombiana de Ingeniería Julio Garavito 2023-2.
+
+- **Daniel Santanilla** - [ELS4NTA](https://github.com/ELS4NTA)
+- **Andres Oñate** - [AndresOnate](https://github.com/AndresOnate)
+- **David Valecia** - [DavidVal6](https://github.com/DavidVal6)
+- **Angie Mojica** - [An6ie02](https://github.com/An6ie02)
+
+## Licencia 📄
+
+[![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-sa/4.0/)
+
+Este proyecto está bajo la licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional (CC BY-SA 4.0) para más detalles consulte el archivo [LICENSE](LICENSE)
