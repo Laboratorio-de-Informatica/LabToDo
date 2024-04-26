@@ -48,9 +48,6 @@ Realice los siguientes pasos para clonar el proyecto en su máquina local.
     docker run -p 3306:3306 --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest
     ```
 
-    > [!NOTE]  
-    > El anterior comando creará un contenedor con MySQL en el puerto 3306, el nombre del contenedor será `some-mysql` y la contraseña del usuario root será `my-secret-pw`.
-
     En caso de que tengas una base de datos MySQL disponible, puedes cambiar las propiedades de la base de datos en el archivo `application.properties` que se encuentra en la ruta `src\main\resources\` para que la aplicación se conecte a tu base de datos.
 
     Ejemplo de ejecución local con un contenedor de Docker:
@@ -83,7 +80,7 @@ Realice los siguientes pasos para clonar el proyecto en su máquina local.
 
     ```bash
     java -jar target/labtodo.jar
-    ``` 
+    ```
 
 ## Dependencias 🛠️
 
